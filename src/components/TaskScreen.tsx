@@ -66,8 +66,11 @@ export const TaskScreen = () => {
     }
     try {
       toast.info("Adding task...");
+
+      // TODO: Remove status from newTask object (UPDATE LATER)
       const { status, ...taskWithoutStatus } = newTask;
       await createTask({ ...taskWithoutStatus, userId });
+
       setNewTask({
         name: "",
         description: "",
@@ -96,8 +99,11 @@ export const TaskScreen = () => {
 
     try {
       toast.info("Updating task...");
+
+      // Remove unnecessary fields before updating
       const { id, createdBy, created_at, updated_at, ...formattedTask } = editTask;
       await updateTask(editTask.id, formattedTask);
+      
       setShowEditModal(false);
       loadTasks();
       toast.success("Task updated successfully.");
