@@ -5,6 +5,19 @@ import { ITask } from "../types/task";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Lưu ý tháng bắt đầu từ 0
+  const year = date.getFullYear();
+
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+
+  return `${day}/${month}/${year} - ${hours}:${minutes}`;
+};
+
 export const TaskScreen = () => {
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<ITask[]>([]);
@@ -103,7 +116,7 @@ export const TaskScreen = () => {
       // Remove unnecessary fields before updating
       const { id, createdBy, created_at, updated_at, ...formattedTask } = editTask;
       await updateTask(editTask.id, formattedTask);
-      
+
       setShowEditModal(false);
       loadTasks();
       toast.success("Task updated successfully.");
@@ -177,53 +190,69 @@ export const TaskScreen = () => {
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-6 rounded shadow">
               <h2 className="text-lg font-semibold mb-4">Add New Task</h2>
+
+              <label className="block mb-2">Task Name</label>
               <input
                 type="text"
-                placeholder="Task Name"
                 value={newTask.name}
                 onChange={(e) => setNewTask({ ...newTask, name: e.target.value })}
                 className="p-2 border rounded mb-4 w-full"
               />
+
+              <label className="block mb-2">Description</label>
               <textarea
-                placeholder="Description"
                 value={newTask.description}
                 onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
                 className="p-2 border rounded mb-4 w-full"
               />
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <select
-                  value={newTask.priority}
-                  onChange={(e) => setNewTask({ ...newTask, priority: e.target.value as ITask["priority"] })}
-                  className="p-2 border rounded mb-2 w-full"
-                >
-                  <option value="High">High</option>
-                  <option value="Medium">Medium</option>
-                  <option value="Low">Low</option>
-                </select>
-                <select
-                  value={newTask.status}
-                  onChange={(e) => setNewTask({ ...newTask, status: e.target.value as ITask["status"] })}
-                  className="p-2 border rounded mb-2 w-full"
-                >
-                  <option value="Todo">Todo</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Completed">Completed</option>
-                  <option value="Expired">Expired</option>
-                </select>
-                <input
-                  type="datetime-local"
-                  placeholder="Opened At"
-                  value={newTask.opened_at}
-                  onChange={(e) => setNewTask({ ...newTask, opened_at: e.target.value })}
-                  className="p-2 border rounded mb-2 w-full"
-                />
-                <input
-                  type="datetime-local"
-                  placeholder="Due At"
-                  value={newTask.dued_at}
-                  onChange={(e) => setNewTask({ ...newTask, dued_at: e.target.value })}
-                  className="p-2 border rounded mb-2 w-full"
-                />
+                <div>
+                  <label className="block mb-2">Priority</label>
+                  <select
+                    value={newTask.priority}
+                    onChange={(e) => setNewTask({ ...newTask, priority: e.target.value as ITask["priority"] })}
+                    className="p-2 border rounded mb-2 w-full"
+                  >
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block mb-2">Status</label>
+                  <select
+                    value={newTask.status}
+                    onChange={(e) => setNewTask({ ...newTask, status: e.target.value as ITask["status"] })}
+                    className="p-2 border rounded mb-2 w-full"
+                  >
+                    <option value="Todo">Todo</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Expired">Expired</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block mb-2">Opened At</label>
+                  <input
+                    type="datetime-local"
+                    value={newTask.opened_at}
+                    onChange={(e) => setNewTask({ ...newTask, opened_at: e.target.value })}
+                    className="p-2 border rounded mb-2 w-full"
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-2">Due At</label>
+                  <input
+                    type="datetime-local"
+                    value={newTask.dued_at}
+                    onChange={(e) => setNewTask({ ...newTask, dued_at: e.target.value })}
+                    className="p-2 border rounded mb-2 w-full"
+                  />
+                </div>
               </div>
 
               <div className="flex justify-end space-x-2 mt-4">
@@ -243,51 +272,69 @@ export const TaskScreen = () => {
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-6 rounded shadow">
               <h2 className="text-lg font-semibold mb-4">Update Task</h2>
+
+              <label className="block mb-2">Task Name</label>
               <input
                 type="text"
-                placeholder="Task Name"
                 value={editTask.name}
                 onChange={(e) => setEditTask({ ...editTask, name: e.target.value })}
                 className="p-2 border rounded mb-4 w-full"
               />
+
+              <label className="block mb-2">Description</label>
               <textarea
-                placeholder="Description"
                 value={editTask.description}
                 onChange={(e) => setEditTask({ ...editTask, description: e.target.value })}
                 className="p-2 border rounded mb-4 w-full"
               />
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <select
-                  value={editTask.priority}
-                  onChange={(e) => setEditTask({ ...editTask, priority: e.target.value as ITask["priority"] })}
-                  className="p-2 border rounded mb-2 w-full"
-                >
-                  <option value="High">High</option>
-                  <option value="Medium">Medium</option>
-                  <option value="Low">Low</option>
-                </select>
-                <select
-                  value={editTask.status}
-                  onChange={(e) => setEditTask({ ...editTask, status: e.target.value as ITask["status"] })}
-                  className="p-2 border rounded mb-2 w-full"
-                >
-                  <option value="Todo">Todo</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Completed">Completed</option>
-                  <option value="Expired">Expired</option>
-                </select>
-                <input
-                  type="datetime-local"
-                  value={editTask.opened_at}
-                  onChange={(e) => setEditTask({ ...editTask, opened_at: e.target.value })}
-                  className="p-2 border rounded mb-2 w-full"
-                />
-                <input
-                  type="datetime-local"
-                  value={editTask.dued_at}
-                  onChange={(e) => setEditTask({ ...editTask, dued_at: e.target.value })}
-                  className="p-2 border rounded mb-2 w-full"
-                />
+                <div>
+                  <label className="block mb-2">Priority</label>
+                  <select
+                    value={editTask.priority}
+                    onChange={(e) => setEditTask({ ...editTask, priority: e.target.value as ITask["priority"] })}
+                    className="p-2 border rounded mb-2 w-full"
+                  >
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block mb-2">Status</label>
+                  <select
+                    value={editTask.status}
+                    onChange={(e) => setEditTask({ ...editTask, status: e.target.value as ITask["status"] })}
+                    className="p-2 border rounded mb-2 w-full"
+                  >
+                    <option value="Todo">Todo</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Expired">Expired</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block mb-2">Opened At</label>
+                  <input
+                    type="datetime-local"
+                    value={editTask.opened_at ? new Date(editTask.opened_at).toISOString().slice(0, 16) : ""}
+                    onChange={(e) => setEditTask({ ...editTask, opened_at: e.target.value })}
+                    className="p-2 border rounded mb-2 w-full"
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-2">Due At</label>
+                  <input
+                    type="datetime-local"
+                    value={editTask.dued_at ? new Date(editTask.dued_at).toISOString().slice(0, 16) : ""}
+                    onChange={(e) => setEditTask({ ...editTask, dued_at: e.target.value })}
+                    className="p-2 border rounded mb-2 w-full"
+                  />
+                </div>
               </div>
 
               <div className="flex justify-end space-x-2 mt-4">
@@ -342,8 +389,8 @@ export const TaskScreen = () => {
                 <p className="text-gray-500">{task.description}</p>
                 <p>Priority: {task.priority}</p>
                 <p>Status: {task.status}</p>
-                <p>Opened At: {new Date(task.opened_at || "").toLocaleString()}</p>
-                <p>Due At: {new Date(task.dued_at || "").toLocaleString()}</p>
+                <p>Opened At: {formatDate(task.opened_at || "")}</p>
+                <p>Due At: {formatDate(task.dued_at || "")}</p>
               </div>
               <div>
                 <button onClick={() => handleEditClick(task)} className="bg-blue-500 text-white px-3 py-1 rounded">
