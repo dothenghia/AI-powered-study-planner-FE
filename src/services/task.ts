@@ -3,9 +3,7 @@ import { ITask } from "../types/task";
 
 export const fetchTasks = async (userId: string) => {
   try {
-    const response = await apiInstance.get("/tasks", {
-      data: { userId },
-    });
+    const response = await apiInstance.get(`/tasks?userId=${userId}`);
     return response.data.data;
   } catch (error) {
     console.error("Error fetching tasks:", error);

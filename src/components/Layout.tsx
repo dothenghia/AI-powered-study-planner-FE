@@ -9,7 +9,7 @@ const { Header, Content } = AntLayout;
 const Layout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout } = useAuthStore();
+  const { logout, email } = useAuthStore();
 
   // If the current route is login or register, only render the Outlet
   if (location.pathname === '/login' || location.pathname === '/register') {
@@ -42,12 +42,15 @@ const Layout: React.FC = () => {
             },
           ]}
         />
-        <Button
-          onClick={() => {
-            logout();
-            navigate("/login");
-          }}
-        >Logout</Button>
+        <div>
+          <span className='mr-4 text-white/80'>Welcome, {email}</span>
+          <Button
+            onClick={() => {
+              logout();
+              navigate("/login");
+            }}
+          >Logout</Button>
+        </div>
       </Header>
       <Content style={{ height: 'calc(100vh - 52px)', overflow: 'auto' }}>
         <Outlet />
