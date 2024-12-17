@@ -36,7 +36,7 @@ export default function SignIn() {
   const handleSubmit = async (data: any) => {
     try {
       await login(data);
-      navigate("/profile");
+      navigate("/task");
     } catch (error) {
       if (error instanceof Error) setMsg(error.message, true);
     }
@@ -58,7 +58,7 @@ export default function SignIn() {
     const email = params.get("email");
     if (token) {
       setUser(email, username, token);
-      navigate("/profile");
+      navigate("/task");
     }
   }, []);
 

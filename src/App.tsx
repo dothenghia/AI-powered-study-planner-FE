@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 import RouterError from "./components/RouterError";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
+import { TaskScreen } from "./components/TaskScreen";
 import { Profile } from "./components/Profile";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -19,6 +20,11 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
+    errorElement: <RouterError />,
+  },
+  {
+    path: "/task",
+    element: <TaskScreen />,
     errorElement: <RouterError />,
   },
   {

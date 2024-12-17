@@ -12,7 +12,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate("/profile");
+            navigate("/task");
         } else {
             navigate("/login");
         }
