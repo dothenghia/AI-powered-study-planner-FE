@@ -31,3 +31,13 @@ export const createTask = async (taskData: Partial<ITask>) => {
     throw error;
   }
 };
+
+export const updateTask = async (id: string, taskData: Partial<ITask>) => {
+  try {
+    const response = await apiInstance.put(`/tasks/${id}`, taskData);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error updating task:", error);
+    throw error;
+  }
+};
