@@ -51,7 +51,7 @@ export default function SignUp() {
   const handleSubmit = async (data: ICreateUserData) => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/register`, {
+      const response = await fetch(`${apiUrl}/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

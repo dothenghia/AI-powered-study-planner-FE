@@ -41,7 +41,8 @@ export const CalendarScreen = () => {
     const newEnd = eventInfo.event.end || newStart;
 
     try {
-      const updatedStatus = newStart && newStart < new Date() ? "Expired" : "Todo";
+      const updatedStatus =
+        newStart && newStart < new Date() ? "Expired" : "Todo";
       await updateTask(taskId, {
         opened_at: newStart.toISOString(),
         dued_at: newEnd.toISOString(),
@@ -89,16 +90,20 @@ export const CalendarScreen = () => {
           {/* Chú thích màu sắc */}
           <div className="flex space-x-4">
             <div className="flex items-center">
-              <span className="w-4 h-4 bg-gray-500 mr-2"></span> <span>Expired</span>
+              <span className="w-4 h-4 bg-gray-500 mr-2"></span>{" "}
+              <span>Expired</span>
             </div>
             <div className="flex items-center">
-              <span className="w-4 h-4 bg-orange-400 mr-2"></span> <span>Todo</span>
+              <span className="w-4 h-4 bg-orange-400 mr-2"></span>{" "}
+              <span>Todo</span>
             </div>
             <div className="flex items-center">
-              <span className="w-4 h-4 bg-blue-500 mr-2"></span> <span>In Progress</span>
+              <span className="w-4 h-4 bg-blue-500 mr-2"></span>{" "}
+              <span>In Progress</span>
             </div>
             <div className="flex items-center">
-              <span className="w-4 h-4 bg-green-500 mr-2"></span> <span>Completed</span>
+              <span className="w-4 h-4 bg-green-500 mr-2"></span>{" "}
+              <span>Completed</span>
             </div>
           </div>
         </div>
