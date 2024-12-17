@@ -125,23 +125,29 @@ export const TaskScreen = () => {
 
   const toggleSortPriority = () => {
     setSortPriorityAsc(!sortPriorityAsc);
-    const sortedTasks = [...filteredTasks].sort((a, b) =>
-      sortPriorityAsc
-        ? b.priority.localeCompare(a.priority)
-        : a.priority.localeCompare(b.priority)
-    );
+    const priorityOrder = sortPriorityAsc ? ["Low", "Medium", "High"] : ["High", "Medium", "Low"];
+
+    const sortedTasks = [...filteredTasks].sort((a, b) => {
+      return priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority);
+    });
+
     setFilteredTasks(sortedTasks);
   };
 
+
   const toggleSortStatus = () => {
     setSortStatusAsc(!sortStatusAsc);
-    const sortedTasks = [...filteredTasks].sort((a, b) =>
-      sortStatusAsc
-        ? b.status.localeCompare(a.status)
-        : a.status.localeCompare(b.status)
-    );
+    const statusOrder = sortStatusAsc
+      ? ["Todo", "In Progress", "Completed", "Expired"]
+      : ["Completed", "In Progress", "Todo", "Expired"];
+
+    const sortedTasks = [...filteredTasks].sort((a, b) => {
+      return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
+    });
+
     setFilteredTasks(sortedTasks);
   };
+
 
   useEffect(() => {
     handleSearch();
