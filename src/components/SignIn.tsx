@@ -53,11 +53,12 @@ export default function SignIn() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-    const username = params.get("username");
-    const email = params.get("email");
+    const userId = params.get("userId") || "";
+    const token = params.get("token") || "";
+    const username = params.get("username") || "";
+    const email = params.get("email") || "";
     if (token) {
-      setUser(email, username, token);
+      setUser(userId, email, username, token);
       navigate("/task");
     }
   }, []);

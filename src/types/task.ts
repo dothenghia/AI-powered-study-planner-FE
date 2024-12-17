@@ -10,4 +10,6 @@ export interface ITask {
   estimated_time?: number;
   opened_at?: string;
   dued_at?: string;
+  created_at?: string;
+  updated_at?: string;
 }
