@@ -154,7 +154,7 @@ export const TaskScreen = () => {
   }, [searchTerm, filterPriority, filterStatus]);
 
   return (
-    <div className="h-screen overflow-y-auto bg-gray-200 p-6">
+    <div className="min-h-full bg-gray-200 p-6">
       <ToastContainer />
       <div className="container mx-auto">
         <h1 className="text-2xl font-bold mb-4">Task Management</h1>
