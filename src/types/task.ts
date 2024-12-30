@@ -1,3 +1,4 @@
+import { Priority, Status } from './common';
 
 export interface ITask {
   id: string;
@@ -5,8 +6,8 @@ export interface ITask {
   createdBy?: string;
   name: string;
   description?: string;
-  priority: "High" | "Medium" | "Low";
-  status: "Todo" | "In Progress" | "Completed" | "Expired";
+  priority: Priority;
+  status: Status;
   estimated_time?: number;
   opened_at?: string;
   dued_at?: string;

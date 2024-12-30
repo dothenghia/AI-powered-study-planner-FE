@@ -1,13 +1,11 @@
-import apiInstance from "./config";
+import { api } from './api';
+import { PromptResponse } from '../types/prompt';
 
-export const prompt = async (userId: string) => {
-  try {
-    const response = await apiInstance.post("/prompt", {
-      data: { userId },
+export const promptService = {
+  analyzeWithAI: async (userId: string): Promise<PromptResponse> => {
+    const response = await api.post('/prompt', {
+      data: { userId }
     });
     return response.data;
-  } catch (error) {
-    console.error("Error fetching tasks:", error);
-    throw error;
   }
 };

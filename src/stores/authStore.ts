@@ -1,51 +1,36 @@
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { AuthState } from '../types/auth';
 
-type AuthStore = {
-  isAuthenticated: boolean;
-  userId: string | null;
-  email: string | null;
-  username: string | null;
-  accessToken: string | null;
-
+interface AuthStore extends AuthState {
   setUser: (userId: string, email: string, username: string, accessToken: string) => void;
   logout: () => void;
+}
+
+const initialState: AuthState = {
+  isAuthenticated: false,
+  userId: null,
+  email: null,
+  username: null,
+  accessToken: null,
 };
 
-const useAuthStore = create<AuthStore>()(
+export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
-      isAuthenticated: false,
-      userId: null,
-      email: "",
-      username: "",
-      accessToken: null,
-
-      setUser: (userId, email, username, accessToken) => {
+      ...initialState,
+      setUser: (userId, email, username, accessToken) => 
         set({
           isAuthenticated: true,
           userId,
           email,
           username,
           accessToken,
-        });
-      },
-
-      logout: () => {
-        set({
-          isAuthenticated: false,
-          userId: null,
-          email: "",
-          username: "",
-          accessToken: null,
-        });
-      },
+        }),
+      logout: () => set(initialState),
     }),
     {
-      name: "auth-storage",
-      storage: createJSONStorage(() => localStorage),
+      name: 'auth-storage',
     }
   )
 );
-
-export default useAuthStore;
