@@ -23,7 +23,7 @@ function App() {
                 index
                 element={
                   <ProtectedRoute>
-                    <SignInPage />
+                    <TaskPage />
                   </ProtectedRoute>
                 }
               />

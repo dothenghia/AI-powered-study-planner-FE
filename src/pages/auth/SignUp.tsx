@@ -28,7 +28,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex w-full h-screen">
+    <div className="flex w-full h-screen justify-center items-center">
       <img
         src={illustration}
         alt="register-illustration"

@@ -1,10 +1,7 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { Layout, Menu, Button } from 'antd';
 import { useAuthStore } from '../stores';
 
-const { Header, Content } = Layout;
-
-const MainLayout = () => {
+export default function MainLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout, email } = useAuthStore();
@@ -16,14 +13,8 @@ const MainLayout = () => {
   }
 
   const menuItems = [
-    {
-      key: '/task',
-      label: <Link to="/task">Task Management</Link>
-    },
-    {
-      key: '/view',
-      label: <Link to="/view">Calendar View</Link>
-    },
+    { path: '/task', label: 'Task Management' },
+    { path: '/view', label: 'Calendar View' },
   ];
 
   const handleLogout = () => {
@@ -32,25 +23,37 @@ const MainLayout = () => {
   };
 
   return (
-    <Layout className="min-h-screen">
-      <Header className="flex justify-between items-center h-[52px] px-5">
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          selectedKeys={[location.pathname]}
-          className="flex-1 h-[52px]"
-          items={menuItems}
-        />
-        <div className="flex items-center">
-          <span className="mr-4 text-white/80">Welcome, {email}</span>
-          <Button onClick={handleLogout}>Logout</Button>
+    <div className="min-h-screen flex flex-col">
+      <header className="bg-gray-800 h-[52px] px-5 flex items-center justify-between">
+        <nav className="flex-1">
+          <ul className="flex space-x-6">
+            {menuItems.map(({ path, label }) => (
+              <li key={path}>
+                <Link
+                  to={path}
+                  className={`text-white hover:text-gray-300 ${
+                    location.pathname === path ? 'font-semibold' : ''
+                  }`}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="flex items-center space-x-4">
+          <span className="text-white/80">Welcome, {email}</span>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+          >
+            Logout
+          </button>
         </div>
-      </Header>
-      <Content className="h-[calc(100vh-52px)] overflow-auto">
+      </header>
+      <main className="flex-1 overflow-auto">
         <Outlet />
-      </Content>
-    </Layout>
+      </main>
+    </div>
   );
-};
-
-export default MainLayout; 
+} 
