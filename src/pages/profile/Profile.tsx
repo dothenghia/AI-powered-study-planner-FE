@@ -1,18 +1,11 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../stores";
-import { useMsgStore } from "../../stores";
 import avatar from "../../assets/avatar.jpg";
 import background from "../../assets/background.jpg";
 
 export default function ProfilePage() {
   const { email, username, clearUser } = useAuthStore();
-  const { setMsg } = useMsgStore();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setMsg("", false);
-  }, [setMsg]);
 
   const handleLogout = () => {
     clearUser();
