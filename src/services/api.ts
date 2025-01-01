@@ -27,7 +27,7 @@ const createApiInstance = () => {
     (response) => response,
     (error) => {
       if (error.response?.status === 401) {
-        useAuthStore.getState().logout();
+        useAuthStore.getState().clearUser();
       }
       return Promise.reject(error);
     }

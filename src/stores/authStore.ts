@@ -4,7 +4,7 @@ import { AuthState } from '../types/auth';
 
 interface AuthStore extends AuthState {
   setUser: (userId: string, email: string, username: string, accessToken: string) => void;
-  logout: () => void;
+  clearUser: () => void;
 }
 
 const initialState: AuthState = {
@@ -27,7 +27,7 @@ export const useAuthStore = create<AuthStore>()(
           username,
           accessToken,
         }),
-      logout: () => set(initialState),
+      clearUser: () => set(initialState),
     }),
     {
       name: 'auth-storage',

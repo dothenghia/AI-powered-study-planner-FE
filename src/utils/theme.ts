@@ -5,7 +5,8 @@ export const theme = {
       hover: "#1A0F9A"
     },
     secondary: {
-      DEFAULT: "#ACA0E0"
+      DEFAULT: "#ACA0E0",
+      hover: "#8A78C0"
     },
     error: {
       DEFAULT: "#C93B32"

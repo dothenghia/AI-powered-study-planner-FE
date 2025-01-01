@@ -3,7 +3,7 @@ import { ITask } from '../types/task';
 
 export const taskService = {
   fetchTasks: async (userId: string): Promise<ITask[]> => {
-    const response = await api.get(`/tasks`, {
+    const response = await api.get('/tasks', {
       params: { userId }
     });
     return response.data.data;

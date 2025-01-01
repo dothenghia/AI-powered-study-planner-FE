@@ -1,64 +1,60 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { MainLayout } from "./layouts";
-import { 
-  SignInPage, 
-  SignUpPage, 
-  TaskPage, 
-  CalendarPage, 
-  ProfilePage, 
-  NotFoundPage 
+import {
+  SignInPage,
+  SignUpPage,
+  TaskPage,
+  CalendarPage,
+  ProfilePage,
+  NotFoundPage
 } from "./pages";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { BackgroundBase } from "./components/BackgroundBase";
+import { ROUTES } from "./utils/constants";
 
+// App routing setup
 function App() {
   return (
-    <>
-      <BackgroundBase />
-      <div className="relative z-10">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<MainLayout />}>
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <TaskPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="login" element={<SignInPage />} />
-              <Route path="register" element={<SignUpPage />} />
-              <Route 
-                path="profile" 
-                element={
-                  <ProtectedRoute>
-                    <ProfilePage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="task" 
-                element={
-                  <ProtectedRoute>
-                    <TaskPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="view" 
-                element={
-                  <ProtectedRoute>
-                    <CalendarPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route path="*" element={<NotFoundPage />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path={ROUTES.HOME} element={<MainLayout />}>
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <TaskPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path={ROUTES.LOGIN} element={<SignInPage />} />
+          <Route path={ROUTES.REGISTER} element={<SignUpPage />} />
+          <Route
+            path={ROUTES.PROFILE}
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={ROUTES.TASK}
+            element={
+              <ProtectedRoute>
+                <TaskPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={ROUTES.CALENDAR}
+            element={
+              <ProtectedRoute>
+                <CalendarPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

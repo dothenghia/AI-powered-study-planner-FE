@@ -1,6 +1,7 @@
 import * as yup from "yup";
 import regex from "./regex";
 
+// Login schema with yup validation
 export const loginSchema = yup.object({
   email: yup
     .string()
@@ -11,6 +12,7 @@ export const loginSchema = yup.object({
     .required("Password is required")
 });
 
+// Register schema with yup validation
 export const registerSchema = yup.object({
   username: yup
     .string()
@@ -34,6 +36,7 @@ export const registerSchema = yup.object({
     .oneOf([yup.ref("password")], "Passwords must match")
 });
 
+// Task schema with yup validation
 export const taskSchema = yup.object({
   name: yup.string().required("Task name is required"),
   description: yup.string(),
