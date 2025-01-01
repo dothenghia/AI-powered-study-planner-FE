@@ -8,9 +8,10 @@ interface ModalProps {
   title: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  hideFooter?: boolean;
 }
 
-export const Modal = ({ isOpen, onClose, title, children, footer }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, title, children, footer, hideFooter }: ModalProps) => {
   const modalRoot = document.getElementById('modal-root');
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -40,7 +41,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer }: ModalProps) 
         <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={onClose} />
         <div
           ref={modalRef}
-          className="relative w-full max-w-md transform rounded-lg bg-white p-6 shadow-xl transition-all"
+          className="relative w-full max-w-lg transform rounded-lg bg-white p-6 pb-1 shadow-xl transition-all"
         >
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-lg font-medium">{title}</h3>
@@ -52,15 +53,17 @@ export const Modal = ({ isOpen, onClose, title, children, footer }: ModalProps) 
             </button>
           </div>
           <div className="mb-6">{children}</div>
-          {footer || (
-            <div className="flex justify-end space-x-2">
-              <Button variant="secondary" onClick={onClose}>
-                Cancel
-              </Button>
-              <Button type="submit" form="modal-form">
-                Confirm
-              </Button>
-            </div>
+          {!hideFooter && (
+            footer || (
+              <div className="flex justify-end space-x-2">
+                <Button variant="gray" onClick={onClose}>
+                  Cancel
+                </Button>
+                <Button type="submit" form="modal-form">
+                  Confirm
+                </Button>
+              </div>
+            )
           )}
         </div>
       </div>

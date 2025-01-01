@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TaskList } from "./components/TaskList";
@@ -12,6 +12,7 @@ import { ITask } from "../../types/task";
 import { taskSchema } from "../../utils/validations";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuthStore } from "../../stores";
 
 export default function TaskPage() {
   const [showModal, setShowModal] = useState(false);
@@ -21,9 +22,16 @@ export default function TaskPage() {
   const [statusFilter, setStatusFilter] = useState("");
   const [sortPriorityAsc, setSortPriorityAsc] = useState(true);
   const [sortStatusAsc, setSortStatusAsc] = useState(true);
+  const { userId } = useAuthStore();
 
-  const { tasks, isLoading, createTask, updateTask, deleteTask } = useTasks();
+  const { tasks, isLoading, createTask, updateTask, deleteTask, fetchTasks } = useTasks();
   const { isAnalyzing, analyzeWithAI } = useAIAnalysis();
+
+  useEffect(() => {
+    if (userId) {
+      fetchTasks();
+    }
+  }, []);
 
   const form = useForm<Partial<ITask>>({
     resolver: yupResolver(taskSchema),
@@ -32,14 +40,22 @@ export default function TaskPage() {
       description: "",
       priority: "Medium",
       status: "Todo",
+      estimated_time: 0,
+      opened_at: new Date().toISOString().slice(0, 16),
+      dued_at: new Date().toISOString().slice(0, 16),
     },
   });
 
   const handleSubmit = async (data: Partial<ITask>) => {
+    const formattedData = {
+      ...data,
+      estimated_time: data.estimated_time ? Math.round(Number(data.estimated_time)) : undefined
+    };
+
     if (editingTask) {
-      await updateTask(editingTask.id, data);
+      await updateTask(editingTask.id, formattedData);
     } else {
-      await createTask(data);
+      await createTask(formattedData);
     }
     setShowModal(false);
     setEditingTask(null);
@@ -48,12 +64,16 @@ export default function TaskPage() {
 
   const handleEdit = (task: ITask) => {
     setEditingTask(task);
-    form.reset(task);
+    form.reset({
+      ...task,
+      opened_at: task.opened_at ? new Date(task.opened_at).toISOString().slice(0, 16) : "",
+      dued_at: task.dued_at ? new Date(task.dued_at).toISOString().slice(0, 16) : "",
+    });
     setShowModal(true);
   };
 
   const filteredTasks = tasks
-    .filter((task) => 
+    .filter((task) =>
       task.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (!priorityFilter || task.priority === priorityFilter) &&
       (!statusFilter || task.status === statusFilter)
@@ -66,21 +86,37 @@ export default function TaskPage() {
     });
 
   return (
-    <div className="min-h-full bg-gray-100 p-6">
+    <div className="min-h-full p-6">
       <ToastContainer />
-      <div className="max-w-6xl mx-auto">
+
+      <div className="container mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Task Management</h1>
           <div className="space-x-4">
-            <Button onClick={() => setShowModal(true)}>
+            <Button
+              variant="primary"
+              onClick={() => {
+                setEditingTask(null);
+                form.reset({
+                  name: "",
+                  description: "",
+                  priority: "Medium",
+                  status: "Todo",
+                  estimated_time: 0,
+                  opened_at: new Date().toISOString().slice(0, 16),
+                  dued_at: new Date().toISOString().slice(0, 16),
+                });
+                setShowModal(true);
+              }}
+            >
               Add Task
             </Button>
-            <Button 
-              variant="secondary" 
+            <Button
+              variant="secondary"
               onClick={analyzeWithAI}
               isLoading={isAnalyzing}
             >
-              ★ Analyse with AI
+              ✨ Analyse with AI
             </Button>
           </div>
         </div>
@@ -112,10 +148,9 @@ export default function TaskPage() {
           isOpen={showModal}
           onClose={() => {
             setShowModal(false);
-            setEditingTask(null);
-            form.reset();
           }}
           title={editingTask ? "Edit Task" : "Create Task"}
+          hideFooter
         >
           <TaskForm
             form={form}

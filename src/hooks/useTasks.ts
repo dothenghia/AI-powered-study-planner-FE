@@ -26,13 +26,14 @@ export const useTasks = () => {
     }
   }, [userId]);
 
-  const createTask = async (taskData: Partial<ITask>) => {
-    if (!userId) return;
+  const createTask = async (taskData: Partial<ITask>): Promise<boolean> => {
+    if (!userId) return false;
     
     try {
       toast.info('Adding task...');
       await taskService.createTask({ ...taskData, userId });
       await fetchTasks();
+      toast.dismiss();
       toast.success('Task added successfully.');
       return true;
     } catch (error) {
@@ -42,11 +43,23 @@ export const useTasks = () => {
     }
   };
 
-  const updateTask = async (id: string, taskData: Partial<ITask>) => {
+  const updateTask = async (id: string, taskData: Partial<ITask>): Promise<boolean> => {
     try {
       toast.info('Updating task...');
-      await taskService.updateTask(id, taskData);
+      
+      const updateBody = {
+        name: taskData.name,
+        description: taskData.description,
+        priority: taskData.priority,
+        status: taskData.status,
+        estimated_time: taskData.estimated_time,
+        opened_at: taskData.opened_at,
+        dued_at: taskData.dued_at
+      };
+
+      await taskService.updateTask(id, updateBody);
       await fetchTasks();
+      toast.dismiss();
       toast.success('Task updated successfully.');
       return true;
     } catch (error) {
@@ -56,11 +69,12 @@ export const useTasks = () => {
     }
   };
 
-  const deleteTask = async (id: string) => {
+  const deleteTask = async (id: string): Promise<boolean> => {
     try {
       toast.info('Deleting task...');
       await taskService.deleteTask(id);
       await fetchTasks();
+      toast.dismiss();
       toast.success('Task deleted successfully.');
       return true;
     } catch (error) {

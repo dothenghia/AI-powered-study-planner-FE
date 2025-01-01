@@ -42,6 +42,13 @@ export const taskSchema = yup.object({
   description: yup.string(),
   priority: yup.string().oneOf(["High", "Medium", "Low"]).required(),
   status: yup.string().oneOf(["Todo", "In Progress", "Completed", "Expired"]).required(),
+  estimated_time: yup
+    .number()
+    .typeError("Estimated time must be a number")
+    .required("Estimated time is required")
+    .integer("Estimated time must be an integer")
+    .min(1, "Estimated time must be at least 1 minute")
+    .max(1440, "Estimated time cannot exceed 1440 minutes (24 hours)"),
   opened_at: yup.string().required("Start date is required"),
   dued_at: yup.string().required("Due date is required")
 }); 

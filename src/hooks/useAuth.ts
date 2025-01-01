@@ -7,7 +7,7 @@ import { LoginCredentials } from "../types/auth";
 
 export const useAuth = () => {
   const navigate = useNavigate();
-  const { setUser, logout } = useAuthStore();
+  const { setUser, clearUser } = useAuthStore();
 
   const login = useCallback(async (credentials: LoginCredentials) => {
     try {
@@ -40,7 +40,7 @@ export const useAuth = () => {
   return {
     login,
     register,
-    logout,
+    clearUser,
     loginWithGoogle
   };
 }; 

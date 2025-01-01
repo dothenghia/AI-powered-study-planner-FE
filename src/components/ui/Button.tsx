@@ -2,18 +2,21 @@ import { forwardRef } from "react";
 import clsx from "clsx";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "google";
+  variant?: "primary" | "secondary" | "google" | "primary-outline" | "secondary-outline" | "gray";
   isLoading?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ children, variant = "primary", isLoading, className, ...props }, ref) => {
-    const baseStyles = "rounded-md px-4 py-2 font-medium transition-colors duration-200";
+    const baseStyles = "rounded-md px-4 h-10 transition-colors duration-300";
     
     const variants = {
       primary: "bg-primary hover:bg-primary-hover text-white",
       secondary: "bg-secondary hover:bg-secondary-hover text-white",
-      google: "bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center justify-center gap-2"
+      google: "bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center justify-center gap-2",
+      "primary-outline": "border-2 border-primary text-primary hover:bg-primary hover:text-white",
+      "secondary-outline": "border-2 border-secondary text-secondary hover:bg-secondary hover:text-white",
+      gray: "bg-gray-100 hover:bg-gray-200 text-gray-700"
     };
 
     return (

@@ -6,7 +6,7 @@ import avatar from "../../assets/avatar.jpg";
 import background from "../../assets/background.jpg";
 
 export default function ProfilePage() {
-  const { email, username, logout } = useAuthStore();
+  const { email, username, clearUser } = useAuthStore();
   const { setMsg } = useMsgStore();
   const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ export default function ProfilePage() {
   }, [setMsg]);
 
   const handleLogout = () => {
-    logout();
+    clearUser();
     navigate("/login");
   };
 
