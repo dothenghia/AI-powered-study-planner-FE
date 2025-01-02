@@ -10,9 +10,9 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTe
 export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
   ({ error, className, as = "input", ...props }, ref) => {
     const Component = as;
-    
+
     return (
-      <div className="mb-4">
+      <>
         <Component
           ref={ref as any}
           className={clsx(
@@ -27,7 +27,7 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
         {error && (
           <span className="text-sm text-red-500 mt-1">{error}</span>
         )}
-      </div>
+      </>
     );
   }
 ); 

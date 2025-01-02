@@ -20,8 +20,8 @@ export default function TaskPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [sortPriorityAsc, setSortPriorityAsc] = useState(true);
-  const [sortStatusAsc, setSortStatusAsc] = useState(true);
+  const [sortPriorityAsc, setSortPriorityAsc] = useState<boolean | null>(null);
+  const [sortStatusAsc, setSortStatusAsc] = useState<boolean | null>(null);
   const { userId } = useAuthStore();
 
   const { tasks, isLoading, createTask, updateTask, deleteTask, fetchTasks } = useTasks();
@@ -72,6 +72,9 @@ export default function TaskPage() {
     setShowModal(true);
   };
 
+  const priorityOrder = sortPriorityAsc ? ["High", "Medium", "Low"] : ["Low", "Medium", "High"];
+  const statusOrder = sortStatusAsc ? ["Todo", "In Progress", "Completed", "Expired"] : ["Completed", "In Progress", "Todo", "Expired"];
+
   const filteredTasks = tasks
     .filter((task) =>
       task.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -79,11 +82,51 @@ export default function TaskPage() {
       (!statusFilter || task.status === statusFilter)
     )
     .sort((a, b) => {
-      if (sortPriorityAsc) {
-        return a.priority.localeCompare(b.priority);
+      // Sort by priority if priority sort is active
+      if (sortPriorityAsc !== null) {
+        const priorityA = priorityOrder.indexOf(a.priority);
+        const priorityB = priorityOrder.indexOf(b.priority);
+        if (priorityA !== priorityB) {
+          return priorityA - priorityB;
+        }
       }
-      return b.priority.localeCompare(a.priority);
+
+      // Sort by status if status sort is active
+      if (sortStatusAsc !== null) {
+        const statusA = statusOrder.indexOf(a.status);
+        const statusB = statusOrder.indexOf(b.status);
+        if (statusA !== statusB) {
+          return statusA - statusB;
+        }
+      }
+
+      return 0;
     });
+
+  // Toggle sort functions
+  const togglePrioritySort = () => {
+    if (sortPriorityAsc === null) {
+      setSortPriorityAsc(true);
+    } else if (sortPriorityAsc) {
+      setSortPriorityAsc(false);
+    } else {
+      setSortPriorityAsc(null);
+    }
+    // Reset status sort when priority sort changes
+    setSortStatusAsc(null);
+  };
+
+  const toggleStatusSort = () => {
+    if (sortStatusAsc === null) {
+      setSortStatusAsc(true);
+    } else if (sortStatusAsc) {
+      setSortStatusAsc(false);
+    } else {
+      setSortStatusAsc(null);
+    }
+    // Reset priority sort when status sort changes
+    setSortPriorityAsc(null);
+  };
 
   return (
     <div className="min-h-full p-6">
@@ -128,8 +171,8 @@ export default function TaskPage() {
           onPriorityFilterChange={setPriorityFilter}
           statusFilter={statusFilter}
           onStatusFilterChange={setStatusFilter}
-          onSortPriority={() => setSortPriorityAsc(!sortPriorityAsc)}
-          onSortStatus={() => setSortStatusAsc(!sortStatusAsc)}
+          onSortPriority={togglePrioritySort}
+          onSortStatus={toggleStatusSort}
           sortPriorityAsc={sortPriorityAsc}
           sortStatusAsc={sortStatusAsc}
         />

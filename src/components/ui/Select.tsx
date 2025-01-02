@@ -12,7 +12,7 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ error, className, options, ...props }, ref) => {
     return (
-      <div className="mb-4">
+      <>
         <select
           ref={ref}
           className={clsx(
@@ -33,7 +33,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {error && (
           <span className="text-sm text-red-500 mt-1">{error}</span>
         )}
-      </div>
+      </>
     );
   }
 );
