@@ -43,12 +43,12 @@ export const TaskFilters = ({
   ];
 
   const getPrioritySortLabel = () => {
-    if (sortPriorityAsc === null) return "Priority";
+    if (sortPriorityAsc === null) return "Sort Priority";
     return `Priority: ${sortPriorityAsc ? "↑" : "↓"}`;
   };
 
   const getStatusSortLabel = () => {
-    if (sortStatusAsc === null) return "Status";
+    if (sortStatusAsc === null) return "Sort Status";
     return `Status: ${sortStatusAsc ? "↑" : "↓"}`;
   };
 
@@ -62,30 +62,30 @@ export const TaskFilters = ({
         className="flex-1"
       />
       <Select
-        value={priorityFilter}
-        onChange={(e) => onPriorityFilterChange(e.target.value)}
-        options={priorityOptions}
-        className="w-36"
-      />
-      <Select
         value={statusFilter}
         onChange={(e) => onStatusFilterChange(e.target.value)}
         options={statusOptions}
         className="w-36"
       />
-      <Button 
-        variant={sortPriorityAsc === null ? "secondary-outline" : "secondary"} 
-        onClick={onSortPriority}
+      <Select
+        value={priorityFilter}
+        onChange={(e) => onPriorityFilterChange(e.target.value)}
+        options={priorityOptions}
         className="w-36"
-      >
-        {getPrioritySortLabel()}
-      </Button>
-      <Button 
-        variant={sortStatusAsc === null ? "secondary-outline" : "secondary"} 
+      />
+      <Button
+        variant={sortStatusAsc === null ? "secondary-outline" : "secondary"}
         onClick={onSortStatus}
         className="w-36"
       >
         {getStatusSortLabel()}
+      </Button>
+      <Button
+        variant={sortPriorityAsc === null ? "secondary-outline" : "secondary"}
+        onClick={onSortPriority}
+        className="w-36"
+      >
+        {getPrioritySortLabel()}
       </Button>
     </div>
   );

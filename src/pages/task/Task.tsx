@@ -73,7 +73,7 @@ export default function TaskPage() {
     setShowModal(true);
   };
 
-  const priorityOrder = sortPriorityAsc ? ["High", "Medium", "Low"] : ["Low", "Medium", "High"];
+  const priorityOrder = sortPriorityAsc ? ["Low", "Medium", "High"] : ["High", "Medium", "Low"];
   const statusOrder = sortStatusAsc ? ["Todo", "In Progress", "Completed", "Expired"] : ["Completed", "In Progress", "Todo", "Expired"];
 
   const filteredTasks = tasks
