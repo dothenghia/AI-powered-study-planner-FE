@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import LoadingIndicator from "react-loading-indicator";
 import { TaskList } from "./components/TaskList";
 import { TaskFilters } from "./components/TaskFilters";
 import { TaskForm } from "../../components/forms/TaskForm";
@@ -178,7 +179,9 @@ export default function TaskPage() {
         />
 
         {isLoading ? (
-          <div className="text-center py-10">Loading tasks...</div>
+          <div className="flex justify-center items-center py-10">
+            <LoadingIndicator />
+          </div>
         ) : (
           <TaskList
             tasks={filteredTasks}
