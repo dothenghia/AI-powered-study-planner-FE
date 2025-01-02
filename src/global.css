@@ -5,3 +5,7 @@
 body {
     @apply bg-[#F7F7F7];
 }
+
+* {
+    font-size: 14px;
+}

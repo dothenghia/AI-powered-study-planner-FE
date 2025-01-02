@@ -178,17 +178,19 @@ export default function TaskPage() {
           sortStatusAsc={sortStatusAsc}
         />
 
-        {isLoading ? (
-          <div className="flex justify-center items-center py-10">
-            <LoadingIndicator />
-          </div>
-        ) : (
-          <TaskList
-            tasks={filteredTasks}
-            onEdit={handleEdit}
-            onDelete={deleteTask}
-          />
-        )}
+        <div className="mt-6 bg-white rounded-lg shadow overflow-hidden border border-gray-200">
+          {isLoading ? (
+            <div className="flex justify-center items-center py-10">
+              <LoadingIndicator />
+            </div>
+          ) : (
+            <TaskList
+              tasks={filteredTasks}
+              onEdit={handleEdit}
+              onDelete={deleteTask}
+            />
+          )}
+        </div>
 
         <Modal
           isOpen={showModal}

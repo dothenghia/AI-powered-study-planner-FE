@@ -13,28 +13,44 @@ interface TaskItemProps {
 
 export const TaskItem = ({ task, onEdit, onDelete }: TaskItemProps) => {
   return (
-    <li className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex justify-between items-start">
-        <div className="space-y-2">
-          <h3 className="text-xl font-semibold">{task.name}</h3>
-          <div className="text-sm text-gray-500 space-y-1">
-            <span>{formatDate(task.opened_at || "")} → {formatDate(task.dued_at || "")}</span>
-          </div>
-          <div className="flex items-center gap-3 text-sm">
-            <StatusTag status={task.status} />
-            <PriorityTag priority={task.priority} />
-          </div>
-          <p className="text-gray-600">{task.description}</p>
+    <tr className="hover:bg-gray-50">
+      <td className="px-6 py-4">
+        <span className="font-medium">{task.name}</span>
+      </td>
+      <td className="px-6 py-4 text-center">
+        <div className="flex justify-center">
+          <StatusTag status={task.status} />
         </div>
+      </td>
+      <td className="px-6 py-4 text-center">
+        <div className="flex justify-center">
+          <PriorityTag priority={task.priority} />
+        </div>
+      </td>
+      <td className="px-6 py-4 text-center">
+        {task.estimated_time}
+      </td>
+      <td className="px-6 py-4 text-center">
+        {formatDate(task.opened_at || "")}
+      </td>
+      <td className="px-6 py-4 text-center">
+        {formatDate(task.dued_at || "")}
+      </td>
+      <td className="px-6 py-4">
+        <div className="max-w-xs truncate" title={task.description}>
+          {task.description}
+        </div>
+      </td>
+      <td className="px-6 py-4">
         <div className="flex gap-2">
           <Button variant="secondary" onClick={onEdit}>
-            <PenSquare />
+            <PenSquare className="w-4 h-4" />
           </Button>
           <Button variant="secondary" onClick={onDelete}>
-            <Trash2 />
+            <Trash2 className="w-4 h-4" />
           </Button>
         </div>
-      </div>
-    </li>
+      </td>
+    </tr>
   );
 }; 

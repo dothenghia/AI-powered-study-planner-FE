@@ -56,6 +56,7 @@ export const TaskForm = ({ form, onSubmit, onCancel, isEditing }: TaskFormProps)
             {...register("priority")}
             options={priorityOptions}
             error={errors.priority?.message}
+            className="w-full"
           />
         </div>
 
@@ -65,6 +66,7 @@ export const TaskForm = ({ form, onSubmit, onCancel, isEditing }: TaskFormProps)
             {...register("status")}
             options={statusOptions}
             error={errors.status?.message}
+            className="w-full"
           />
         </div>
       </div>

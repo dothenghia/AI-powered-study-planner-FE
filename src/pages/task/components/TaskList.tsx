@@ -17,15 +17,31 @@ export const TaskList = ({ tasks, onEdit, onDelete }: TaskListProps) => {
   }
 
   return (
-    <ul className="space-y-4">
-      {tasks.map((task) => (
-        <TaskItem
-          key={task.id}
-          task={task}
-          onEdit={() => onEdit(task)}
-          onDelete={() => onDelete(task.id)}
-        />
-      ))}
-    </ul>
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white">
+        <thead>
+          <tr className="bg-gray-50 text-left">
+            <th className="px-6 py-3 text-sm font-semibold text-gray-600">Task Name</th>
+            <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-center">Status</th>
+            <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-center">Priority</th>
+            <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-center">Est. Time</th>
+            <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-center">Start Date</th>
+            <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-center">End Date</th>
+            <th className="px-6 py-3 text-sm font-semibold text-gray-600">Description</th>
+            <th className="px-6 py-3 text-sm font-semibold text-gray-600">Actions</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {tasks.map((task) => (
+            <TaskItem
+              key={task.id}
+              task={task}
+              onEdit={() => onEdit(task)}
+              onDelete={() => onDelete(task.id)}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }; 
