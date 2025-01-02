@@ -29,7 +29,7 @@ export default function MainLayout() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="bg-gray-800 h-[52px] px-5 flex items-center justify-between">
+      <header className="fixed top-0 left-0 right-0 bg-white h-[52px] px-5 flex items-center justify-between shadow-md z-50">
         {/* Navigation bar */}
         <nav className="flex-1">
           <ul className="flex space-x-6">
@@ -37,8 +37,11 @@ export default function MainLayout() {
               <li key={path}>
                 <Link
                   to={path}
-                  className={`text-white hover:text-gray-300 ${location.pathname === path ? 'font-semibold' : ''
-                    }`}
+                  className={`text-gray-700 hover:text-gray-900 relative pb-4 ${
+                    location.pathname === path 
+                      ? 'font-semibold after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-blue-500' 
+                      : ''
+                  }`}
                 >
                   {label}
                 </Link>
@@ -49,13 +52,13 @@ export default function MainLayout() {
 
         {/* User information and logout button */}
         <div className="flex items-center space-x-4">
-          <span className="text-white/80">Welcome, {email}</span>
+          <span className="text-gray-700">Welcome, {email}</span>
           <Button onClick={handleLogout} variant="gray">Logout</Button>
         </div>
       </header>
 
       {/* Main content area */}
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 pt-[52px]">
         <Outlet />
       </main>
     </div>

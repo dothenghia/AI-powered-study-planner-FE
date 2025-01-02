@@ -14,10 +14,8 @@ export const useTasks = () => {
     
     setIsLoading(true);
     try {
-      toast.info('Loading tasks...');
       const data = await taskService.fetchTasks(userId);
       setTasks(data);
-      toast.dismiss();
     } catch (error) {
       console.error('Failed to load tasks:', error);
       toast.error('Failed to load tasks.');
