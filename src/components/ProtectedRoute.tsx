@@ -11,12 +11,9 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     const navigate = useNavigate();
     const { isAuthenticated } = useAuthStore();
 
-    // If the user is authenticated, navigate to the task page
-    // Otherwise, navigate to the login page
+    // If the user is not authenticated, navigate to the login page
     useEffect(() => {
-        if (isAuthenticated) {
-            navigate(ROUTES.TASK);
-        } else {
+        if (!isAuthenticated) {
             navigate(ROUTES.LOGIN);
         }
     }, [isAuthenticated, navigate]);

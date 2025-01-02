@@ -1,6 +1,7 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores';
 import { ROUTES } from '../utils/constants';
+import { Button } from '../components/ui/Button';
 
 export default function MainLayout() {
   const location = useLocation();
@@ -49,12 +50,7 @@ export default function MainLayout() {
         {/* User information and logout button */}
         <div className="flex items-center space-x-4">
           <span className="text-white/80">Welcome, {email}</span>
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
-          >
-            Logout
-          </button>
+          <Button onClick={handleLogout} variant="gray">Logout</Button>
         </div>
       </header>
 
