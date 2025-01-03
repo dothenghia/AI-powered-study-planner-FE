@@ -14,9 +14,11 @@ import { taskSchema } from "../../utils/validations";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthStore } from "../../stores";
+import Markdown from "react-markdown";
 
 export default function TaskPage() {
   const [showModal, setShowModal] = useState(false);
+  const [showAIModal, setShowAIModal] = useState(false);
   const [editingTask, setEditingTask] = useState<ITask | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("");
@@ -26,7 +28,7 @@ export default function TaskPage() {
   const { userId } = useAuthStore();
 
   const { tasks, isLoading, createTask, updateTask, deleteTask, fetchTasks } = useTasks();
-  const { isAnalyzing, analyzeWithAI } = useAIAnalysis();
+  const { isAnalyzing, analysisResult, analyzeWithAI } = useAIAnalysis();
 
   useEffect(() => {
     if (userId) {
@@ -129,6 +131,13 @@ export default function TaskPage() {
     setSortPriorityAsc(null);
   };
 
+  const handleAIAnalysis = async () => {
+    const result = await analyzeWithAI();
+    if (result) {
+      setShowAIModal(true);
+    }
+  };
+
   return (
     <div className="min-h-full p-6">
       <ToastContainer
@@ -171,7 +180,7 @@ export default function TaskPage() {
             </Button>
             <Button
               variant="secondary"
-              onClick={analyzeWithAI}
+              onClick={handleAIAnalysis}
               isLoading={isAnalyzing}
             >
               ✨ Analyse with AI
@@ -220,6 +229,31 @@ export default function TaskPage() {
             onCancel={() => setShowModal(false)}
             isEditing={!!editingTask}
           />
+        </Modal>
+
+        <Modal
+          isOpen={showAIModal}
+          onClose={() => setShowAIModal(false)}
+          title="AI Analysis"
+          hideFooter
+          containerClassName="max-w-6xl"
+        >
+          <div className="bg-gray-50 w-full px-6 py-4 rounded-lg shadow-inner">
+            {isAnalyzing ? (
+              <div className="flex justify-center items-center py-10">
+                <LoadingIndicator />
+              </div>
+            ) : (
+              <div className="prose max-w-none">
+                <Markdown>{analysisResult}</Markdown>
+              </div>
+            )}
+          </div>
+          <div className="flex justify-end mt-6">
+            <Button variant="secondary" onClick={() => setShowAIModal(false)}>
+              Close
+            </Button>
+          </div>
         </Modal>
       </div>
     </div>

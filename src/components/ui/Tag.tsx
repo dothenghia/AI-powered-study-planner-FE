@@ -43,7 +43,7 @@ export const Tag = ({
     },
     yellow: {
       bg: "bg-[#fff9d1]",
-      text: "text-[#efa91b]",
+      text: "text-[#dc9c17]",
       border: "border-[#fedc78]"
     }
   };

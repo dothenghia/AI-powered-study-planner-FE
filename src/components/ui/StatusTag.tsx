@@ -21,7 +21,7 @@ export const StatusTag = ({ status, className }: StatusTagProps) => {
     yellow: "#efa91b",
     blue: "#1777ff",
     green: "#389e0e",
-    default: "#555555"
+    default: "#888888"
   };
 
   return (
