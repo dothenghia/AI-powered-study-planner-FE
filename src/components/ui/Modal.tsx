@@ -16,6 +16,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer, hideFooter, co
   const modalRoot = document.getElementById('modal-root');
   const modalRef = useRef<HTMLDivElement>(null);
 
+  // Handle escape key press
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -34,6 +35,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer, hideFooter, co
     };
   }, [isOpen, onClose]);
 
+  // Return null if modal is not open or modal root is not found
   if (!isOpen || !modalRoot) return null;
 
   return createPortal(

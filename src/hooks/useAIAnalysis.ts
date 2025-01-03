@@ -8,6 +8,7 @@ export const useAIAnalysis = () => {
   const [analysisResult, setAnalysisResult] = useState<string>('');
   const { userId } = useAuthStore();
 
+  // Analyze tasks with AI
   const analyzeWithAI = async () => {
     if (!userId) return;
 

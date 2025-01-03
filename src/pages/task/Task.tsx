@@ -15,6 +15,7 @@ import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthStore } from "../../stores";
 import Markdown from "react-markdown";
+import { STATUS, PRIORITY } from "../../types/common";
 
 export default function TaskPage() {
   const [showModal, setShowModal] = useState(false);
@@ -30,25 +31,28 @@ export default function TaskPage() {
   const { tasks, isLoading, createTask, updateTask, deleteTask, fetchTasks } = useTasks();
   const { isAnalyzing, analysisResult, analyzeWithAI } = useAIAnalysis();
 
+  // Fetch tasks when user is authenticated
   useEffect(() => {
     if (userId) {
       fetchTasks();
     }
   }, []);
 
+  // Initialize form with yup validation
   const form = useForm<Partial<ITask>>({
     resolver: yupResolver(taskSchema),
     defaultValues: editingTask || {
       name: "",
       description: "",
-      priority: "Medium",
-      status: "Todo",
+      priority: PRIORITY.MEDIUM,
+      status: STATUS.TODO,
       estimated_time: 0,
       opened_at: new Date().toISOString().slice(0, 16),
       dued_at: new Date().toISOString().slice(0, 16),
     },
   });
 
+  // Handle form submission
   const handleSubmit = async (data: Partial<ITask>) => {
     const formattedData = {
       ...data,
@@ -65,6 +69,7 @@ export default function TaskPage() {
     form.reset();
   };
 
+  // Handle edit task
   const handleEdit = (task: ITask) => {
     setEditingTask(task);
     form.reset({
@@ -75,9 +80,17 @@ export default function TaskPage() {
     setShowModal(true);
   };
 
-  const priorityOrder = sortPriorityAsc ? ["Low", "Medium", "High"] : ["High", "Medium", "Low"];
-  const statusOrder = sortStatusAsc ? ["Todo", "In Progress", "Completed", "Expired"] : ["Completed", "In Progress", "Todo", "Expired"];
+  // Define priority order
+  const priorityOrder = sortPriorityAsc 
+    ? [PRIORITY.LOW, PRIORITY.MEDIUM, PRIORITY.HIGH] 
+    : [PRIORITY.HIGH, PRIORITY.MEDIUM, PRIORITY.LOW];
 
+  // Define status order
+  const statusOrder = sortStatusAsc 
+    ? [STATUS.TODO, STATUS.IN_PROGRESS, STATUS.COMPLETED, STATUS.EXPIRED] 
+    : [STATUS.COMPLETED, STATUS.IN_PROGRESS, STATUS.TODO, STATUS.EXPIRED];
+
+  // Filter tasks based on search term, priority, and status
   const filteredTasks = tasks
     .filter((task) =>
       task.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -119,6 +132,7 @@ export default function TaskPage() {
     setSortStatusAsc(null);
   };
 
+  // Toggle status sort
   const toggleStatusSort = () => {
     if (sortStatusAsc === null) {
       setSortStatusAsc(true);
@@ -131,6 +145,7 @@ export default function TaskPage() {
     setSortPriorityAsc(null);
   };
 
+  // Handle AI analysis
   const handleAIAnalysis = async () => {
     const result = await analyzeWithAI();
     if (result) {
@@ -167,8 +182,8 @@ export default function TaskPage() {
                 form.reset({
                   name: "",
                   description: "",
-                  priority: "Medium",
-                  status: "Todo",
+                  priority: PRIORITY.MEDIUM,
+                  status: STATUS.TODO,
                   estimated_time: 0,
                   opened_at: new Date().toISOString().slice(0, 16),
                   dued_at: new Date().toISOString().slice(0, 16),

@@ -3,6 +3,7 @@ import { ITask } from "../../types/task";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
 import { Button } from "../ui/Button";
+import { STATUS, PRIORITY } from "../../types/common";
 
 interface TaskFormProps {
   form: UseFormReturn<Partial<ITask>>;
@@ -14,17 +15,19 @@ interface TaskFormProps {
 export const TaskForm = ({ form, onSubmit, onCancel, isEditing }: TaskFormProps) => {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = form;
 
+  // Define priority options
   const priorityOptions = [
-    { value: "High", label: "High" },
-    { value: "Medium", label: "Medium" },
-    { value: "Low", label: "Low" },
+    { value: PRIORITY.HIGH, label: PRIORITY.HIGH },
+    { value: PRIORITY.MEDIUM, label: PRIORITY.MEDIUM },
+    { value: PRIORITY.LOW, label: PRIORITY.LOW },
   ];
 
+  // Define status options
   const statusOptions = [
-    { value: "Todo", label: "Todo" },
-    { value: "In Progress", label: "In Progress" },
-    { value: "Completed", label: "Completed" },
-    { value: "Expired", label: "Expired" },
+    { value: STATUS.TODO, label: STATUS.TODO },
+    { value: STATUS.IN_PROGRESS, label: STATUS.IN_PROGRESS },
+    { value: STATUS.COMPLETED, label: STATUS.COMPLETED },
+    { value: STATUS.EXPIRED, label: STATUS.EXPIRED },
   ];
 
   return (

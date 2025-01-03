@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import regex from "./regex";
+import { STATUS, PRIORITY } from "../types/common";
 
 // Login schema with yup validation
 export const loginSchema = yup.object({
@@ -40,8 +41,8 @@ export const registerSchema = yup.object({
 export const taskSchema = yup.object({
   name: yup.string().required("Task name is required"),
   description: yup.string(),
-  priority: yup.string().oneOf(["High", "Medium", "Low"]).required(),
-  status: yup.string().oneOf(["Todo", "In Progress", "Completed", "Expired"]).required(),
+  priority: yup.string().oneOf(Object.values(PRIORITY)).required(),
+  status: yup.string().oneOf(Object.values(STATUS)).required(),
   estimated_time: yup
     .number()
     .typeError("Estimated time must be a number")

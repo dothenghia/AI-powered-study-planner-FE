@@ -9,6 +9,7 @@ export const useTasks = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { userId } = useAuthStore();
 
+  // Fetch tasks by user id
   const fetchTasks = useCallback(async () => {
     if (!userId) return;
     
@@ -24,6 +25,7 @@ export const useTasks = () => {
     }
   }, [userId]);
 
+  // Create a new task
   const createTask = async (taskData: Partial<ITask>): Promise<boolean> => {
     if (!userId) return false;
     
@@ -41,6 +43,7 @@ export const useTasks = () => {
     }
   };
 
+  // Update an existing task
   const updateTask = async (id: string, taskData: Partial<ITask>): Promise<boolean> => {
     try {
       toast.info('Updating task...');
@@ -67,6 +70,7 @@ export const useTasks = () => {
     }
   };
 
+  // Delete an existing task
   const deleteTask = async (id: string): Promise<boolean> => {
     try {
       toast.info('Deleting task...');

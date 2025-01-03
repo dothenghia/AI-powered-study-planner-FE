@@ -1,19 +1,18 @@
 import { cn } from "../../utils/cn";
 import { Tag } from "./Tag";
-
-type Status = "Todo" | "In Progress" | "Completed" | "Expired";
+import { Status, STATUS } from "../../types/common";
 
 interface StatusTagProps {
   status: Status;
   className?: string;
 }
 
-const statusConfig: Record<Status, { color: string }> = {
-  "Todo": { color: "yellow" },
-  "In Progress": { color: "blue" },
-  "Completed": { color: "green" },
-  "Expired": { color: "default" },
-};
+const statusConfig = {
+  [STATUS.TODO]: { color: "yellow" },
+  [STATUS.IN_PROGRESS]: { color: "blue" },
+  [STATUS.COMPLETED]: { color: "green" },
+  [STATUS.EXPIRED]: { color: "default" },
+}
 
 export const StatusTag = ({ status, className }: StatusTagProps) => {
   const config = statusConfig[status];
@@ -22,7 +21,7 @@ export const StatusTag = ({ status, className }: StatusTagProps) => {
     blue: "#1777ff",
     green: "#389e0e",
     default: "#888888"
-  };
+  }
 
   return (
     <Tag

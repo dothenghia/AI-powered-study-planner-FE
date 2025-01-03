@@ -1,30 +1,26 @@
 import { Tag } from "./Tag";
 import { ChevronUp, ChevronDown, Equal } from "lucide-react";
-
-type Priority = "High" | "Medium" | "Low";
+import { Priority, PRIORITY } from "../../types/common";
 
 interface PriorityTagProps {
   priority: Priority;
   className?: string;
 }
 
-const priorityConfig: Record<Priority, { 
-  color: string;
-  icon: React.ReactNode;
-}> = {
-  High: { 
+const priorityConfig = {
+  [PRIORITY.HIGH]: { 
     color: "red",
     icon: <ChevronUp className="w-4 h-4" />
   },
-  Medium: { 
+  [PRIORITY.MEDIUM]: { 
     color: "yellow",
     icon: <Equal className="w-4 h-4" />
   },
-  Low: { 
+  [PRIORITY.LOW]: { 
     color: "green",
     icon: <ChevronDown className="w-4 h-4" />
   },
-};
+}
 
 export const PriorityTag = ({ priority, className }: PriorityTagProps) => {
   const config = priorityConfig[priority];

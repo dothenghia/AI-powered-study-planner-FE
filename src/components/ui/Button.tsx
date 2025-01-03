@@ -10,6 +10,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ children, variant = "primary", isLoading, className, ...props }, ref) => {
     const baseStyles = "rounded-lg px-4 h-10 transition-colors duration-300";
     
+    // Define button styles based on variant
     const variants = {
       primary: "bg-primary hover:bg-primary-hover text-white",
       secondary: "bg-secondary hover:bg-secondary-hover text-white",

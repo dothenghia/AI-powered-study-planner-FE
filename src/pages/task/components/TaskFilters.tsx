@@ -1,6 +1,7 @@
 import { Input } from "../../../components/ui/Input";
 import { Select } from "../../../components/ui/Select";
 import { Button } from "../../../components/ui/Button";
+import { STATUS, PRIORITY } from "../../../types/common";
 
 interface TaskFiltersProps {
   searchTerm: string;
@@ -29,17 +30,17 @@ export const TaskFilters = ({
 }: TaskFiltersProps) => {
   const priorityOptions = [
     { value: "", label: "All Priorities" },
-    { value: "High", label: "High" },
-    { value: "Medium", label: "Medium" },
-    { value: "Low", label: "Low" },
+    { value: PRIORITY.HIGH, label: PRIORITY.HIGH },
+    { value: PRIORITY.MEDIUM, label: PRIORITY.MEDIUM },
+    { value: PRIORITY.LOW, label: PRIORITY.LOW },
   ];
 
   const statusOptions = [
     { value: "", label: "All Statuses" },
-    { value: "Todo", label: "Todo" },
-    { value: "In Progress", label: "In Progress" },
-    { value: "Completed", label: "Completed" },
-    { value: "Expired", label: "Expired" },
+    { value: STATUS.TODO, label: STATUS.TODO },
+    { value: STATUS.IN_PROGRESS, label: STATUS.IN_PROGRESS },
+    { value: STATUS.COMPLETED, label: STATUS.COMPLETED },
+    { value: STATUS.EXPIRED, label: STATUS.EXPIRED },
   ];
 
   const getPrioritySortLabel = () => {
