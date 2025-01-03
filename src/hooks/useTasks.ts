@@ -18,7 +18,7 @@ export const useTasks = () => {
       setTasks(data);
     } catch (error) {
       console.error('Failed to load tasks:', error);
-      toast.error('Failed to load tasks.');
+      toast.error('Failed to load tasks');
     } finally {
       setIsLoading(false);
     }
@@ -32,11 +32,11 @@ export const useTasks = () => {
       await taskService.createTask({ ...taskData, userId });
       await fetchTasks();
       toast.dismiss();
-      toast.success('Task added successfully.');
+      toast.success('Task added successfully');
       return true;
     } catch (error) {
       console.error('Error adding task:', error);
-      toast.error('Failed to add task.');
+      toast.error('Failed to add task');
       return false;
     }
   };
@@ -58,11 +58,11 @@ export const useTasks = () => {
       await taskService.updateTask(id, updateBody);
       await fetchTasks();
       toast.dismiss();
-      toast.success('Task updated successfully.');
+      toast.success('Task updated successfully');
       return true;
     } catch (error) {
       console.error('Error updating task:', error);
-      toast.error('Failed to update task.');
+      toast.error('Failed to update task');
       return false;
     }
   };
@@ -73,11 +73,11 @@ export const useTasks = () => {
       await taskService.deleteTask(id);
       await fetchTasks();
       toast.dismiss();
-      toast.success('Task deleted successfully.');
+      toast.success('Task deleted successfully');
       return true;
     } catch (error) {
       console.error('Error deleting task:', error);
-      toast.error('Failed to delete task.');
+      toast.error('Failed to delete task');
       return false;
     }
   };

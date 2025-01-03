@@ -11,7 +11,7 @@ import { useTasks } from "../../hooks/useTasks";
 import { useAIAnalysis } from "../../hooks/useAIAnalysis";
 import { ITask } from "../../types/task";
 import { taskSchema } from "../../utils/validations";
-import { ToastContainer } from "react-toastify";
+import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthStore } from "../../stores";
 
@@ -131,7 +131,21 @@ export default function TaskPage() {
 
   return (
     <div className="min-h-full p-6">
-      <ToastContainer />
+      <ToastContainer
+        position="top-center"
+        autoClose={2345}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme="light"
+        transition={Slide}
+        toastClassName={"w-fit px-5 !min-h-14"}
+        closeButton={false}
+      />
 
       <div className="mx-auto">
         <div className="flex justify-between items-center mb-6">

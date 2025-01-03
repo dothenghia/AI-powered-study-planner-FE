@@ -43,7 +43,7 @@ export const CalendarPage = () => {
       toast.dismiss();
     } catch (error) {
       console.error("Failed to load tasks:", error);
-      toast.error("Failed to load tasks.");
+      toast.error("Failed to load tasks");
     }
   };
 
@@ -103,18 +103,18 @@ export const CalendarPage = () => {
           await taskService.updateTask(selectedTask.id, formattedTask);
 
           loadTasks();
-          toast.success("Task updated successfully.");
+          toast.success("Task updated successfully");
           setShowModal(false);
         } catch (error) {
           console.error("Error updating task:", error);
-          toast.error("Failed to update task.");
+          toast.error("Failed to update task");
         }
         break;
       case '0_time_left_work':
-        toast.info("Out of time for work session, you can start a break.");
+        toast.info("Out of time for work session, you can start a break");
         break;
       case '0_time_left_break':
-        toast.info("Out of time for break session, you can focus on task.");
+        toast.info("Out of time for break session, you can focus on task");
         break;
       default:
         break;

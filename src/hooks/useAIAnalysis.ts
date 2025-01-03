@@ -17,7 +17,7 @@ export const useAIAnalysis = () => {
       setAnalysisResult(response.message);
       return response.message;
     } catch (error) {
-      toast.error('Failed to analyze with AI.');
+      toast.error('Failed to analyze with AI');
       console.error('AI analysis error:', error);
     } finally {
       setIsAnalyzing(false);

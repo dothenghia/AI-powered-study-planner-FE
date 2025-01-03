@@ -16,7 +16,7 @@ export const useAuth = () => {
       setUser(userId, email, username, access_token);
       return true;
     } catch (error) {
-      toast.error("Login failed. Please check your credentials.");
+      toast.error("Login failed. Please check your credentials");
       return false;
     }
   }, [setUser]);
@@ -24,11 +24,11 @@ export const useAuth = () => {
   const register = useCallback(async (data: LoginCredentials & { username: string }) => {
     try {
       await authService.register(data);
-      toast.success("Registration successful! Please log in.");
+      toast.success("Registration successful! Please log in");
       navigate("/login");
       return true;
     } catch (error) {
-      toast.error("Registration failed. Please try again.");
+      toast.error("Registration failed. Please try again");
       return false;
     }
   }, [navigate]);
