@@ -16,7 +16,7 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
         <Component
           ref={ref as any}
           className={clsx(
-            "block w-full rounded-md border p-2 focus:outline-none focus:ring-1",
+            "block w-full rounded-lg border px-4 h-10 focus:outline-none focus:ring-1",
             error
               ? "border-red-500 focus:border-red-500 focus:ring-red-500"
               : "border-gray-300 focus:border-blue-500 focus:ring-blue-500",

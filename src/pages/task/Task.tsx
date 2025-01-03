@@ -133,7 +133,7 @@ export default function TaskPage() {
     <div className="min-h-full p-6">
       <ToastContainer />
 
-      <div className="container mx-auto">
+      <div className="mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Task Management</h1>
           <div className="space-x-4">

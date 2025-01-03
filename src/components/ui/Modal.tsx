@@ -47,7 +47,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer, hideFooter }: 
             <h3 className="text-lg font-medium">{title}</h3>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-500"
+              className="text-gray-400 hover:text-gray-500 text-2xl font-light"
             >
               ×
             </button>
@@ -55,7 +55,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer, hideFooter }: 
           <div className="mb-6">{children}</div>
           {!hideFooter && (
             footer || (
-              <div className="flex justify-end space-x-2">
+              <div className="flex justify-end space-x-3">
                 <Button variant="gray" onClick={onClose}>
                   Cancel
                 </Button>
