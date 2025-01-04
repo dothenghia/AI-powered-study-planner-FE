@@ -1,3 +1,6 @@
+import { COLORS } from "../constants/colors";
+import { STATUS } from "../types/common";
+
 export const theme = {
   colors: {
     primary: {
@@ -16,3 +19,18 @@ export const theme = {
     }
   }
 } as const; 
+
+export function getStatusColor(status: string) {
+  switch (status) {
+    case STATUS.EXPIRED:
+      return COLORS.STATUS_EXPIRED;
+    case STATUS.TODO:
+      return COLORS.STATUS_TODO;
+    case STATUS.IN_PROGRESS:
+      return COLORS.STATUS_IN_PROGRESS;
+    case STATUS.COMPLETED:
+      return COLORS.STATUS_COMPLETED;
+    default:
+      return "lightgray";
+  }
+}

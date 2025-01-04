@@ -61,7 +61,7 @@ export default function TaskPage() {
   const handleSubmit = async (data: Partial<ITask>) => {
     const formattedData = {
       ...data,
-      estimated_time: data.estimated_time ? Math.round(Number(data.estimated_time)) : undefined
+      estimated_time: data.estimated_time ? Math.round(Number(data.estimated_time)) : 30
     };
 
     if (editingTask) {
