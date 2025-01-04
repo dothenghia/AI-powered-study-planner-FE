@@ -7,9 +7,4 @@ export const focusService = {
     });
     return response.data;
   },
-
-  getFocusedTimeStats: async (taskId: string) => {
-    const response = await api.get(`/tasks/${taskId}/focused-time`);
-    return response.data;
-  },
 };

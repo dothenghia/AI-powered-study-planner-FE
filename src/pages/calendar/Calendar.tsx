@@ -30,34 +30,20 @@ export default function CalendarPage() {
     }
   }, []);
 
+  // Handle timer state change
+  const handleTimerStateChange = useCallback((isRunning: boolean) => {
     setIsTimerRunning(isRunning);
-  };
-  const closeModal = () => {
-    if (!isTimerRunning) {
-      setShowModal(false);
-      setIsTimerRunning(false);
-    }
-  };
-  useEffect(() => {
-    if (userId && accessToken) {
-      loadTasks();
-    }
-  }, [userId, accessToken]);
+  }, []);
 
-  const loadTasks = async () => {
-    if (userId == null) {
-      return;
+  // Handle close modal
+  const handleCloseModal = useCallback(() => {
+    if (!isTimerRunning) {
+      setShowPomodoroModal(false);
+      setIsTimerRunning(false);
+      setSelectedTask(null);
     }
-    try {
-      toast.info("Loading tasks...");
-      const data = await taskService.fetchTasks(userId);
-      setTasks(data);
-      toast.dismiss();
-    } catch (error) {
-      console.error("Failed to load tasks:", error);
-      toast.error("Failed to load tasks");
-    }
-  };
+  }, [isTimerRunning]);
+
 
   // Generate events for the calendar
   const taskEvents: EventInput[] = tasks.map((task) => ({
@@ -128,77 +114,22 @@ export default function CalendarPage() {
     setShowPomodoroModal(true);
   }, []);
 
+  // Handle task completion
+  const handleCompleteTask = useCallback(async (type: string) => {
+    if (!selectedTask?.id) return;
 
-  const onCompleteTask = async (type: string) => {
     switch (type) {
-      case 'complete':
-        if (!selectedTask || !selectedTask.id) return;
-        try {
-          toast.info("Updating task...");
-
-          // Check if the task is done (based on your specific conditions)
-          if (selectedTask.status !== "Completed") {
-            selectedTask.status = "Completed";
-          }
-
-          // Remove unnecessary fields before updating
-          const { id, createdBy, created_at, updated_at, ...formattedTask } =
-            selectedTask;
-          await taskService.updateTask(selectedTask.id, formattedTask);
-
-          loadTasks();
-          toast.success("Task updated successfully");
-          setShowModal(false);
-        } catch (error) {
-          console.error("Error updating task:", error);
-          toast.error("Failed to update task");
-        }
-        break;
       case '0_time_left_work':
-        toast.info("Out of time for work session, you can start a break");
+        toast.info("Out of time for Work session, you can start a Break");
         break;
       case '0_time_left_break':
-        toast.info("Out of time for break session, you can focus on task");
+        toast.info("Out of time for Break session, you can focus on Task");
         break;
-      default:
+      case 'complete':
+        handleCloseModal();
         break;
     }
-
-  };
-
-  const taskEvents: EventInput[] = tasks.map((task) => ({
-    id: task.id,
-    title: task.name,
-    start: task.opened_at || new Date().toISOString(),
-    end: task.dued_at || new Date().toISOString(),
-    backgroundColor: getStatusColor(task.status),
-    borderColor: getStatusColor(task.status),
-    extendedProps: {
-      createdBy: task.createdBy,
-      description: task.description,
-      priority: task.priority,
-      status: task.status,
-      opened_at: task.opened_at,
-      dued_at: task.dued_at,
-      created_at: task.created_at,
-      updated_at: task.updated_at,
-    },
-  }));
-
-  function getStatusColor(status: string) {
-    switch (status) {
-      case "Expired":
-        return COLORS.STATUS_EXPIRED;
-      case "Todo":
-        return COLORS.STATUS_TODO;
-      case "In Progress":
-        return COLORS.STATUS_IN_PROGRESS;
-      case "Completed":
-        return COLORS.STATUS_COMPLETED;
-      default:
-        return "lightgray";
-    }
-  };
+  }, [selectedTask, handleCloseModal]);
 
   return (
     <div className="p-6">
@@ -265,6 +196,21 @@ export default function CalendarPage() {
           />
         )}
       </div>
+
+      {/* Pomodoro Modal */}
+      <Modal
+        isOpen={showPomodoroModal}
+        onClose={handleCloseModal}
+        title=""
+        hideFooter
+        hideTitle
+      >
+        <PomodoroTimer
+          selectedTask={selectedTask}
+          onTimerStateChange={handleTimerStateChange}
+          onCompleteTask={handleCompleteTask}
+        />
+      </Modal>
     </div>
   );
 }

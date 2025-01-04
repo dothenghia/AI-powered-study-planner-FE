@@ -1,38 +1,42 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { toast } from "react-toastify";
+import { focusService } from "../services/focus";
 
-const useSaveFocusedTime = (taskId: string) => {
+interface UseSaveFocusedTimeReturn {
+  saveFocusedTime: (timeInSeconds: number) => Promise<boolean>;
+  isSaving: boolean;
+  error: string | null;
+}
+
+const useSaveFocusedTime = (taskId: string): UseSaveFocusedTimeReturn => {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const saveFocusedTime = async (timeInSeconds: number) => {
-    const apiUrl = import.meta.env.VITE_API_URL;
+  const saveFocusedTime = useCallback(async (timeInSeconds: number): Promise<boolean> => {
+    if (!taskId) {
+      setError("Task ID is required");
+      return false;
+    }
+
     setIsSaving(true);
     setError(null);
 
     try {
-      const response = await fetch(
-        `${apiUrl}/tasks/${taskId}/focused-time`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ timeInSeconds }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to save focused time: ${response.statusText}`);
-      }
-
-      console.log("Focused time saved successfully!");
+      toast.info("Saving focused time...");
+      await focusService.saveFocusedTime(taskId, timeInSeconds);
+      toast.dismiss();
+      toast.success("Focus time saved successfully");
+      return true;
     } catch (err) {
-      setError((err as Error).message);
+      const errorMessage = (err as Error).message;
+      setError(errorMessage);
       console.error("Error saving focused time:", err);
+      toast.error(errorMessage || "Failed to save focused time");
+      return false;
     } finally {
       setIsSaving(false);
     }
-  };
+  }, [taskId]);
 
   return { saveFocusedTime, isSaving, error };
 };
