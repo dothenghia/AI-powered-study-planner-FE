@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores';
-import { ROUTES } from '../utils/constants';
+import { ROUTES } from '../constants/constants';
 import { Button } from '../components/ui/Button';
 
 export default function MainLayout() {

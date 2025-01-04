@@ -2,7 +2,7 @@ import { UseFormReturn } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
-import { ROUTES } from "../../utils/constants";
+import { ROUTES } from "../../constants/constants";
 
 interface RegisterFormData {
   username: string;

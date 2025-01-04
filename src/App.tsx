@@ -9,7 +9,7 @@ import {
   NotFoundPage
 } from "./pages";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { ROUTES } from "./utils/constants";
+import { ROUTES } from "./constants/constants";
 
 // App routing setup
 function App() {

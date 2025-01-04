@@ -9,7 +9,7 @@ import { loginSchema } from "../../utils/validations";
 import { LoginForm } from "../../components/forms/LoginForm";
 import illustration from "../../assets/login.png";
 import { BackgroundBase } from "../../components/BackgroundBase";
-import { ROUTES } from "../../utils/constants";
+import { ROUTES } from "../../constants/constants";
 
 export default function SignInPage() {
   const navigate = useNavigate();

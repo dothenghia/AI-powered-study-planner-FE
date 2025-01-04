@@ -1,6 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import { useAuthStore } from '../stores';
-import { API_URL } from '../utils/constants';
+import { API_URL } from '../constants/constants';
 
 const createApiInstance = () => {
   const instance = axios.create({

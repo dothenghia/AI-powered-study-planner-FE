@@ -8,7 +8,7 @@ import { registerSchema } from "../../utils/validations";
 import { RegisterForm } from "../../components/forms/RegisterForm";
 import illustration from "../../assets/login.png";
 import { BackgroundBase } from "../../components/BackgroundBase";
-import { ROUTES } from "../../utils/constants";
+import { ROUTES } from "../../constants/constants";
 import { RegisterFormData } from "../../types/auth";
 
 export default function SignUpPage() {
