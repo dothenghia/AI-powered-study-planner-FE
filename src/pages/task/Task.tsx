@@ -116,7 +116,10 @@ export default function TaskPage() {
         }
       }
 
-      return 0;
+      // Default sort by opened_at in descending order
+      const timeA = a.opened_at ? new Date(a.opened_at).getTime() : 0;
+      const timeB = b.opened_at ? new Date(b.opened_at).getTime() : 0;
+      return timeB - timeA;
     });
 
   // Toggle sort functions
