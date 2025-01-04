@@ -7,13 +7,14 @@ import { StatusTag } from "../../../components/ui/StatusTag";
 
 interface TaskItemProps {
   task: ITask;
+  onView: () => void;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-export const TaskItem = ({ task, onEdit, onDelete }: TaskItemProps) => {
+export const TaskItem = ({ task, onView, onEdit, onDelete }: TaskItemProps) => {
   return (
-    <tr className="hover:bg-gray-50">
+    <tr className="hover:bg-gray-50 cursor-pointer" onClick={onView}>
       <td className="px-6 py-4">
         <span className="font-medium">{task.name}</span>
       </td>
@@ -43,10 +44,16 @@ export const TaskItem = ({ task, onEdit, onDelete }: TaskItemProps) => {
       </td>
       <td className="px-6 py-4">
         <div className="flex gap-2">
-          <Button variant="filled" onClick={onEdit}>
+          <Button variant="filled" onClick={(e) => {
+            e.stopPropagation();
+            onEdit();
+          }}>
             <PenSquare className="w-4 h-4" />
           </Button>
-          <Button variant="filled" onClick={onDelete}>
+          <Button variant="filled" onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}>
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>

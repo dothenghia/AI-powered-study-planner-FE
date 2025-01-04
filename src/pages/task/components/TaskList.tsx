@@ -3,11 +3,12 @@ import { TaskItem } from "./TaskItem";
 
 interface TaskListProps {
   tasks: ITask[];
+  onView: (task: ITask) => void;
   onEdit: (task: ITask) => void;
   onDelete: (id: string) => void;
 }
 
-export const TaskList = ({ tasks, onEdit, onDelete }: TaskListProps) => {
+export const TaskList = ({ tasks, onView, onEdit, onDelete }: TaskListProps) => {
   if (tasks.length === 0) {
     return (
       <div className="text-center py-10 text-gray-500">
@@ -36,6 +37,7 @@ export const TaskList = ({ tasks, onEdit, onDelete }: TaskListProps) => {
             <TaskItem
               key={task.id}
               task={task}
+              onView={() => onView(task)}
               onEdit={() => onEdit(task)}
               onDelete={() => onDelete(task.id)}
             />

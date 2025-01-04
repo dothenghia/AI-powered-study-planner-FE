@@ -7,10 +7,13 @@ import { TaskFilters } from "./components/TaskFilters";
 import { TaskForm } from "../../components/forms/TaskForm";
 import { Modal } from "../../components/ui/Modal";
 import { Button } from "../../components/ui/Button";
+import { PriorityTag } from "../../components/ui/PriorityTag";
+import { StatusTag } from "../../components/ui/StatusTag";
 import { useTasks } from "../../hooks/useTasks";
 import { useAIAnalysis } from "../../hooks/useAIAnalysis";
 import { ITask } from "../../types/task";
 import { taskSchema } from "../../utils/validations";
+import { formatDate } from "../../utils/date";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthStore } from "../../stores";
@@ -20,7 +23,9 @@ import { STATUS, PRIORITY } from "../../types/common";
 export default function TaskPage() {
   const [showModal, setShowModal] = useState(false);
   const [showAIModal, setShowAIModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
   const [editingTask, setEditingTask] = useState<ITask | null>(null);
+  const [viewingTask, setViewingTask] = useState<ITask | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -78,6 +83,11 @@ export default function TaskPage() {
       dued_at: task.dued_at ? new Date(task.dued_at).toISOString().slice(0, 16) : "",
     });
     setShowModal(true);
+  };
+
+  const handleView = (task: ITask) => {
+    setViewingTask(task);
+    setShowViewModal(true);
   };
 
   // Define priority order
@@ -227,6 +237,7 @@ export default function TaskPage() {
           ) : (
             <TaskList
               tasks={filteredTasks}
+              onView={handleView}
               onEdit={handleEdit}
               onDelete={deleteTask}
             />
@@ -247,6 +258,86 @@ export default function TaskPage() {
             onCancel={() => setShowModal(false)}
             isEditing={!!editingTask}
           />
+        </Modal>
+
+        <Modal
+          isOpen={showViewModal}
+          onClose={() => {
+            setShowViewModal(false);
+            setViewingTask(null);
+          }}
+          title="Task Details"
+          hideFooter
+        >
+          {viewingTask && (
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500">Task Name</h3>
+                  <p className="mt-1 text-base text-gray-900">{viewingTask.name}</p>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500">Description</h3>
+                  <p className="mt-1 text-base text-gray-900 whitespace-pre-wrap">{viewingTask.description || "No description"}</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500">Priority</h3>
+                    <div className="mt-1">
+                      <PriorityTag priority={viewingTask.priority} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500">Status</h3>
+                    <div className="mt-1">
+                      <StatusTag status={viewingTask.status} />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500">Estimated Time</h3>
+                  <p className="mt-1 text-base text-gray-900">{viewingTask.estimated_time} minutes</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500">Start Date</h3>
+                    <p className="mt-1 text-base text-gray-900">{formatDate(viewingTask.opened_at || "")}</p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500">Due Date</h3>
+                    <p className="mt-1 text-base text-gray-900">{formatDate(viewingTask.dued_at || "")}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-4 pt-4">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    deleteTask(viewingTask.id);
+                    setShowViewModal(false);
+                  }}
+                >
+                  Delete
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    handleEdit(viewingTask);
+                    setShowViewModal(false);
+                  }}
+                >
+                  Edit
+                </Button>
+              </div>
+            </div>
+          )}
         </Modal>
 
         <Modal
