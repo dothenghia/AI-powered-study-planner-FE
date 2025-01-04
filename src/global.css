@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    @apply bg-[#F7F7F7];
+    @apply bg-[#FAFAFA];
 }
 
 * {
