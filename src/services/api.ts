@@ -1,11 +1,10 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import { useAuthStore } from '../stores';
+import { API_URL } from '../utils/constants';
 
 const createApiInstance = () => {
-  const apiUrl = 'https://ai-powered-study-planner-be.onrender.com';
-  
   const instance = axios.create({
-    baseURL: apiUrl,
+    baseURL: API_URL,
     headers: {
       'Content-Type': 'application/json',
     },
