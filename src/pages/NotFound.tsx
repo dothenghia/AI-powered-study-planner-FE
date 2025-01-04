@@ -15,7 +15,7 @@ export default function NotFoundPage() {
           changed, or is temporarily unavailable.
         </p>
         <Link to={ROUTES.HOME}>
-          <Button>Return Home</Button>
+          <Button variant="primary">Return Home</Button>
         </Link>
       </div>
     </div>

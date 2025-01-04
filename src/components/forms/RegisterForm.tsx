@@ -59,6 +59,7 @@ export const RegisterForm = ({ form, onSubmit }: RegisterFormProps) => {
 
       <Button 
         type="submit" 
+        variant="primary"
         className="mt-10 mb-5"
         isLoading={isSubmitting}
       >

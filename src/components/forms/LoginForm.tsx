@@ -36,7 +36,7 @@ export const LoginForm = ({ form, onSubmit, onGoogleSignIn }: LoginFormProps) =>
       />
       <div className="mb-5"></div>
 
-      <Button type="submit" className="mt-10 mb-5">
+      <Button type="submit" variant="primary" className="mt-10 mb-5">
         LOG IN
       </Button>
 
@@ -50,7 +50,7 @@ export const LoginForm = ({ form, onSubmit, onGoogleSignIn }: LoginFormProps) =>
       <Button
         type="button"
         onClick={onGoogleSignIn}
-        variant="google"
+        variant="default"
         className="mt-5"
       >
         Sign in with Google

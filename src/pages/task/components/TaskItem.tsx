@@ -43,10 +43,10 @@ export const TaskItem = ({ task, onEdit, onDelete }: TaskItemProps) => {
       </td>
       <td className="px-6 py-4">
         <div className="flex gap-2">
-          <Button variant="secondary" onClick={onEdit}>
+          <Button variant="filled" onClick={onEdit}>
             <PenSquare className="w-4 h-4" />
           </Button>
-          <Button variant="secondary" onClick={onDelete}>
+          <Button variant="filled" onClick={onDelete}>
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>

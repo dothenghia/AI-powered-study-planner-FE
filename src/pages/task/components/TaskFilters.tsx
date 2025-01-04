@@ -75,14 +75,14 @@ export const TaskFilters = ({
         className="w-36"
       />
       <Button
-        variant={sortStatusAsc === null ? "secondary-outline" : "secondary"}
+        variant="default"
         onClick={onSortStatus}
         className="w-36"
       >
         {getStatusSortLabel()}
       </Button>
       <Button
-        variant={sortPriorityAsc === null ? "secondary-outline" : "secondary"}
+        variant="default"
         onClick={onSortPriority}
         className="w-36"
       >

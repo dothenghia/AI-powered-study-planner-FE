@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import clsx from "clsx";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "google" | "primary-outline" | "secondary-outline" | "gray";
+  variant?: "primary" | "outline" | "filled" | "gray" | "default";
   isLoading?: boolean;
 }
 
@@ -13,10 +13,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     // Define button styles based on variant
     const variants = {
       primary: "bg-primary hover:bg-primary-hover text-white",
-      secondary: "bg-secondary hover:bg-secondary-hover text-white",
-      google: "bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center justify-center gap-2",
-      "primary-outline": "border-2 border-primary text-primary hover:bg-primary hover:text-white",
-      "secondary-outline": "border-2 border-secondary text-secondary hover:bg-secondary hover:text-white",
+      outline: "border-2 border-primary text-primary hover:border-primary-hover hover:text-primary-hover",
+      filled: "bg-primary-background text-primary hover:bg-primary-background-hover hover:text-primary-hover",
+      default: "bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center justify-center gap-2",
       gray: "bg-gray-100 hover:bg-gray-200 text-gray-700"
     };
 

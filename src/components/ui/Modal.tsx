@@ -62,7 +62,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer, hideFooter, co
                 <Button variant="gray" onClick={onClose}>
                   Cancel
                 </Button>
-                <Button type="submit" form="modal-form">
+                <Button variant="primary" type="submit" form="modal-form">
                   Confirm
                 </Button>
               </div>

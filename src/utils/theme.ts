@@ -1,12 +1,10 @@
 export const theme = {
   colors: {
     primary: {
-      DEFAULT: "#362DD2",
-      hover: "#1A0F9A"
-    },
-    secondary: {
-      DEFAULT: "#ACA0E0",
-      hover: "#8A78C0"
+      DEFAULT: "#1677ff",
+      hover: "#4096ff",
+      background: "#e6f4ff",
+      backgroundHover: "#bae0ff",
     },
     error: {
       DEFAULT: "#C93B32"

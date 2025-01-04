@@ -197,7 +197,7 @@ export default function TaskPage() {
               Add Task
             </Button>
             <Button
-              variant="secondary"
+              variant="primary"
               onClick={handleAIAnalysis}
               isLoading={isAnalyzing}
             >
@@ -268,7 +268,7 @@ export default function TaskPage() {
             )}
           </div>
           <div className="flex justify-end mt-6">
-            <Button variant="secondary" onClick={() => setShowAIModal(false)}>
+            <Button variant="primary" onClick={() => setShowAIModal(false)}>
               Close
             </Button>
           </div>
