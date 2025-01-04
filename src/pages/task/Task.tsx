@@ -184,9 +184,10 @@ export default function TaskPage() {
         closeButton={false}
       />
 
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Task Management</h1>
-        <div className="space-x-4">
+        <div className="space-x-4 flex items-center">
           <Button
             variant="primary"
             onClick={() => {
@@ -215,6 +216,7 @@ export default function TaskPage() {
         </div>
       </div>
 
+      {/* Task filters */}
       <TaskFilters
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
@@ -228,6 +230,7 @@ export default function TaskPage() {
         sortStatusAsc={sortStatusAsc}
       />
 
+      {/* Task list */}
       <div className="mt-6 bg-white rounded-lg shadow overflow-hidden border border-gray-200">
         {isLoading ? (
           <div className="flex justify-center items-center py-10">
@@ -243,6 +246,7 @@ export default function TaskPage() {
         )}
       </div>
 
+      {/* Task modal */}
       <Modal
         isOpen={showModal}
         onClose={() => {
@@ -259,6 +263,7 @@ export default function TaskPage() {
         />
       </Modal>
 
+      {/* Task view modal */}
       <Modal
         isOpen={showViewModal}
         onClose={() => {
@@ -339,6 +344,7 @@ export default function TaskPage() {
         )}
       </Modal>
 
+      {/* AI analysis modal */}
       <Modal
         isOpen={showAIModal}
         onClose={() => setShowAIModal(false)}
