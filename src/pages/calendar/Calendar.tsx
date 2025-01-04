@@ -44,7 +44,6 @@ export default function CalendarPage() {
     }
   }, [isTimerRunning]);
 
-
   // Generate events for the calendar
   const taskEvents: EventInput[] = tasks.map((task) => ({
     id: task.id,
@@ -87,6 +86,11 @@ export default function CalendarPage() {
           opened_at: newStart.toISOString(),
           dued_at: newEnd.toISOString(),
           status: STATUS.TODO,
+        });
+      } else {
+        await updateTask(taskId, {
+          opened_at: newStart.toISOString(),
+          dued_at: newEnd.toISOString(),
         });
       }
     } catch (error) {

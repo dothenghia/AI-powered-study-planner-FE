@@ -8,15 +8,15 @@ interface PriorityTagProps {
 }
 
 const priorityConfig = {
-  [PRIORITY.HIGH]: { 
+  [PRIORITY.HIGH]: {
     color: "red",
     icon: <ChevronUp className="w-4 h-4" />
   },
-  [PRIORITY.MEDIUM]: { 
+  [PRIORITY.MEDIUM]: {
     color: "yellow",
     icon: <Equal className="w-4 h-4" />
   },
-  [PRIORITY.LOW]: { 
+  [PRIORITY.LOW]: {
     color: "green",
     icon: <ChevronDown className="w-4 h-4" />
   },
@@ -24,7 +24,7 @@ const priorityConfig = {
 
 export const PriorityTag = ({ priority, className }: PriorityTagProps) => {
   const config = priorityConfig[priority];
-  
+
   return (
     <Tag
       color={config.color}

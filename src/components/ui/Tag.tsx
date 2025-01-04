@@ -1,5 +1,4 @@
 import { cn } from "../../utils/cn";
-import { COLORS } from "../../constants/colors";
 
 export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   color?: string;
@@ -13,6 +12,34 @@ export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   };
 }
 
+const colorMap: { [key: string]: { bg: string; text: string; border: string } } = {
+  default: {
+    bg: 'bg-gray-100',
+    text: 'text-gray-600',
+    border: 'border-gray-300'
+  },
+  blue: {
+    bg: 'bg-blue-100',
+    text: 'text-blue-600',
+    border: 'border-blue-300'
+  },
+  green: {
+    bg: 'bg-green-100',
+    text: 'text-green-600',
+    border: 'border-green-300'
+  },
+  red: {
+    bg: 'bg-red-100',
+    text: 'text-red-600',
+    border: 'border-red-300'
+  },
+  yellow: {
+    bg: 'bg-yellow-100',
+    text: 'text-yellow-600',
+    border: 'border-yellow-300'
+  }
+};
+
 export const Tag = ({ 
   color = "default", 
   bordered = false, 
@@ -21,34 +48,6 @@ export const Tag = ({
   customColors,
   ...props 
 }: TagProps) => {
-  const colorMap: { [key: string]: { bg: string; text: string; border: string } } = {
-    default: {
-      bg: `bg-[${COLORS.TAG_DEFAULT_BG}]`,
-      text: `text-[${COLORS.TAG_DEFAULT_TEXT}]`,
-      border: `border-[${COLORS.TAG_DEFAULT_BORDER}]`
-    },
-    blue: {
-      bg: `bg-[${COLORS.TAG_BLUE_BG}]`,
-      text: `text-[${COLORS.TAG_BLUE_TEXT}]`,
-      border: `border-[${COLORS.TAG_BLUE_BORDER}]`
-    },
-    green: {
-      bg: `bg-[${COLORS.TAG_GREEN_BG}]`,
-      text: `text-[${COLORS.TAG_GREEN_TEXT}]`,
-      border: `border-[${COLORS.TAG_GREEN_BORDER}]`
-    },
-    red: {
-      bg: `bg-[${COLORS.TAG_RED_BG}]`,
-      text: `text-[${COLORS.TAG_RED_TEXT}]`,
-      border: `border-[${COLORS.TAG_RED_BORDER}]`
-    },
-    yellow: {
-      bg: `bg-[${COLORS.TAG_YELLOW_BG}]`,
-      text: `text-[${COLORS.TAG_YELLOW_TEXT}]`,
-      border: `border-[${COLORS.TAG_YELLOW_BORDER}]`
-    }
-  };
-
   const getColorClasses = () => {
     if (customColors) {
       return {
