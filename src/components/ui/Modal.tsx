@@ -9,10 +9,11 @@ interface ModalProps {
   children: React.ReactNode;
   footer?: React.ReactNode;
   hideFooter?: boolean;
+  hideTitle?: boolean;
   containerClassName?: string;
 }
 
-export const Modal = ({ isOpen, onClose, title, children, footer, hideFooter, containerClassName }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, title, children, footer, hideFooter = false, hideTitle = false, containerClassName }: ModalProps) => {
   const modalRoot = document.getElementById('modal-root');
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -46,15 +47,17 @@ export const Modal = ({ isOpen, onClose, title, children, footer, hideFooter, co
           ref={modalRef}
           className={`relative w-full max-w-lg transform rounded-lg bg-white p-6 pb-1 shadow-xl transition-all ${containerClassName}`}
         >
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-lg font-medium">{title}</h3>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-500 text-2xl font-light"
-            >
-              ×
-            </button>
-          </div>
+          {!hideTitle && (
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-medium">{title}</h3>
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-500 text-2xl font-light"
+              >
+                ×
+              </button>
+            </div>
+          )}
           <div className="mb-6">{children}</div>
           {!hideFooter && (
             footer || (

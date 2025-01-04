@@ -25,7 +25,7 @@ export const TaskList = ({ tasks, onView, onEdit, onDelete }: TaskListProps) => 
             <th className="px-6 py-3 text-sm font-semibold text-gray-600">Task Name</th>
             <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-center">Status</th>
             <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-center">Priority</th>
-            <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-center">Est. Time</th>
+            <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-center">Estimated Time</th>
             <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-center">Start Date</th>
             <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-center">End Date</th>
             <th className="px-6 py-3 text-sm font-semibold text-gray-600">Description</th>
