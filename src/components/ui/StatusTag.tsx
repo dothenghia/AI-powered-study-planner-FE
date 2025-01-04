@@ -1,6 +1,7 @@
 import { cn } from "../../utils/cn";
 import { Tag } from "./Tag";
 import { Status, STATUS } from "../../types/common";
+import { COLORS } from "../../constants/colors";
 
 interface StatusTagProps {
   status: Status;
@@ -17,10 +18,10 @@ const statusConfig = {
 export const StatusTag = ({ status, className }: StatusTagProps) => {
   const config = statusConfig[status];
   const colorMap = {
-    yellow: "#efa91b",
-    blue: "#1777ff",
-    green: "#389e0e",
-    default: "#888888"
+    yellow: COLORS.STATUS_TODO,
+    blue: COLORS.STATUS_IN_PROGRESS,
+    green: COLORS.STATUS_COMPLETED,
+    default: COLORS.STATUS_EXPIRED
   }
 
   return (

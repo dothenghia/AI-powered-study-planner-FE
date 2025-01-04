@@ -1,4 +1,5 @@
 import { cn } from "../../utils/cn";
+import { COLORS } from "../../constants/colors";
 
 export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   color?: string;
@@ -22,29 +23,29 @@ export const Tag = ({
 }: TagProps) => {
   const colorMap: { [key: string]: { bg: string; text: string; border: string } } = {
     default: {
-      bg: "bg-[#f6f6f6]",
-      text: "text-[#555555]",
-      border: "border-[#d9d9d9]"
+      bg: `bg-[${COLORS.TAG_DEFAULT_BG}]`,
+      text: `text-[${COLORS.TAG_DEFAULT_TEXT}]`,
+      border: `border-[${COLORS.TAG_DEFAULT_BORDER}]`
     },
     blue: {
-      bg: "bg-[#e6f4ff]",
-      text: "text-[#1777ff]",
-      border: "border-[#91caff]"
+      bg: `bg-[${COLORS.TAG_BLUE_BG}]`,
+      text: `text-[${COLORS.TAG_BLUE_TEXT}]`,
+      border: `border-[${COLORS.TAG_BLUE_BORDER}]`
     },
     green: {
-      bg: "bg-[#f6ffed]",
-      text: "text-[#389e0e]",
-      border: "border-[#b8ea8f]"
+      bg: `bg-[${COLORS.TAG_GREEN_BG}]`,
+      text: `text-[${COLORS.TAG_GREEN_TEXT}]`,
+      border: `border-[${COLORS.TAG_GREEN_BORDER}]`
     },
     red: {
-      bg: "bg-[#fff2f0]",
-      text: "text-[#cf1421]",
-      border: "border-[#ffccc6]"
+      bg: `bg-[${COLORS.TAG_RED_BG}]`,
+      text: `text-[${COLORS.TAG_RED_TEXT}]`,
+      border: `border-[${COLORS.TAG_RED_BORDER}]`
     },
     yellow: {
-      bg: "bg-[#fff9d1]",
-      text: "text-[#dc9c17]",
-      border: "border-[#fedc78]"
+      bg: `bg-[${COLORS.TAG_YELLOW_BG}]`,
+      text: `text-[${COLORS.TAG_YELLOW_TEXT}]`,
+      border: `border-[${COLORS.TAG_YELLOW_BORDER}]`
     }
   };
 

@@ -1,16 +1,17 @@
+import { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { EventInput } from "@fullcalendar/core";
-import { useEffect, useState } from "react";
 import { useAuthStore } from "../../stores";
-import { toast } from "react-toastify";
-import PomodoroTimer from "../../components/Pomodoro";
-import { ITask } from "../../types/task";
 import { taskService } from "../../services";
+import { ITask } from "../../types/task";
+import { PomodoroTimer } from "../../components/Pomodoro";
+import { Slide, toast, ToastContainer } from "react-toastify";
+import { COLORS } from "../../constants/colors";
 
-export const CalendarPage = () => {
+export default function CalendarPage() {
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Partial<ITask> | null>(null);
@@ -67,7 +68,7 @@ export const CalendarPage = () => {
 
   const handleEventClick = (eventInfo: any) => {
     const event = eventInfo.event;
-  
+
     setSelectedTask({
       id: event.id,
       name: event.title,
@@ -80,13 +81,13 @@ export const CalendarPage = () => {
       created_at: event.extendedProps.created_at,
       updated_at: event.extendedProps.updated_at,
     });
-  
+
     setShowModal(true);
   };
-  
+
 
   const onCompleteTask = async (type: string) => {
-    switch(type) {
+    switch (type) {
       case 'complete':
         if (!selectedTask || !selectedTask.id) return;
         try {
@@ -119,7 +120,7 @@ export const CalendarPage = () => {
       default:
         break;
     }
-    
+
   };
 
   const taskEvents: EventInput[] = tasks.map((task) => ({
@@ -144,43 +145,59 @@ export const CalendarPage = () => {
   function getStatusColor(status: string) {
     switch (status) {
       case "Expired":
-        return "#6b7280";
+        return COLORS.STATUS_EXPIRED;
       case "Todo":
-        return "#fb923c";
+        return COLORS.STATUS_TODO;
       case "In Progress":
-        return "#3b82f6";
+        return COLORS.STATUS_IN_PROGRESS;
       case "Completed":
-        return "#22c55e";
+        return COLORS.STATUS_COMPLETED;
       default:
         return "lightgray";
     }
   };
 
   return (
-    <div className="min-h-full bg-gray-200 p-6">
-      <div className="container mx-auto">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold">Calendar View</h1>
-          <div className="flex space-x-4">
-            <div className="flex items-center">
-              <span className="w-4 h-4 bg-gray-500 mr-2"></span>
-              <span>Expired</span>
-            </div>
-            <div className="flex items-center">
-              <span className="w-4 h-4 bg-orange-400 mr-2"></span>
-              <span>Todo</span>
-            </div>
-            <div className="flex items-center">
-              <span className="w-4 h-4 bg-blue-500 mr-2"></span>
-              <span>In Progress</span>
-            </div>
-            <div className="flex items-center">
-              <span className="w-4 h-4 bg-green-500 mr-2"></span>
-              <span>Completed</span>
-            </div>
+    <div className="p-6">
+      <ToastContainer
+        position="top-center"
+        autoClose={2345}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme="light"
+        transition={Slide}
+        toastClassName={"w-fit px-5 !min-h-14"}
+        closeButton={false}
+      />
+      
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold">Calendar View</h1>
+        <div className="flex space-x-5">
+          <div className="flex items-center">
+            <span className={`w-4 h-4 rounded-full bg-[${COLORS.STATUS_TODO}] mr-2`}></span>
+            <span>Todo</span>
+          </div>
+          <div className="flex items-center">
+            <span className={`w-4 h-4 rounded-full bg-[${COLORS.STATUS_IN_PROGRESS}] mr-2`}></span>
+            <span>In Progress</span>
+          </div>
+          <div className="flex items-center">
+            <span className={`w-4 h-4 rounded-full bg-[${COLORS.STATUS_COMPLETED}] mr-2`}></span>
+            <span>Completed</span>
+          </div>
+          <div className="flex items-center">
+            <span className={`w-4 h-4 rounded-full bg-[${COLORS.STATUS_EXPIRED}] mr-2`}></span>
+            <span>Expired</span>
           </div>
         </div>
+      </div>
 
+      <div className="bg-white rounded-lg shadow overflow-hidden border border-gray-200 px-6 py-10">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
@@ -212,8 +229,8 @@ export const CalendarPage = () => {
               />
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
