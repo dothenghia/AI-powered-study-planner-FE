@@ -31,6 +31,7 @@ export const RegisterForm = ({ form, onSubmit }: RegisterFormProps) => {
         placeholder="Username"
         error={errors.username?.message}
       />
+      <div className="mb-5"></div>
 
       <Input
         {...register("email")}
@@ -38,6 +39,7 @@ export const RegisterForm = ({ form, onSubmit }: RegisterFormProps) => {
         placeholder="Email"
         error={errors.email?.message}
       />
+      <div className="mb-5"></div>
 
       <Input
         {...register("password")}
@@ -45,6 +47,7 @@ export const RegisterForm = ({ form, onSubmit }: RegisterFormProps) => {
         placeholder="Password"
         error={errors.password?.message}
       />
+      <div className="mb-5"></div>
 
       <Input
         {...register("confirmPassword")}
@@ -52,6 +55,7 @@ export const RegisterForm = ({ form, onSubmit }: RegisterFormProps) => {
         placeholder="Confirm password"
         error={errors.confirmPassword?.message}
       />
+      <div className="mb-5"></div>
 
       <Button 
         type="submit" 

@@ -26,6 +26,7 @@ export const LoginForm = ({ form, onSubmit, onGoogleSignIn }: LoginFormProps) =>
         placeholder="Email"
         error={errors.email?.message}
       />
+      <div className="mb-5"></div>
 
       <Input
         {...register("password")}
@@ -33,6 +34,7 @@ export const LoginForm = ({ form, onSubmit, onGoogleSignIn }: LoginFormProps) =>
         placeholder="Password"
         error={errors.password?.message}
       />
+      <div className="mb-5"></div>
 
       <Button type="submit" className="mt-10 mb-5">
         LOG IN
