@@ -33,7 +33,7 @@ export const TaskForm = ({ form, onSubmit, onCancel, isEditing }: TaskFormProps)
   return (
     <form id="modal-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700">Task Name</label>
+        <label className="block text-sm font-medium text-gray-500">Task Name</label>
         <Input
           {...register("name")}
           placeholder="Enter task name"
@@ -42,7 +42,7 @@ export const TaskForm = ({ form, onSubmit, onCancel, isEditing }: TaskFormProps)
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700">Description</label>
+        <label className="block text-sm font-medium text-gray-500">Description</label>
         <Input
           {...register("description")}
           placeholder="Enter task description"
@@ -54,7 +54,7 @@ export const TaskForm = ({ form, onSubmit, onCancel, isEditing }: TaskFormProps)
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Priority</label>
+          <label className="block text-sm font-medium text-gray-500">Priority</label>
           <Select
             {...register("priority")}
             options={priorityOptions}
@@ -64,7 +64,7 @@ export const TaskForm = ({ form, onSubmit, onCancel, isEditing }: TaskFormProps)
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Status</label>
+          <label className="block text-sm font-medium text-gray-500">Status</label>
           <Select
             {...register("status")}
             options={statusOptions}
@@ -75,7 +75,7 @@ export const TaskForm = ({ form, onSubmit, onCancel, isEditing }: TaskFormProps)
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700">Estimated Time (minutes)</label>
+        <label className="block text-sm font-medium text-gray-500">Estimated Time (minutes)</label>
         <Input
           {...register("estimated_time")}
           type="number"
@@ -86,7 +86,7 @@ export const TaskForm = ({ form, onSubmit, onCancel, isEditing }: TaskFormProps)
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Start Date</label>
+          <label className="block text-sm font-medium text-gray-500">Start Date</label>
           <Input
             {...register("opened_at")}
             type="datetime-local"
@@ -95,7 +95,7 @@ export const TaskForm = ({ form, onSubmit, onCancel, isEditing }: TaskFormProps)
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Due Date</label>
+          <label className="block text-sm font-medium text-gray-500">Due Date</label>
           <Input
             {...register("dued_at")}
             type="datetime-local"

@@ -271,7 +271,7 @@ export default function TaskPage() {
         >
           {viewingTask && (
             <div className="space-y-6">
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div>
                   <h3 className="text-sm font-medium text-gray-500">Task Name</h3>
                   <p className="mt-1 text-base text-gray-900">{viewingTask.name}</p>
@@ -345,7 +345,7 @@ export default function TaskPage() {
           onClose={() => setShowAIModal(false)}
           title="AI Analysis"
           hideFooter
-          containerClassName="max-w-6xl"
+          containerClassName="!max-w-6xl"
         >
           <div className="bg-gray-50 w-full px-6 py-4 rounded-lg shadow-inner">
             {isAnalyzing ? (

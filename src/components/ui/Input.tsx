@@ -8,7 +8,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTe
 }
 
 export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
-  ({ error, className, as = "input", ...props }, ref) => {
+  ({ error, className, as = "input", rows = 4, ...props }, ref) => {
     const Component = as;
 
     return (
@@ -20,8 +20,10 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
             error
               ? "border-red-500 focus:border-red-500 focus:ring-red-500"
               : "border-gray-300 focus:border-blue-500 focus:ring-blue-500",
+            as === "textarea" && "h-auto py-2",
             className
           )}
+          rows={as === "textarea" ? rows : undefined}
           {...props}
         />
         {error && (

@@ -50,6 +50,20 @@ export const taskSchema = yup.object({
     .integer("Estimated time must be an integer")
     .min(1, "Estimated time must be at least 1 minute")
     .max(1440, "Estimated time cannot exceed 1440 minutes (24 hours)"),
-  opened_at: yup.string().required("Start date is required"),
-  dued_at: yup.string().required("Due date is required")
+  opened_at: yup
+    .string()
+    .required("Start date is required")
+    .test("opened_at", "Start date cannot be after due date", function(opened_at) {
+      const { dued_at } = this.parent;
+      if (!opened_at || !dued_at) return true;
+      return new Date(opened_at) <= new Date(dued_at);
+    }),
+  dued_at: yup
+    .string()
+    .required("Due date is required")
+    .test("dued_at", "Due date cannot be before start date", function(dued_at) {
+      const { opened_at } = this.parent;
+      if (!opened_at || !dued_at) return true;
+      return new Date(dued_at) >= new Date(opened_at);
+    })
 }); 
