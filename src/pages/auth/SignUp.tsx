@@ -25,14 +25,17 @@ export default function SignUpPage() {
 
   // Initialize form with yup validation
   const form = useForm<RegisterFormData>({
-    resolver: yupResolver(registerSchema)
+    resolver: yupResolver(registerSchema),
   });
 
   // Handle form submission
   const onSubmit = async (data: RegisterFormData) => {
-    const success = await registerUser(data);
-    if (success) {
-      navigate(ROUTES.LOGIN);
+    const { confirmPassword, ...rest } = data;
+    if (confirmPassword === rest.password) {
+      const success = await registerUser(rest);
+      if (success) {
+        navigate(ROUTES.LOGIN);
+      }
     }
   };
 
