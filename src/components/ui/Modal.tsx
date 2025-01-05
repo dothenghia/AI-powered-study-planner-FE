@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Button } from './Button';
+import { X } from 'lucide-react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -59,9 +60,9 @@ export const Modal = ({ isOpen, onClose, title, children, footer, hideFooter = f
               <h3 className="text-lg font-medium">{title}</h3>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-500 text-2xl font-light"
+                className="text-gray-400 hover:text-gray-500"
               >
-                ×
+                <X className="w-5 h-5" />
               </button>
             </div>
           )}
