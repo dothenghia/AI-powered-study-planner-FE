@@ -1,155 +1,126 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import "./index.css";
 import useSaveFocusedTime from "../../hooks/useSaveFocusedTime";
 import { ITask } from "../../types/task";
+import { PRIORITY, STATUS } from "../../types/common";
+import { useTasks } from "../../hooks/useTasks";
+import { Button } from "../ui/Button";
+import { Play, RotateCcw, Pause, MoveRight, Check, ChartNoAxesGantt } from "lucide-react";
+import { formatDate, formatTime } from "../../utils/date";
+import { PriorityTag } from "../ui/PriorityTag";
+import { StatusTag } from "../ui/StatusTag";
 
 type PomodoroProps = {
   selectedTask: Partial<ITask> | null;
-  onTimerStateChange?: (isRunning: boolean) => void;
+  isRunning: boolean;
+  setIsRunning: (isRunning: boolean) => void;
   onCompleteTask?: (type: string) => void;
 };
 
-export const PomodoroTimer = (props: PomodoroProps) => {
-  const { selectedTask, onCompleteTask } = props;
-  const [timeLeft, setTimeLeft] = useState(25 * 60);
-  const [isRunning, setIsRunning] = useState(false);
-  const [isWorkSession, setIsWorkSession] = useState(true);
-  const [workDuration, setWorkDuration] = useState(1);
-  const [breakDuration, setBreakDuration] = useState(5);
-  const [totalTime, setTotalTime] = useState(25 * 60);
+export const PomodoroTimer = ({
+  selectedTask,
+  isRunning,
+  setIsRunning,
+  onCompleteTask
+}: PomodoroProps) => {
+  const [isWorkSession, setIsWorkSession] = useState(true); // Work Session | Break Session
+  const [workDuration] = useState(25); // Default 25 minutes
+  const [breakDuration] = useState(5); // Default 5 minutes
+  const [totalTime, setTotalTime] = useState(25 * 60); // Total time in seconds of the current session (Default is Work Session)
+  const [timeLeft, setTimeLeft] = useState(25 * 60); // Time left in seconds of the current session (Default is Work Session)
+
+  const { updateTask } = useTasks();
   const { saveFocusedTime } = useSaveFocusedTime(selectedTask?.id ?? "");
-  const isInProgress = selectedTask?.status === "In Progress";
-  const formatTime = (seconds: any) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
-      .toString()
-      .padStart(2, "0")}`;
-  };
 
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return;
-    const date = new Date(dateString);
+  // Calculate focused time
+  const getFocusedTime = useCallback(() => {
+    return isWorkSession ? totalTime - timeLeft : 0;
+  }, [isWorkSession, totalTime, timeLeft]);
 
-    const day = String(date.getUTCDate()).padStart(2, "0");
-    const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Lưu ý tháng bắt đầu từ 0
-    const year = date.getFullYear();
+  // Memoized values
+  const taskStatus = useMemo(() => selectedTask?.status, [selectedTask?.status]);
+  const isInProgress = taskStatus === STATUS.IN_PROGRESS;
+  const isCompleted = taskStatus === STATUS.COMPLETED;
 
-    const hours = String(date.getUTCHours()).padStart(2, "0");
-    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+  // Handle task status updates
+  const handleStartTask = useCallback(async () => {
+    if (!selectedTask?.id) return;
 
-    return `${day}/${month}/${year} - ${hours}:${minutes}`;
-  };
+    await updateTask(selectedTask.id, {
+      status: STATUS.IN_PROGRESS
+    });
+  }, [selectedTask, updateTask]);
 
-  // Timer logic
-  useEffect(() => {
-    let timer: any;
-    if (isRunning && timeLeft > 0 && isWorkSession) {
-      timer = setInterval(() => {
-        setFocusedTime((prev) => prev + 1);
-      }, 1000);
+  const handleCompleteTask = useCallback(async () => {
+    if (!selectedTask?.id) return;
+
+    await updateTask(selectedTask.id, {
+      status: STATUS.COMPLETED
+    });
+    onCompleteTask?.("complete");
+  }, [selectedTask, updateTask, onCompleteTask]);
+
+  // Timer controls
+  const toggleTimer = useCallback(() => {
+    // Save focused time
+    if (isRunning && isWorkSession) {
+      const focusedTime = getFocusedTime();
+      if (focusedTime > 0) {
+        saveFocusedTime(focusedTime);
+      }
     }
-    return () => clearInterval(timer);
-  }, [isRunning, timeLeft, isWorkSession]);
 
-  useEffect(() => {
-    if (!isRunning && focusedTime > 0) {
-      saveFocusedTime(focusedTime);
-      setFocusedTime(0);
+    // Toggle timer
+    setIsRunning(!isRunning);
+  }, [isRunning, setIsRunning, isWorkSession, getFocusedTime, saveFocusedTime]);
+
+  // Reset timer
+  const resetTimer = useCallback(() => {
+    // Save focused time
+    if (isRunning && isWorkSession) {
+      const focusedTime = getFocusedTime();
+      if (focusedTime > 0) {
+        saveFocusedTime(focusedTime);
+      }
     }
-  }, [isRunning]);
+    setIsRunning(false);
 
-  useEffect(() => {
-    if (!isWorkSession) {
-      setFocusedTime(0);
-    }
-  }, [isWorkSession]);
+    // Reset timer
+    const initialTime = isWorkSession ? workDuration * 60 : breakDuration * 60;
+    setTimeLeft(initialTime);
+    setTotalTime(initialTime);
+  }, [isWorkSession, workDuration, breakDuration, setIsRunning, isRunning, getFocusedTime, saveFocusedTime]);
 
+  // Handle session change - switch between work and break sessions, reset timer
+  const handleSessionChange = useCallback(() => {
+    setIsWorkSession(!isWorkSession);
+
+    // Reset timer
+    const newDuration = !isWorkSession ? workDuration : breakDuration;
+    setTimeLeft(newDuration * 60);
+    setTotalTime(newDuration * 60);
+  }, [isWorkSession, workDuration, breakDuration]);
+
+  // Countdown timer
   useEffect(() => {
-    let timer: any;
+    let timer: NodeJS.Timeout;
     if (isRunning && timeLeft > 0) {
       timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
+        setTimeLeft(prev => prev - 1);
       }, 1000);
-    } else if (timeLeft === 0) {
+    }
+    else if (timeLeft === 0) {
       if (isWorkSession) {
         onCompleteTask?.("0_time_left_work");
       } else {
         onCompleteTask?.("0_time_left_break");
       }
-      clearInterval(timer);
-      setIsWorkSession((prev) => !prev);
-      const nextTotalTime = isWorkSession
-        ? workDuration * 60
-        : breakDuration * 60;
-      setTimeLeft(3);
-      setTotalTime(nextTotalTime);
-      setIsRunning(false);
-      props.onTimerStateChange?.(false);
+
+      // Change session
+      handleSessionChange();
     }
-    return () => clearInterval(timer); // Cleanup
-  }, [isRunning, timeLeft]);
-
-  useEffect(() => {
-    if (isWorkSession) {
-      setTimeLeft(3);
-    } else {
-      setTimeLeft(3);
-    }
-  }, [isWorkSession]);
-
-  // Start/Stop timer
-  const toggleTimer = () => {
-    setIsRunning((prev) => {
-      const newState = !prev;
-      if (props.onTimerStateChange) {
-        props.onTimerStateChange(newState);
-      }
-      return newState;
-    });
-  };
-
-  // Reset timer
-  const resetTimer = () => {
-    setIsRunning(false);
-    const initialTime = isWorkSession ? workDuration * 60 : breakDuration * 60;
-    setTimeLeft(initialTime);
-    setTotalTime(initialTime);
-  };
-  const [focusedTime, setFocusedTime] = useState(0);
-
-  // Calculate progress percentage
-  const progress = ((totalTime - timeLeft) / totalTime) * 100;
-
-  // Handle duration change
-  const handleWorkDurationChange = (e: any) => {
-    const value = Math.max(1, parseInt(e.target.value || "1"));
-    setWorkDuration(value);
-    if (isWorkSession) {
-      setTimeLeft(value * 60);
-      setTotalTime(value * 60);
-    }
-  };
-
-  const handleChange = () => {
-    setIsRunning(false);
-    setIsWorkSession(!isWorkSession);
-
-    if (isWorkSession) {
-      setTimeLeft(workDuration * 60);
-    } else {
-      setTimeLeft(breakDuration * 60);
-    }
-  };
-
-  const handleBreakDurationChange = (e: any) => {
-    const value = Math.max(1, parseInt(e.target.value || "1"));
-    setBreakDuration(value);
-    if (!isWorkSession) {
-      setTimeLeft(value * 60);
-      setTotalTime(value * 60);
-    }
-  };
+    return () => clearInterval(timer);
+  }, [isRunning, timeLeft, isWorkSession, workDuration, breakDuration, onCompleteTask, handleSessionChange]);
 
   return (
     <div className="flex flex-row items-center justify-center w-full h-full">
@@ -213,7 +184,7 @@ export const PomodoroTimer = (props: PomodoroProps) => {
 
         <div className="flex items-center justify-center gap-4">
           <Button
-            variant={isRunning ? "outline" : "gray"}
+            variant={timeLeft === totalTime ? "gray" : "outline"}
             onClick={resetTimer}
             disabled={timeLeft === totalTime}
             className={`flex items-center gap-2 ${timeLeft === totalTime ? "cursor-not-allowed" : "cursor-pointer"}`}

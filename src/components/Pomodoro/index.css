@@ -1,68 +1,67 @@
 .switch-toggle {
-    --width: 260px;
-    --height: 50px;
-    --radius: 25px;
-    --padding: 5px;
-  
-    margin-top: 20px;
-    position: relative;
-    width: var(--width);
-    height: var(--height);
-    background: rgba(227, 229, 232, 0.5);
-    border-radius: var(--radius);
-    display: flex;
-    align-items: center;
-    padding: var(--padding);
-    cursor: pointer;
-  }
-  
-  .switch-toggle-checkbox {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
-  
-  .switch-toggle-label {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    user-select: none;
-    pointer-events: auto;
-  }
-  
-  .switch-toggle-label::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 50%;
-    height: calc(100%);
-    background: #ffffff;
-    border-radius: var(--radius);
-    transform: translate(100%, -50%);
-    transition: transform 0.3s ease;
-  }
-  
-  .switch-toggle-checkbox:checked + .switch-toggle-label::before {
-    transform: translate(0, -50%);
-  }
-  
-  .switch-toggle-label span {
-    flex: 1;
-    text-align: center;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-  
-  .switch-toggle-label span.active {
-    color: #000;
-    z-index: 1;
-  }
-  
-  .switch-toggle-label span.inactive {
-    color: gray;
-    z-index: 1;
-  }
-  
+  --width: 260px;
+  --height: 50px;
+  --radius: 25px;
+  --padding: 5px;
+
+  margin-top: 20px;
+  position: relative;
+  width: var(--width);
+  height: var(--height);
+  background: rgba(227, 229, 232, 0.5);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  padding: var(--padding);
+  cursor: pointer;
+}
+
+.switch-toggle-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.switch-toggle-label {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  user-select: none;
+  pointer-events: auto;
+}
+
+.switch-toggle-label::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 50%;
+  height: calc(100%);
+  background: #ffffff;
+  border-radius: var(--radius);
+  transform: translate(100%, -50%);
+  transition: transform 0.3s ease;
+}
+
+.switch-toggle-checkbox:checked+.switch-toggle-label::before {
+  transform: translate(0, -50%);
+}
+
+.switch-toggle-label span {
+  flex: 1;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.switch-toggle-label span.active {
+  color: #000;
+  z-index: 1;
+}
+
+.switch-toggle-label span.inactive {
+  color: gray;
+  z-index: 1;
+}
