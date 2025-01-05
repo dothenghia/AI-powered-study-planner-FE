@@ -77,8 +77,8 @@ export default function TaskPage() {
     setEditingTask(task);
     form.reset({
       ...task,
-      opened_at: task.opened_at ? new Date(task.opened_at).toLocaleString('sv-SE').slice(0, 16) : "",
-      dued_at: task.dued_at ? new Date(task.dued_at).toLocaleString('sv-SE').slice(0, 16) : "",
+      opened_at: task.opened_at ? new Date(task.opened_at).toISOString().slice(0, 16) : "",
+      dued_at: task.dued_at ? new Date(task.dued_at).toISOString().slice(0, 16) : "",
     });
     setShowModal(true);
   };

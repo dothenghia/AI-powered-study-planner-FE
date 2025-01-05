@@ -56,7 +56,7 @@ export const useTasks = (config: TasksConfig = { showToast: true }) => {
   };
 
   // Update an existing task
-  const updateTask = async (id: string, taskData: Partial<ITask>): Promise<boolean> => {
+  const updateTask = async (id: string, taskData: Partial<ITask>, shouldFetch: boolean = true): Promise<boolean> => {
     try {
       if (config.showToast) {
         toast.info('Updating task...');
@@ -73,7 +73,12 @@ export const useTasks = (config: TasksConfig = { showToast: true }) => {
       };
 
       await taskService.updateTask(id, updateBody);
-      await fetchTasks();
+      
+      // Only fetch if shouldFetch is true
+      if (shouldFetch) {
+        await fetchTasks();
+      }
+
       if (config.showToast) {
         toast.dismiss();
         toast.success('Task updated successfully');
@@ -84,6 +89,20 @@ export const useTasks = (config: TasksConfig = { showToast: true }) => {
       if (config.showToast) {
         toast.error('Failed to update task');
       }
+      return false;
+    }
+  };
+
+  // Update multiple tasks at once
+  const updateMultipleTasks = async (updates: { id: string; data: Partial<ITask> }[]): Promise<boolean> => {
+    try {
+      for (const update of updates) {
+        await updateTask(update.id, update.data, false); // Don't fetch after each update
+      }
+      await fetchTasks(); // Fetch once after all updates
+      return true;
+    } catch (error) {
+      console.error('Error updating multiple tasks:', error);
       return false;
     }
   };
@@ -116,6 +135,7 @@ export const useTasks = (config: TasksConfig = { showToast: true }) => {
     fetchTasks,
     createTask,
     updateTask,
+    updateMultipleTasks,
     deleteTask,
   };
 }; 

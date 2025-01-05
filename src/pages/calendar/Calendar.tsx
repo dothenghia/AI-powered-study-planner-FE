@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -11,9 +11,9 @@ import { useTasks } from "../../hooks/useTasks";
 import { useAuthStore } from "../../stores";
 import { ITask } from "../../types/task";
 import { STATUS } from "../../types/common";
-import { COLORS } from "../../constants/colors";
 import LoadingIndicator from "react-loading-indicator";
 import { getStatusColor } from "../../utils/theme";
+import { compareDates, formatDateForComparison } from "../../utils/date";
 
 export default function CalendarPage() {
   const [showPomodoroModal, setShowPomodoroModal] = useState(false);
@@ -21,34 +21,64 @@ export default function CalendarPage() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
   const { userId } = useAuthStore();
-  const { tasks, isLoading, fetchTasks, updateTask } = useTasks({ showToast: false });
+  const { tasks, isLoading, fetchTasks, updateTask, updateMultipleTasks } = useTasks({ showToast: false });
 
-  // Fetch tasks when user is authenticated
+  // Function to check and update expired tasks
+  const checkAndUpdateExpiredTasks = useCallback(async () => {
+    const now = new Date();
+    const expiredTasks = tasks.reduce<Array<{ id: string; data: { status: typeof STATUS.EXPIRED } }>>((acc, task) => {
+      if (
+        task.status === STATUS.TODO &&
+        task.dued_at &&
+        compareDates(formatDateForComparison(task.dued_at || ""), now.toLocaleString('sv-SE').slice(0, 16)) < 0
+      ) {
+        acc.push({
+          id: task.id,
+          data: { status: STATUS.EXPIRED }
+        });
+      }
+      return acc;
+    }, []);
+
+    if (expiredTasks.length > 0) {
+      try {
+        await updateMultipleTasks(expiredTasks);
+      } catch (error) {
+        toast.error('Failed to update expired tasks');
+      }
+    }
+  }, [userId, tasks, updateMultipleTasks]);
+
+  // Effect for initial tasks fetch
   useEffect(() => {
     if (userId) {
       fetchTasks();
     }
   }, []);
 
+  // Separate effect for periodic expired tasks check
+  useEffect(() => {
+    if (!userId || !tasks.length) return;
+
+    const intervalId = setInterval(checkAndUpdateExpiredTasks, 5000);
+    return () => clearInterval(intervalId);
+  }, [tasks.length, checkAndUpdateExpiredTasks]);
+
   // Generate events for the calendar
-  const taskEvents: EventInput[] = tasks.map((task) => ({
-    id: task.id,
-    title: task.name,
-    start: task.opened_at || new Date().toISOString(),
-    end: task.dued_at || new Date().toISOString(),
-    backgroundColor: getStatusColor(task.status),
-    borderColor: getStatusColor(task.status),
-    extendedProps: {
-      createdBy: task.createdBy,
-      description: task.description,
-      priority: task.priority,
-      status: task.status,
-      opened_at: task.opened_at,
-      dued_at: task.dued_at,
-      created_at: task.created_at,
-      updated_at: task.updated_at,
-    },
-  }));
+  const taskEvents: EventInput[] = useMemo(() =>
+    tasks.map((task) => ({
+      id: task.id,
+      title: task.name,
+      start: task.opened_at || new Date().toISOString(),
+      end: task.dued_at || new Date().toISOString(),
+      backgroundColor: getStatusColor(task.status),
+      borderColor: getStatusColor(task.status),
+      extendedProps: {
+        ...task
+      },
+    })),
+    [tasks]
+  );
 
   // Handle event drop - update task status
   const handleEventDrop = useCallback(async (eventInfo: any) => {
@@ -59,26 +89,19 @@ export default function CalendarPage() {
 
     try {
       const now = new Date();
+      const updateData: Partial<ITask> = {
+        opened_at: newStart.toISOString(),
+        dued_at: newEnd.toISOString(),
+      };
 
       // Update status based on task timing
       if (currentStatus === STATUS.TODO && newEnd < now) {
-        await updateTask(taskId, {
-          opened_at: newStart.toISOString(),
-          dued_at: newEnd.toISOString(),
-          status: STATUS.EXPIRED,
-        });
+        updateData.status = STATUS.EXPIRED;
       } else if (currentStatus === STATUS.EXPIRED && newStart >= now) {
-        await updateTask(taskId, {
-          opened_at: newStart.toISOString(),
-          dued_at: newEnd.toISOString(),
-          status: STATUS.TODO,
-        });
-      } else {
-        await updateTask(taskId, {
-          opened_at: newStart.toISOString(),
-          dued_at: newEnd.toISOString(),
-        });
+        updateData.status = STATUS.TODO;
       }
+
+      await updateTask(taskId, updateData);
     } catch (error) {
       eventInfo.revert();
     }
@@ -90,14 +113,7 @@ export default function CalendarPage() {
     const taskData = {
       id: event.id,
       name: event.title,
-      opened_at: event.extendedProps.opened_at,
-      dued_at: event.extendedProps.dued_at,
-      priority: event.extendedProps.priority,
-      status: event.extendedProps.status,
-      createdBy: event.extendedProps.createdBy,
-      description: event.extendedProps.description,
-      created_at: event.extendedProps.created_at,
-      updated_at: event.extendedProps.updated_at,
+      ...event.extendedProps
     };
 
     setSelectedTask(taskData);
@@ -131,19 +147,19 @@ export default function CalendarPage() {
         <h1 className="text-2xl font-bold">Calendar View</h1>
         <div className="flex space-x-5">
           <div className="flex items-center">
-            <span className={`w-4 h-4 rounded-full bg-[${COLORS.STATUS_TODO}] mr-2`}></span>
+            <span className={`w-4 h-4 rounded-full bg-yellow-500 mr-2`}></span>
             <span>Todo</span>
           </div>
           <div className="flex items-center">
-            <span className={`w-4 h-4 rounded-full bg-[${COLORS.STATUS_IN_PROGRESS}] mr-2`}></span>
+            <span className={`w-4 h-4 rounded-full bg-blue-500 mr-2`}></span>
             <span>In Progress</span>
           </div>
           <div className="flex items-center">
-            <span className={`w-4 h-4 rounded-full bg-[${COLORS.STATUS_COMPLETED}] mr-2`}></span>
+            <span className={`w-4 h-4 rounded-full bg-green-500 mr-2`}></span>
             <span>Completed</span>
           </div>
           <div className="flex items-center">
-            <span className={`w-4 h-4 rounded-full bg-[${COLORS.STATUS_EXPIRED}] mr-2`}></span>
+            <span className={`w-4 h-4 rounded-full bg-gray-500 mr-2`}></span>
             <span>Expired</span>
           </div>
         </div>
