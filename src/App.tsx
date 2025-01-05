@@ -9,7 +9,8 @@ import {
   NotFoundPage,
   ForgotPasswordPage,
   ResetPasswordPage,
-  EmailVerificationPage
+  EmailVerificationPage,
+  AnalyticsPage,
 } from "./pages";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { ROUTES } from "./constants/constants";
@@ -23,16 +24,14 @@ function App() {
           <Route
             index
             element={
-              // <ProtectedRoute>
-                <TaskPage />
-              // </ProtectedRoute>
+              <TaskPage />
             }
           />
           <Route path={ROUTES.LOGIN} element={<SignInPage />} />
           <Route path={ROUTES.REGISTER} element={<SignUpPage />} />
-          <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />}/>
-          <Route path={ROUTES.RESET_PASSWORD} element={<ResetPasswordPage />}/>
-          <Route path={ROUTES.EMAIL_VERIFICATION} element={<EmailVerificationPage />}/>
+          <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
+          <Route path={ROUTES.RESET_PASSWORD} element={<ResetPasswordPage />} />
+          <Route path={ROUTES.EMAIL_VERIFICATION} element={<EmailVerificationPage />} />
           <Route
             path={ROUTES.PROFILE}
             element={
@@ -44,19 +43,18 @@ function App() {
           <Route
             path={ROUTES.TASK}
             element={
-              // <ProtectedRoute>
-                <TaskPage />
-              // </ProtectedRoute>
+              <TaskPage />
             }
           />
           <Route
             path={ROUTES.CALENDAR}
             element={
-              // <ProtectedRoute>
-                <CalendarPage />
-              // </ProtectedRoute>
+              <CalendarPage />
             }
           />
+          <Route path={ROUTES.ANALYTICS} element={
+            <AnalyticsPage />
+          } />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

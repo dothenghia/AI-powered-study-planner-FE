@@ -4,6 +4,7 @@ export { default as ForgotPasswordPage } from './auth/ForgotPassword';
 export { default as ResetPasswordPage } from './auth/ResetPassword';
 export { default as EmailVerificationPage } from './auth/EmailVerification';
 export { default as TaskPage } from './task/Task';
+export { default as AnalyticsPage } from './analytics/Analytics';
 export { default as CalendarPage } from './calendar/Calendar';
 export { default as ProfilePage } from './profile/Profile';
 export { default as NotFoundPage } from './NotFound';

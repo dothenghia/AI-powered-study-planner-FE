@@ -5,6 +5,7 @@ export const ROUTES = {
   PROFILE: "/profile",
   TASK: "/task",
   CALENDAR: "/view",
+  ANALYTICS: "/analytics",
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
   EMAIL_VERIFICATION: "/verify-email"

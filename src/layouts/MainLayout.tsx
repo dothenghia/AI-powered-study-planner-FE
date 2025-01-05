@@ -46,6 +46,7 @@ export default function MainLayout() {
   const menuItems = [
     { path: ROUTES.TASK, label: "Task" },
     { path: ROUTES.CALENDAR, label: "Calendar" },
+    { path: ROUTES.ANALYTICS, label: "Analytics" },
   ];
 
   // Handle logout functionality
