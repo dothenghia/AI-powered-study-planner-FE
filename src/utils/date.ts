@@ -1,12 +1,11 @@
 export const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-
-  const hours = String(date.getUTCHours()).padStart(2, '0');
-  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  if (!dateString) return "";
+  
+  // Input format: "2025-01-05T19:01:00.000Z"
+  const [datePart, timePart] = dateString.split("T");
+  const [year, month, day] = datePart.split("-");
+  const [time] = timePart.split(".");
+  const [hours, minutes] = time.split(":");
 
   return `${day}/${month}/${year} - ${hours}:${minutes}`;
 };
