@@ -193,9 +193,10 @@ export const PomodoroTimer = ({
           </Button>
 
           <Button
-            variant="primary"
+            variant={!isInProgress ? "gray" : "primary"}
             onClick={toggleTimer}
-            className="flex items-center gap-2 cursor-pointer"
+            disabled={!isInProgress}
+            className={`flex items-center gap-2 ${!isInProgress ? "cursor-not-allowed" : "cursor-pointer"}`}
           >
             {isRunning ? (
               <>
