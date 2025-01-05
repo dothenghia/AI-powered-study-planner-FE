@@ -152,239 +152,93 @@ export const PomodoroTimer = (props: PomodoroProps) => {
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100%",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      <h1 style={{ fontSize: "2rem", marginBottom: "15px" }}>
-        {selectedTask?.name}
-      </h1>
-      <div
-        style={{
-          fontSize: "1rem",
-          fontWeight: "500",
-          color: "#62748e",
-          textAlign: "center",
-          display: "inline-block",
-          marginBottom: "10px",
-        }}
-      >
-        <p>From {formatDate(selectedTask?.opened_at)}</p>
-        <p>To {formatDate(selectedTask?.dued_at)}</p>
-      </div>
-      <hr
-        style={{
-          border: "none",
-          borderTop: "2px solid #ddd",
-          width: "80%",
-        }}
-      />
-      <div className="switch-toggle">
-        <input
-          type="checkbox"
-          id="pricing-plan-switch"
-          className="switch-toggle-checkbox"
-          checked={isWorkSession}
-          onChange={handleChange}
-        />
-        <label
-          className="switch-toggle-label items-center"
-          htmlFor="pricing-plan-switch"
+    <div className="flex flex-row items-center justify-center w-full h-full">
+      {/* Task Info Section */}
+      <div className="flex flex-col items-center justify-center w-1/2 h-full">
+        <h1 className="text-3xl font-bold mb-4">{selectedTask?.name}</h1>
+
+        <div className="flex items-center gap-3 mb-4">
+          <PriorityTag priority={selectedTask?.priority ?? PRIORITY.LOW} />
+          <StatusTag status={selectedTask?.status ?? STATUS.TODO} />
+        </div>
+
+        <div className="text-base text-gray-600 text-center mb-4 flex items-center gap-3">
+          {formatDate(selectedTask?.opened_at ?? "")} <MoveRight strokeWidth={1.5} /> {formatDate(selectedTask?.dued_at ?? "")}
+        </div>
+
+        {/* Start Task Button */}
+        <Button
+          variant={(isInProgress || isRunning) ? "gray" : "primary"}
+          onClick={handleStartTask}
+          disabled={isInProgress || isRunning}
+          className={`flex items-center gap-2 ${(isInProgress || isRunning) ? "cursor-not-allowed" : "cursor-pointer"} mb-4`}
         >
-          <span className={isWorkSession ? "active" : "inactive"}>
-            Work Session
-          </span>
-          <span className={isWorkSession ? "inactive" : "active"}>
-            Break Session
-          </span>
-        </label>
-      </div>
-      <div
-        style={{
-          textAlign: "center",
-          color: "#1b2950",
-          fontSize: "5.5rem",
-          fontWeight: "500",
-          marginBottom: "10px",
-        }}
-      >
-        {formatTime(timeLeft)}
+          <ChartNoAxesGantt className="w-5 h-5" />
+          Mark as In Progress
+        </Button>
+
+        {/* Complete Task Button */}
+        <Button
+          variant={(isCompleted || isRunning) ? "gray" : "primary"}
+          onClick={handleCompleteTask}
+          disabled={isCompleted || isRunning}
+          className={`flex items-center gap-2 ${(isCompleted || isRunning) ? "cursor-not-allowed" : "cursor-pointer !bg-green-500 hover:!bg-green-600"}`}
+        >
+          <Check className="w-5 h-5" />
+          Mark as Completed
+        </Button>
       </div>
 
-      {/* <div
-        style={{
-          width: "80%",
-          height: "10px",
-          backgroundColor: "#d0d3e2",
-          borderRadius: "10px",
-          overflow: "hidden",
-          marginBottom: "30px",
-        }}
-      >
-        <div
-          style={{
-            height: "100%",
-            backgroundColor: "#007bff",
-            transition: "width 0.25s ease",
-            width: `${progress}%`,
-          }}
-        ></div>
-      </div> */}
-      {/* <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "10px",
-          marginBottom: "20px",
-        }}
-      >
-        <label
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "1rem",
-            fontWeight: "500",
-            color: "#333",
-            marginBottom: "10px",
-          }}
-        >
-          Work Duration (min):
+      {/* Timer Section */}
+      <div className="min-h-80 my-4 flex flex-col items-center justify-center w-1/2 h-full border-l border-gray-200">
+        {/* Switch toggle */}
+        <div className="switch-toggle mb-6">
           <input
-            type="number"
-            value={workDuration}
-            onChange={handleWorkDurationChange}
-            min="1"
-            style={{
-              marginTop: "5px",
-              padding: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-              outline: "none",
-              fontSize: "1rem",
-              color: "#333",
-              transition: "box-shadow 0.3s ease",
-            }}
-            onFocus={(e) =>
-              (e.target.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)")
-            }
-            onBlur={(e) =>
-              (e.target.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)")
-            }
+            type="checkbox"
+            id="session-switch"
+            className={`switch-toggle-checkbox ${isRunning ? "cursor-not-allowed" : "cursor-pointer"}`}
+            checked={isWorkSession}
+            onChange={handleSessionChange}
+            disabled={isRunning}
           />
-        </label>
+          <label className={`switch-toggle-label items-center ${isRunning ? "cursor-not-allowed" : "cursor-pointer"}`} htmlFor="session-switch">
+            <span className={isWorkSession ? "active" : "inactive"}>Work Session</span>
+            <span className={isWorkSession ? "inactive" : "active"}>Break Session</span>
+          </label>
+        </div>
 
-        <label
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "1rem",
-            fontWeight: "500",
-            color: "#333",
-            marginBottom: "10px",
-          }}
-        >
-          Break Duration (min):
-          <input
-            type="number"
-            value={breakDuration}
-            onChange={handleBreakDurationChange}
-            min="1"
-            style={{
-              marginTop: "5px",
-              padding: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-              outline: "none",
-              fontSize: "1rem",
-              color: "#333",
-              transition: "box-shadow 0.3s ease",
-            }}
-          />
-        </label>
-      </div> */}
-      <div style={{ display: "flex", gap: "25px" }}>
-        <button
-          className="rounded-full"
-          onClick={resetTimer}
-          style={{
-            padding: "10px 12px",
-            fontSize: "1rem",
-            cursor: "pointer",
-            border: "none",
-            backgroundColor: "#d0d3e2",
-          }}
-        >
-          <img
-            width="25"
-            height="25"
-            src="https://img.icons8.com/ios-filled/50/4D4D4D/update-left-rotation.png"
-            alt="update-left-rotation"
-          />
-        </button>
-        <button
-          disabled={!isInProgress}
-          onClick={toggleTimer}
-          style={{
-            padding: "10px 20px",
-            fontSize: "1rem",
-            cursor: "pointer",
-            borderRadius: "5px",
-            border: "none",
-            backgroundColor: isInProgress ? "#007bff" : "#cccccc", // Disabled state background
-            color: isInProgress ? "#fff" : "#666666", // Disabled state text color
-            opacity: isInProgress ? 1 : 0.7,
-          }}
-        >
-          {isRunning ? (
-            <div className="flex items-center gap-2">
-              <img
-                width="20"
-                height="20"
-                src="https://img.icons8.com/glyph-neue/64/FFFFFF/circled-pause.png"
-                alt="circled-pause"
-              />
-              Pause
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <img
-                width="20"
-                height="20"
-                src="https://img.icons8.com/sf-black-filled/64/FFFFFF/play.png"
-                alt="play"
-              />
-              Start
-            </div>
-          )}
-        </button>
-        <button
-          className="rounded-full"
-          onClick={() => onCompleteTask?.("complete")}
-          style={{
-            gap: "10px",
-            alignItems: "center",
-            display: "flex",
-            padding: "10px 10px",
-            fontSize: "1rem",
-            cursor: "pointer",
-            border: "none",
-            backgroundColor: "#d0d3e2",
-          }}
-        >
-          <img
-            width="30"
-            height="30"
-            src="https://img.icons8.com/ios-glyphs/30/4D4D4D/task-completed.png"
-            alt="task-completed"
-          />
-        </button>
+        <div className="text-6xl font-medium text-gray-900 mb-8">
+          {formatTime(timeLeft)}
+        </div>
+
+        <div className="flex items-center justify-center gap-4">
+          <Button
+            variant={isRunning ? "outline" : "gray"}
+            onClick={resetTimer}
+            disabled={timeLeft === totalTime}
+            className={`flex items-center gap-2 ${timeLeft === totalTime ? "cursor-not-allowed" : "cursor-pointer"}`}
+          >
+            <RotateCcw className="w-5 h-5" /> Reset
+          </Button>
+
+          <Button
+            variant="primary"
+            onClick={toggleTimer}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            {isRunning ? (
+              <>
+                <Pause className="w-5 h-5" />
+                Pause Timer
+              </>
+            ) : (
+              <>
+                <Play className="w-5 h-5" />
+                Start Timer
+              </>
+            )}
+          </Button>
+        </div>
       </div>
     </div>
   );

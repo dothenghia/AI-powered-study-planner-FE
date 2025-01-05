@@ -208,6 +208,8 @@ export default function CalendarPage() {
         title=""
         hideFooter
         hideTitle
+        containerClassName="!max-w-4xl"
+        preventCloseOnOutsideClick={isTimerRunning}
       >
         <PomodoroTimer
           selectedTask={selectedTask}

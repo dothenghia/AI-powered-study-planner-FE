@@ -2,6 +2,8 @@ import { Input } from "../../../components/ui/Input";
 import { Select } from "../../../components/ui/Select";
 import { Button } from "../../../components/ui/Button";
 import { STATUS, PRIORITY } from "../../../types/common";
+import { ArrowDown } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 
 interface TaskFiltersProps {
   searchTerm: string;
@@ -44,13 +46,21 @@ export const TaskFilters = ({
   ];
 
   const getPrioritySortLabel = () => {
-    if (sortPriorityAsc === null) return "Sort Priority";
-    return `Priority: ${sortPriorityAsc ? "↑" : "↓"}`;
+    if (sortPriorityAsc === null) return <>Sort Priority</>;
+    return (
+      <>
+        Priority: {sortPriorityAsc ? <ArrowUp size={20} strokeWidth={1.5} /> : <ArrowDown size={20} strokeWidth={1.5} />}
+      </>
+    );
   };
 
   const getStatusSortLabel = () => {
-    if (sortStatusAsc === null) return "Sort Status";
-    return `Status: ${sortStatusAsc ? "↑" : "↓"}`;
+    if (sortStatusAsc === null) return <>Sort Status</>;
+    return (
+      <>
+        Status: {sortStatusAsc ? <ArrowUp size={20} strokeWidth={1.5} /> : <ArrowDown size={20} strokeWidth={1.5} />}
+      </>
+    );
   };
 
   return (
