@@ -1,26 +1,51 @@
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../stores';
-import { ROUTES } from '../constants/constants';
-import { Button } from '../components/ui/Button';
-import { ToastContainer, Slide } from 'react-toastify';
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../stores";
+import { ROUTES } from "../constants/constants";
+import { Button } from "../components/ui/Button";
+import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function MainLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { clearUser, email } = useAuthStore();
+  const { clearUser, email, username, imageUrl } = useAuthStore();
 
-  const isAuthPage = [ROUTES.LOGIN, ROUTES.REGISTER, ROUTES.FORGOT_PASSWORD, ROUTES.RESET_PASSWORD, ROUTES.EMAIL_VERIFICATION].includes(location.pathname);
+  const isAuthPage = [
+    ROUTES.LOGIN,
+    ROUTES.REGISTER,
+    ROUTES.FORGOT_PASSWORD,
+    ROUTES.RESET_PASSWORD,
+    ROUTES.EMAIL_VERIFICATION,
+  ].includes(location.pathname);
 
   // If the user is on an auth page, render only the Outlet component
   if (isAuthPage) {
-    return <Outlet />;
+    return (
+      <>
+        <ToastContainer
+          position="top-center"
+          autoClose={2345}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable={false}
+          pauseOnHover={false}
+          theme="light"
+          transition={Slide}
+          toastClassName={"w-fit px-5 !min-h-14"}
+          closeButton={false}
+        />
+        <Outlet />
+      </>
+    );
   }
 
   // Define menu items for the navigation bar
   const menuItems = [
-    { path: ROUTES.TASK, label: 'Task' },
-    { path: ROUTES.CALENDAR, label: 'Calendar' },
+    { path: ROUTES.TASK, label: "Task" },
+    { path: ROUTES.CALENDAR, label: "Calendar" },
   ];
 
   // Handle logout functionality
@@ -55,10 +80,11 @@ export default function MainLayout() {
               <li key={path}>
                 <Link
                   to={path}
-                  className={`text-gray-700 hover:text-gray-900 relative pb-4 ${location.pathname === path
-                    ? 'font-semibold after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-blue-500'
-                    : ''
-                    }`}
+                  className={`text-gray-700 hover:text-gray-900 relative pb-4 ${
+                    location.pathname === path
+                      ? 'font-semibold after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-blue-500'
+                      : ""
+                  }`}
                 >
                   {label}
                 </Link>
@@ -68,10 +94,26 @@ export default function MainLayout() {
         </nav>
 
         {/* User information and logout button */}
-        <div className="flex items-center space-x-4">
-          <span className="text-gray-700">Welcome, {email}</span>
-          <Button onClick={handleLogout} variant="gray">Logout</Button>
-        </div>
+        <Link to={ROUTES.PROFILE}>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-3">
+              <img
+                src={imageUrl || "/avatar-placeholder.png"}
+                alt="User avatar"
+                className="w-8 h-8 rounded-full object-cover border border-gray-200"
+              />
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-gray-900">
+                  {username}
+                </span>
+                <span className="text-xs text-gray-500">{email}</span>
+              </div>
+            </div>
+            <Button onClick={handleLogout} variant="gray">
+              Logout
+            </Button>
+          </div>
+        </Link>
       </header>
 
       {/* Main content area */}

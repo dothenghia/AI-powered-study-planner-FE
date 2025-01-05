@@ -14,7 +14,21 @@ import { ROUTES } from "../../constants/constants";
 export default function SignInPage() {
   const navigate = useNavigate();
   const { login, loginWithGoogle } = useAuth();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, setUser } = useAuthStore();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const userId = params.get("userId") || "";
+    const token = params.get("token") || "";
+    const username = params.get("username") || "";
+    const email = params.get("email") || "";
+    const imageUrl = params.get("imageUrl") || "";
+    if (token) {
+      setUser(userId, email, username, token, imageUrl);
+      navigate("/task");
+    }
+  }, []);
+
 
   // Check if user is already authenticated
   useEffect(() => {

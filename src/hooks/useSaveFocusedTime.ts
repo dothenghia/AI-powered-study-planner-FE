@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { toast } from "react-toastify";
 import { focusService } from "../services/focus";
+import { AxiosError } from "axios";
 
 interface UseSaveFocusedTimeReturn {
   saveFocusedTime: (timeInSeconds: number) => Promise<boolean>;
@@ -27,11 +28,12 @@ const useSaveFocusedTime = (taskId: string): UseSaveFocusedTimeReturn => {
       // toast.dismiss();
       // toast.success("Focus time saved successfully");
       return true;
-    } catch (err) {
-      const errorMessage = (err as Error).message;
-      setError(errorMessage);
-      console.error("Error saving focused time:", err);
-      toast.error(errorMessage || "Failed to save focused time");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error?.response?.data?.message);
+      } else { 
+        toast.error("Failed to save focused time");
+      }
       return false;
     } finally {
       setIsSaving(false);

@@ -78,7 +78,7 @@ export default function ProfilePage() {
           />
         </div>
         <div>
-          <div className={`${isEditing ?? "text-center"} px-14`}>
+          <div className={`${isEditing ? "" : "text-center"} px-14`}>
             {isEditing ? (
               <div>
                 <form

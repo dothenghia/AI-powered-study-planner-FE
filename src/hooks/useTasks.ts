@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { taskService } from '../services/task';
 import { ITask } from '../types/task';
 import { useAuthStore } from '../stores';
+import { AxiosError } from 'axios';
 
 export const useTasks = () => {
   const [tasks, setTasks] = useState<ITask[]>([]);
@@ -37,8 +38,11 @@ export const useTasks = () => {
       toast.success('Task added successfully');
       return true;
     } catch (error) {
-      console.error('Error adding task:', error);
-      toast.error('Failed to add task');
+      if (error instanceof AxiosError) {
+        toast.error(error?.response?.data?.message);
+      } else { 
+        toast.error('Failed to add task');
+      }
       return false;
     }
   };
@@ -64,8 +68,11 @@ export const useTasks = () => {
       toast.success('Task updated successfully');
       return true;
     } catch (error) {
-      console.error('Error updating task:', error);
-      toast.error('Failed to update task');
+      if (error instanceof AxiosError) {
+        toast.error(error?.response?.data?.message);
+      } else { 
+        toast.error('Failed to update task');
+      }
       return false;
     }
   };
@@ -80,8 +87,11 @@ export const useTasks = () => {
       toast.success('Task deleted successfully');
       return true;
     } catch (error) {
-      console.error('Error deleting task:', error);
-      toast.error('Failed to delete task');
+      if (error instanceof AxiosError) {
+        toast.error(error?.response?.data?.message);
+      } else { 
+        toast.error('Failed to delete task');
+      }
       return false;
     }
   };
