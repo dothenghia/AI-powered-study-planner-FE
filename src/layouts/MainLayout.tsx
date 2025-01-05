@@ -2,6 +2,7 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores';
 import { ROUTES } from '../constants/constants';
 import { Button } from '../components/ui/Button';
+import { ToastContainer, Slide } from 'react-toastify';
 
 export default function MainLayout() {
   const location = useLocation();
@@ -29,6 +30,22 @@ export default function MainLayout() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <ToastContainer
+        position="top-center"
+        autoClose={2345}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme="light"
+        transition={Slide}
+        toastClassName={"w-fit px-5 !min-h-14"}
+        closeButton={false}
+      />
+
       <header className="fixed top-0 left-0 right-0 bg-white h-[52px] px-5 flex items-center justify-between shadow-md z-50">
         {/* Navigation bar */}
         <nav className="flex-1">
@@ -37,11 +54,10 @@ export default function MainLayout() {
               <li key={path}>
                 <Link
                   to={path}
-                  className={`text-gray-700 hover:text-gray-900 relative pb-4 ${
-                    location.pathname === path 
-                      ? 'font-semibold after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-blue-500' 
-                      : ''
-                  }`}
+                  className={`text-gray-700 hover:text-gray-900 relative pb-4 ${location.pathname === path
+                    ? 'font-semibold after:content-[""] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-blue-500'
+                    : ''
+                    }`}
                 >
                   {label}
                 </Link>

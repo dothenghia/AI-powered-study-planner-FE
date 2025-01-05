@@ -4,7 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { EventInput } from "@fullcalendar/core";
-import { Slide, toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { Modal } from "../../components/ui/Modal";
 import { PomodoroTimer } from "../../components/Pomodoro";
 import { useTasks } from "../../hooks/useTasks";
@@ -137,22 +137,6 @@ export default function CalendarPage() {
 
   return (
     <div className="p-6">
-      <ToastContainer
-        position="top-center"
-        autoClose={2345}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable={false}
-        pauseOnHover={false}
-        theme="light"
-        transition={Slide}
-        toastClassName={"w-fit px-5 !min-h-14"}
-        closeButton={false}
-      />
-
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Calendar View</h1>

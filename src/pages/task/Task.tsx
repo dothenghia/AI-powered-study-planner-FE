@@ -14,7 +14,6 @@ import { useAIAnalysis } from "../../hooks/useAIAnalysis";
 import { ITask } from "../../types/task";
 import { taskSchema } from "../../utils/validations";
 import { formatDate } from "../../utils/date";
-import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthStore } from "../../stores";
 import Markdown from "react-markdown";
@@ -168,22 +167,6 @@ export default function TaskPage() {
 
   return (
     <div className="p-6">
-      <ToastContainer
-        position="top-center"
-        autoClose={2345}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable={false}
-        pauseOnHover={false}
-        theme="light"
-        transition={Slide}
-        toastClassName={"w-fit px-5 !min-h-14"}
-        closeButton={false}
-      />
-
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Task Management</h1>
