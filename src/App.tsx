@@ -30,7 +30,7 @@ function App() {
           />
           <Route path={ROUTES.LOGIN} element={<SignInPage />} />
           <Route path={ROUTES.REGISTER} element={<SignUpPage />} />
-          <Route path={ROUTES.FOTGOT_PASSWORD} element={<ForgotPasswordPage />}/>
+          <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />}/>
           <Route path={ROUTES.RESET_PASSWORD} element={<ResetPasswordPage />}/>
           <Route path={ROUTES.EMAIL_VERIFICATION} element={<EmailVerificationPage />}/>
           <Route
