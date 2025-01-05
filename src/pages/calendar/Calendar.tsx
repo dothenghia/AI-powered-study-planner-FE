@@ -30,20 +30,6 @@ export default function CalendarPage() {
     }
   }, []);
 
-  // Handle timer state change
-  const handleTimerStateChange = useCallback((isRunning: boolean) => {
-    setIsTimerRunning(isRunning);
-  }, []);
-
-  // Handle close modal
-  const handleCloseModal = useCallback(() => {
-    if (!isTimerRunning) {
-      setShowPomodoroModal(false);
-      setIsTimerRunning(false);
-      setSelectedTask(null);
-    }
-  }, [isTimerRunning]);
-
   // Generate events for the calendar
   const taskEvents: EventInput[] = tasks.map((task) => ({
     id: task.id,
@@ -130,10 +116,11 @@ export default function CalendarPage() {
         toast.info("Out of time for Break session, you can focus on Task");
         break;
       case 'complete':
-        handleCloseModal();
+        setShowPomodoroModal(false);
+        setSelectedTask(null);
         break;
     }
-  }, [selectedTask, handleCloseModal]);
+  }, [selectedTask]);
 
   return (
     <div className="p-6">
@@ -188,7 +175,10 @@ export default function CalendarPage() {
       {/* Pomodoro Modal */}
       <Modal
         isOpen={showPomodoroModal}
-        onClose={handleCloseModal}
+        onClose={() => {
+          setShowPomodoroModal(false);
+          setSelectedTask(null);
+        }}
         title=""
         hideFooter
         hideTitle
@@ -197,7 +187,8 @@ export default function CalendarPage() {
       >
         <PomodoroTimer
           selectedTask={selectedTask}
-          onTimerStateChange={handleTimerStateChange}
+          isRunning={isTimerRunning}
+          setIsRunning={setIsTimerRunning}
           onCompleteTask={handleCompleteTask}
         />
       </Modal>
