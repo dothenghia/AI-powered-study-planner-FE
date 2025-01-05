@@ -8,24 +8,20 @@ interface AnalyticsConfig {
 }
 
 export const useAnalytics = (config: AnalyticsConfig = { showToast: true }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingStatus, setIsLoadingStatus] = useState(false);
+  const [isLoadingFocusTime, setIsLoadingFocusTime] = useState(false);
+  const [isLoadingSummary, setIsLoadingSummary] = useState(false);
   const [taskStatusData, setTaskStatusData] = useState<any>(null);
   const [focusedTimeData, setFocusedTimeData] = useState<any>(null);
   const [focusedTimeSummary, setFocusedTimeSummary] = useState<any>(null);
   const { userId } = useAuthStore();
 
-  const fetchAnalytics = useCallback(async () => {
+  const fetchTaskStatusData = useCallback(async () => {
     if (!userId) return;
 
-    setIsLoading(true);
+    setIsLoadingStatus(true);
     try {
-      const [statusCount, timeByDate, timeSummary] = await Promise.all([
-        analyticsService.getTaskStatusCount(userId),
-        analyticsService.getFocusedTimeByDate(userId),
-        analyticsService.getFocusedTimeSummary(userId)
-      ]);
-
-      // Prepare task status data
+      const statusCount = await analyticsService.getTaskStatusCount(userId);
       setTaskStatusData({
         labels: Object.keys(statusCount),
         datasets: [{
@@ -39,8 +35,22 @@ export const useAnalytics = (config: AnalyticsConfig = { showToast: true }) => {
           borderWidth: 1,
         }],
       });
+    } catch (error) {
+      console.error('Error fetching task status:', error);
+      if (config.showToast) {
+        toast.error('Failed to load task status data');
+      }
+    } finally {
+      setIsLoadingStatus(false);
+    }
+  }, [userId, config.showToast]);
 
-      // Prepare focused time by date data
+  const fetchFocusTimeData = useCallback(async () => {
+    if (!userId) return;
+
+    setIsLoadingFocusTime(true);
+    try {
+      const timeByDate = await analyticsService.getFocusedTimeByDate(userId);
       setFocusedTimeData({
         labels: timeByDate.map(item => item.date),
         datasets: [{
@@ -50,8 +60,22 @@ export const useAnalytics = (config: AnalyticsConfig = { showToast: true }) => {
           tension: 0.4,
         }],
       });
+    } catch (error) {
+      console.error('Error fetching focus time:', error);
+      if (config.showToast) {
+        toast.error('Failed to load focus time data');
+      }
+    } finally {
+      setIsLoadingFocusTime(false);
+    }
+  }, [userId, config.showToast]);
 
-      // Prepare focused time summary data
+  const fetchFocusTimeSummary = useCallback(async () => {
+    if (!userId) return;
+
+    setIsLoadingSummary(true);
+    try {
+      const timeSummary = await analyticsService.getFocusedTimeSummary(userId);
       setFocusedTimeSummary({
         labels: ['Focused Time', 'Estimated Time'],
         datasets: [{
@@ -64,20 +88,24 @@ export const useAnalytics = (config: AnalyticsConfig = { showToast: true }) => {
         }],
       });
     } catch (error) {
-      console.error('Error fetching analytics:', error);
+      console.error('Error fetching focus summary:', error);
       if (config.showToast) {
-        toast.error('Failed to load analytics data');
+        toast.error('Failed to load focus summary data');
       }
     } finally {
-      setIsLoading(false);
+      setIsLoadingSummary(false);
     }
   }, [userId, config.showToast]);
 
   return {
-    isLoading,
+    isLoadingStatus,
+    isLoadingFocusTime,
+    isLoadingSummary,
     taskStatusData,
     focusedTimeData,
     focusedTimeSummary,
-    fetchAnalytics,
+    fetchTaskStatusData,
+    fetchFocusTimeData,
+    fetchFocusTimeSummary,
   };
 }; 

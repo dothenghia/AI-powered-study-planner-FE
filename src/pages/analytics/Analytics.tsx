@@ -24,18 +24,25 @@ export default function Analytics() {
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const {
-    isLoading,
+    isLoadingStatus,
+    isLoadingFocusTime,
+    isLoadingSummary,
     taskStatusData,
     focusedTimeData,
     focusedTimeSummary,
-    fetchAnalytics,
+    fetchTaskStatusData,
+    fetchFocusTimeData,
+    fetchFocusTimeSummary,
   } = useAnalytics();
 
   useEffect(() => {
     if (isAuthenticated) {
-      fetchAnalytics();
+      // Fetch all data independently
+      fetchTaskStatusData();
+      fetchFocusTimeData();
+      fetchFocusTimeSummary();
     }
-  }, [isAuthenticated, fetchAnalytics]);
+  }, [isAuthenticated, fetchTaskStatusData, fetchFocusTimeData, fetchFocusTimeSummary]);
 
   if (!isAuthenticated) {
     return (
@@ -65,7 +72,9 @@ export default function Analytics() {
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-lg font-semibold mb-4">Task Status Distribution</h2>
           <div className="h-[300px] flex items-center justify-center">
-            {taskStatusData && (
+            {isLoadingStatus ? (
+              <LoadingIndicator />
+            ) : taskStatusData && (
               <Doughnut
                 data={taskStatusData}
                 options={{
@@ -86,7 +95,9 @@ export default function Analytics() {
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-lg font-semibold mb-4">7-Day Focus vs Estimated Time (minutes)</h2>
           <div className="h-[300px] flex items-center justify-center">
-            {focusedTimeSummary && (
+            {isLoadingSummary ? (
+              <LoadingIndicator />
+            ) : focusedTimeSummary && (
               <Doughnut
                 data={focusedTimeSummary}
                 options={{
@@ -107,7 +118,11 @@ export default function Analytics() {
         <div className="bg-white p-6 rounded-lg shadow md:col-span-2">
           <h2 className="text-lg font-semibold mb-4">Daily Focus Time Trend (minutes)</h2>
           <div className="h-[300px]">
-            {focusedTimeData && (
+            {isLoadingFocusTime ? (
+              <div className="flex items-center justify-center h-full">
+                <LoadingIndicator />
+              </div>
+            ) : focusedTimeData && (
               <Line
                 data={focusedTimeData}
                 options={{
