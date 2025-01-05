@@ -60,7 +60,7 @@ export default function CalendarPage() {
   useEffect(() => {
     if (!userId || !tasks.length) return;
 
-    const intervalId = setInterval(checkAndUpdateExpiredTasks, 5000);
+    const intervalId = setInterval(checkAndUpdateExpiredTasks, 1000);
     return () => clearInterval(intervalId);
   }, [tasks.length, checkAndUpdateExpiredTasks]);
 
@@ -95,9 +95,9 @@ export default function CalendarPage() {
       };
 
       // Update status based on task timing
-      if (currentStatus === STATUS.TODO && newEnd < now) {
+      if (currentStatus === STATUS.TODO && compareDates(formatDateForComparison(newEnd.toISOString()), now.toLocaleString('sv-SE').slice(0, 16)) < 0) {
         updateData.status = STATUS.EXPIRED;
-      } else if (currentStatus === STATUS.EXPIRED && newStart >= now) {
+      } else if (currentStatus === STATUS.EXPIRED && compareDates(formatDateForComparison(newEnd.toISOString()), now.toLocaleString('sv-SE').slice(0, 16)) >= 0) {
         updateData.status = STATUS.TODO;
       }
 
