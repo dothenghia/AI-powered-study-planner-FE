@@ -105,7 +105,7 @@ export default function CalendarPage() {
   }, []);
 
   // Handle task completion
-  const handleCompleteTask = useCallback(async (type: string) => {
+  const handleTaskEvent = useCallback(async (type: string) => {
     if (!selectedTask?.id) return;
 
     switch (type) {
@@ -115,12 +115,14 @@ export default function CalendarPage() {
       case '0_time_left_break':
         toast.info("Out of time for Break session, you can focus on Task");
         break;
-      case 'complete':
-        setShowPomodoroModal(false);
-        setSelectedTask(null);
+      case 'mark_in_progress':
+        await fetchTasks(); // Refresh tasks after Mark as In Progress
+        break;
+      case 'mark_as_completed':
+        await fetchTasks(); // Refresh tasks after Mark as Completed
         break;
     }
-  }, [selectedTask]);
+  }, [selectedTask, fetchTasks]);
 
   return (
     <div className="p-6">
@@ -189,7 +191,7 @@ export default function CalendarPage() {
           selectedTask={selectedTask}
           isRunning={isTimerRunning}
           setIsRunning={setIsTimerRunning}
-          onCompleteTask={handleCompleteTask}
+          onTaskEventChange={handleTaskEvent}
         />
       </Modal>
     </div>

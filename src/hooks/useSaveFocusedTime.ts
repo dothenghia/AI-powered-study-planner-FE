@@ -22,10 +22,10 @@ const useSaveFocusedTime = (taskId: string): UseSaveFocusedTimeReturn => {
     setError(null);
 
     try {
-      toast.info("Saving focused time...");
+      // toast.info("Saving focused time...");
       await focusService.saveFocusedTime(taskId, timeInSeconds);
-      toast.dismiss();
-      toast.success("Focus time saved successfully");
+      // toast.dismiss();
+      // toast.success("Focus time saved successfully");
       return true;
     } catch (err) {
       const errorMessage = (err as Error).message;

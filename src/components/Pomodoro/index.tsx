@@ -14,14 +14,14 @@ type PomodoroProps = {
   selectedTask: Partial<ITask> | null;
   isRunning: boolean;
   setIsRunning: (isRunning: boolean) => void;
-  onCompleteTask?: (type: string) => void;
+  onTaskEventChange: (type: string) => void;
 };
 
 export const PomodoroTimer = ({
   selectedTask,
   isRunning,
   setIsRunning,
-  onCompleteTask
+  onTaskEventChange
 }: PomodoroProps) => {
   const [isWorkSession, setIsWorkSession] = useState(true); // Work Session | Break Session
   const [workDuration] = useState(25); // Default 25 minutes
@@ -46,19 +46,28 @@ export const PomodoroTimer = ({
   const handleStartTask = useCallback(async () => {
     if (!selectedTask?.id) return;
 
-    await updateTask(selectedTask.id, {
+    const success = await updateTask(selectedTask.id, {
       status: STATUS.IN_PROGRESS
     });
-  }, [selectedTask, updateTask]);
+    if (success) {
+      // Update local state immediately for better UX
+      selectedTask.status = STATUS.IN_PROGRESS;
+      onTaskEventChange("mark_in_progress");
+    }
+  }, [selectedTask, updateTask, onTaskEventChange]);
 
   const handleCompleteTask = useCallback(async () => {
     if (!selectedTask?.id) return;
 
-    await updateTask(selectedTask.id, {
+    const success = await updateTask(selectedTask.id, {
       status: STATUS.COMPLETED
     });
-    onCompleteTask?.("complete");
-  }, [selectedTask, updateTask, onCompleteTask]);
+    if (success) {
+      // Update local state immediately for better UX
+      selectedTask.status = STATUS.COMPLETED;
+      onTaskEventChange("mark_as_completed");
+    }
+  }, [selectedTask, updateTask, onTaskEventChange]);
 
   // Timer controls
   const toggleTimer = useCallback(() => {
@@ -111,16 +120,16 @@ export const PomodoroTimer = ({
     }
     else if (timeLeft === 0) {
       if (isWorkSession) {
-        onCompleteTask?.("0_time_left_work");
+        onTaskEventChange?.("0_time_left_work");
       } else {
-        onCompleteTask?.("0_time_left_break");
+        onTaskEventChange?.("0_time_left_break");
       }
 
       // Change session
       handleSessionChange();
     }
     return () => clearInterval(timer);
-  }, [isRunning, timeLeft, isWorkSession, workDuration, breakDuration, onCompleteTask, handleSessionChange]);
+  }, [isRunning, timeLeft, isWorkSession, workDuration, breakDuration, onTaskEventChange, handleSessionChange]);
 
   return (
     <div className="flex flex-row items-center justify-center w-full h-full">
