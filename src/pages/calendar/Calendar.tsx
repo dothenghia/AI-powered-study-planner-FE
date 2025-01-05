@@ -14,17 +14,23 @@ import { STATUS } from "../../types/common";
 import LoadingIndicator from "react-loading-indicator";
 import { getStatusColor } from "../../utils/theme";
 import { compareDates, formatDateForComparison } from "../../utils/date";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../../components/ui/Button";
+import { ROUTES } from "../../constants/constants";
 
 export default function CalendarPage() {
   const [showPomodoroModal, setShowPomodoroModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Partial<ITask> | null>(null);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
-  const { userId } = useAuthStore();
+  const { userId, isAuthenticated } = useAuthStore();
   const { tasks, isLoading, fetchTasks, updateTask, updateMultipleTasks } = useTasks({ showToast: false });
+  const navigate = useNavigate();
 
   // Function to check and update expired tasks
   const checkAndUpdateExpiredTasks = useCallback(async () => {
+    if (!isAuthenticated) return;
+    
     const now = new Date();
     const expiredTasks = tasks.reduce<Array<{ id: string; data: { status: typeof STATUS.EXPIRED } }>>((acc, task) => {
       if (
@@ -47,7 +53,7 @@ export default function CalendarPage() {
         toast.error('Failed to update expired tasks');
       }
     }
-  }, [userId, tasks, updateMultipleTasks]);
+  }, [userId, tasks, updateMultipleTasks, isAuthenticated]);
 
   // Effect for initial tasks fetch
   useEffect(() => {
@@ -109,6 +115,11 @@ export default function CalendarPage() {
 
   // Handle event click - open task modal
   const handleEventClick = useCallback((eventInfo: any) => {
+    if (!isAuthenticated) {
+      toast.info("Please log in to view task details");
+      return;
+    }
+
     const { event } = eventInfo;
     const taskData = {
       id: event.id,
@@ -118,7 +129,7 @@ export default function CalendarPage() {
 
     setSelectedTask(taskData);
     setShowPomodoroModal(true);
-  }, []);
+  }, [isAuthenticated]);
 
   // Handle task completion
   const handleTaskEvent = useCallback(async (type: string) => {
@@ -170,6 +181,21 @@ export default function CalendarPage() {
         {isLoading ? (
           <div className="flex justify-center items-center py-10">
             <LoadingIndicator />
+          </div>
+        ) : !isAuthenticated ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+              Welcome to Calendar View
+            </h2>
+            <p className="text-gray-600 text-center max-w-md mb-6">
+              Log in to view and manage your tasks in a calendar format, track deadlines, and use the Pomodoro timer.
+            </p>
+            <Button
+              variant="primary"
+              onClick={() => navigate(ROUTES.LOGIN)}
+            >
+              Log In to Get Started
+            </Button>
           </div>
         ) : (
           <FullCalendar

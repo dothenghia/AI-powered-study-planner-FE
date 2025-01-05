@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function MainLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { clearUser, email, username, imageUrl } = useAuthStore();
+  const { clearUser, email, username, imageUrl, isAuthenticated } = useAuthStore();
 
   const isAuthPage = [
     ROUTES.LOGIN,
@@ -93,27 +93,38 @@ export default function MainLayout() {
           </ul>
         </nav>
 
-        {/* User information and logout button */}
-        <Link to={ROUTES.PROFILE}>
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center gap-3">
-              <img
-                src={imageUrl || "/avatar-placeholder.png"}
-                alt="User avatar"
-                className="w-8 h-8 rounded-full object-cover border border-gray-200"
-              />
-              <div className="flex flex-col">
-                <span className="text-sm font-medium text-gray-900">
-                  {username}
-                </span>
-                <span className="text-xs text-gray-500">{email}</span>
+        {/* User information and auth buttons */}
+        {isAuthenticated ? (
+          <Link to={ROUTES.PROFILE}>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center gap-3">
+                <img
+                  src={imageUrl || "/avatar-placeholder.png"}
+                  alt="User avatar"
+                  className="w-8 h-8 rounded-full object-cover border border-gray-200"
+                />
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-gray-900">
+                    {username}
+                  </span>
+                  <span className="text-xs text-gray-500">{email}</span>
+                </div>
               </div>
+              <Button onClick={handleLogout} variant="gray">
+                Logout
+              </Button>
             </div>
-            <Button onClick={handleLogout} variant="gray">
-              Logout
+          </Link>
+        ) : (
+          <div className="flex items-center space-x-4">
+            <Button onClick={() => navigate(ROUTES.LOGIN)} variant="primary">
+              Login
+            </Button>
+            <Button onClick={() => navigate(ROUTES.REGISTER)} variant="outline">
+              Register
             </Button>
           </div>
-        </Link>
+        )}
       </header>
 
       {/* Main content area */}

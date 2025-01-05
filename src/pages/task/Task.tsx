@@ -17,6 +17,9 @@ import { formatDate } from "../../utils/date";
 import { useAuthStore } from "../../stores";
 import Markdown from "react-markdown";
 import { STATUS, PRIORITY } from "../../types/common";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/constants";
 
 export default function TaskPage() {
   const [showModal, setShowModal] = useState(false);
@@ -29,7 +32,8 @@ export default function TaskPage() {
   const [statusFilter, setStatusFilter] = useState("");
   const [sortPriorityAsc, setSortPriorityAsc] = useState<boolean | null>(null);
   const [sortStatusAsc, setSortStatusAsc] = useState<boolean | null>(null);
-  const { userId } = useAuthStore();
+  const { userId, isAuthenticated } = useAuthStore();
+  const navigate = useNavigate();
 
   const { tasks, isLoading, createTask, updateTask, deleteTask, fetchTasks } = useTasks();
   const { isAnalyzing, analysisResult, analyzeWithAI } = useAIAnalysis();
@@ -158,10 +162,33 @@ export default function TaskPage() {
 
   // Handle AI analysis
   const handleAIAnalysis = async () => {
+    if (!isAuthenticated) {
+      toast.info("Please log in to use AI analysis");
+      return;
+    }
     const result = await analyzeWithAI();
     if (result) {
       setShowAIModal(true);
     }
+  };
+
+  // Handle add task click
+  const handleAddTaskClick = () => {
+    if (!isAuthenticated) {
+      toast.info("Please log in to add tasks");
+      return;
+    }
+    setEditingTask(null);
+    form.reset({
+      name: "",
+      description: "",
+      priority: PRIORITY.MEDIUM,
+      status: STATUS.TODO,
+      estimated_time: 0,
+      opened_at: new Date().toLocaleString('sv-SE').slice(0, 16),
+      dued_at: new Date().toLocaleString('sv-SE').slice(0, 16),
+    });
+    setShowModal(true);
   };
 
   return (
@@ -172,19 +199,7 @@ export default function TaskPage() {
         <div className="space-x-4 flex items-center">
           <Button
             variant="primary"
-            onClick={() => {
-              setEditingTask(null);
-              form.reset({
-                name: "",
-                description: "",
-                priority: PRIORITY.MEDIUM,
-                status: STATUS.TODO,
-                estimated_time: 0,
-                opened_at: new Date().toLocaleString('sv-SE').slice(0, 16),
-                dued_at: new Date().toLocaleString('sv-SE').slice(0, 16),
-              });
-              setShowModal(true);
-            }}
+            onClick={handleAddTaskClick}
           >
             Add Task
           </Button>
@@ -217,6 +232,21 @@ export default function TaskPage() {
         {isLoading ? (
           <div className="flex justify-center items-center py-10">
             <LoadingIndicator />
+          </div>
+        ) : !isAuthenticated ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+              Welcome to Task Management
+            </h2>
+            <p className="text-gray-600 text-center max-w-md mb-6">
+              Log in to create and manage your tasks, track your progress, and get AI-powered insights.
+            </p>
+            <Button
+              variant="primary"
+              onClick={() => navigate(ROUTES.LOGIN)}
+            >
+              Log In to Get Started
+            </Button>
           </div>
         ) : (
           <TaskList

@@ -23,9 +23,9 @@ function App() {
           <Route
             index
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <TaskPage />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
           <Route path={ROUTES.LOGIN} element={<SignInPage />} />
@@ -44,17 +44,17 @@ function App() {
           <Route
             path={ROUTES.TASK}
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <TaskPage />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
           <Route
             path={ROUTES.CALENDAR}
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <CalendarPage />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
           <Route path="*" element={<NotFoundPage />} />
