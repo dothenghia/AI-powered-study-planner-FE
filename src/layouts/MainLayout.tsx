@@ -3,6 +3,7 @@ import { useAuthStore } from '../stores';
 import { ROUTES } from '../constants/constants';
 import { Button } from '../components/ui/Button';
 import { ToastContainer, Slide } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 export default function MainLayout() {
   const location = useLocation();

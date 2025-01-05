@@ -14,7 +14,6 @@ import { useAIAnalysis } from "../../hooks/useAIAnalysis";
 import { ITask } from "../../types/task";
 import { taskSchema } from "../../utils/validations";
 import { formatDate } from "../../utils/date";
-import "react-toastify/dist/ReactToastify.css";
 import { useAuthStore } from "../../stores";
 import Markdown from "react-markdown";
 import { STATUS, PRIORITY } from "../../types/common";
