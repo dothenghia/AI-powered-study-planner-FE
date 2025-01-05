@@ -10,8 +10,16 @@ interface LoginFormProps {
   onGoogleSignIn: () => void;
 }
 
-export const LoginForm = ({ form, onSubmit, onGoogleSignIn }: LoginFormProps) => {
-  const { register, handleSubmit, formState: { errors } } = form;
+export const LoginForm = ({
+  form,
+  onSubmit,
+  onGoogleSignIn,
+}: LoginFormProps) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-96">
@@ -34,6 +42,9 @@ export const LoginForm = ({ form, onSubmit, onGoogleSignIn }: LoginFormProps) =>
         placeholder="Password"
         error={errors.password?.message}
       />
+        <Link to="/forgot-password" className="text-blue-600 mt-2 ml-1 hover:underline text-right">
+          Forgot password ?
+        </Link>
       <div className="mb-5"></div>
 
       <Button type="submit" variant="primary" className="mt-10 mb-5">
@@ -57,4 +68,4 @@ export const LoginForm = ({ form, onSubmit, onGoogleSignIn }: LoginFormProps) =>
       </Button>
     </form>
   );
-}; 
+};

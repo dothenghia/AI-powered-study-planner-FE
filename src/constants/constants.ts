@@ -4,7 +4,10 @@ export const ROUTES = {
   REGISTER: "/register",
   PROFILE: "/profile",
   TASK: "/task",
-  CALENDAR: "/view"
+  CALENDAR: "/view",
+  FOTGOT_PASSWORD: "/forgot-password",
+  RESET_PASSWORD: "/reset-password",
+  EMAIL_VERIFICATION: "/verify-email"
 }
 
 export const API_URL = import.meta.env.VITE_API_URL;

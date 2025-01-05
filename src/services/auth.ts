@@ -20,5 +20,26 @@ export const authService = {
 
   googleAuth: () => {
     window.location.href = `${API_URL}/google`;
+  },
+
+  forgotPassword: async (email: string) => {
+    const response = await api.post('/user/forgot-password', { email });
+    return response.data;
+  },
+
+  resetPassword: async (userId: string | null, password: string, token: string | null) => {
+    const response = await api.post('/user/update-password', {
+      userId,
+      password,
+      token
+    });
+    return response.data;
+  },
+
+  verifyEmail: async (token: string | null) => {
+    const response = await api.post('/verify-email', {
+      token
+    });
+    return response.data;
   }
 }; 

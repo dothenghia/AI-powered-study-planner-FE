@@ -10,7 +10,7 @@ export default function MainLayout() {
   const navigate = useNavigate();
   const { clearUser, email } = useAuthStore();
 
-  const isAuthPage = [ROUTES.LOGIN, ROUTES.REGISTER].includes(location.pathname);
+  const isAuthPage = [ROUTES.LOGIN, ROUTES.REGISTER, ROUTES.FOTGOT_PASSWORD, ROUTES.RESET_PASSWORD, ROUTES.EMAIL_VERIFICATION].includes(location.pathname);
 
   // If the user is on an auth page, render only the Outlet component
   if (isAuthPage) {

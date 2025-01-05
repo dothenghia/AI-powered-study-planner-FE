@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { authService } from "../services/auth";
@@ -8,6 +8,7 @@ import { LoginCredentials } from "../types/auth";
 export const useAuth = () => {
   const navigate = useNavigate();
   const { setUser, clearUser } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const login = useCallback(async (credentials: LoginCredentials) => {
     try {
@@ -37,10 +38,50 @@ export const useAuth = () => {
     authService.googleAuth();
   }, []);
 
+  const sendResetPasswordLink = useCallback(async (email: string) => {
+    try {
+      await authService.forgotPassword(email);
+      toast.success("Reset password link sent to email");
+      return true;
+    } catch (error) {
+      toast.error("Failed to send reset password link");
+      return false;   
+    }
+  }, []);
+
+  const resetPassword = async (userId: string | null, password: string, token: string | null) => {
+    try {
+      console.log(userId, password, token);
+      await authService.resetPassword(userId, password, token);
+      toast.success("Password reset successful");
+      return true;
+    } catch (error) {
+      toast.error("Failed to reset password");
+      return false;
+    }
+  }
+  const verifyEmail = async (token: string | null) => {
+    try {
+      setIsLoading(true);
+      await authService.verifyEmail(token);
+      setIsLoading(false);
+      toast.success("Email verified successfully");
+      return true;
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Failed to verify email");
+      return false;
+    }
+  }
+
   return {
     login,
     register,
     clearUser,
-    loginWithGoogle
+    loginWithGoogle,
+    sendResetPasswordLink,
+    resetPassword,
+    verifyEmail,
+    isLoading
   };
 }; 

@@ -66,4 +66,46 @@ export const taskSchema = yup.object({
       if (!opened_at || !dued_at) return true;
       return new Date(dued_at) >= new Date(opened_at);
     })
-}); 
+});
+
+export const updateSchema = yup.object({
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Please enter a valid email"),
+  username: yup
+    .string()
+    .required("Username is required")
+    .min(3, "Username must be at least 3 characters"),
+  imageUrl: yup
+    .string()
+    .url("Please provide a valid URL")
+    .nullable(),
+});
+
+// Forgot password schema with yup validation
+export const forgotPasswordSchema = yup.object({
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Please enter a valid email"),
+});
+
+export const resetPasswordSchema = yup.object({
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters")
+    .matches(regex.number, "Must contain at least 1 number")
+    .matches(regex.lowerCase, "Must contain at least 1 lowercase letter")
+    .matches(regex.upperCase, "Must contain at least 1 uppercase letter")
+    .matches(regex.specialCharacter, "Must contain at least 1 special character"),
+  confirmPassword: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters")
+    .matches(regex.number, "Must contain at least 1 number")
+    .matches(regex.lowerCase, "Must contain at least 1 lowercase letter")
+    .matches(regex.upperCase, "Must contain at least 1 uppercase letter")
+    .matches(regex.specialCharacter, "Must contain at least 1 special character"),
+});

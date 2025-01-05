@@ -28,7 +28,7 @@ export const RegisterForm = ({ form, onSubmit }: RegisterFormProps) => {
 
       <Input
         {...register("username")}
-        placeholder="Username"
+        placeholder="Display name"
         error={errors.username?.message}
       />
       <div className="mb-5"></div>
