@@ -178,7 +178,7 @@ export default function CalendarPage() {
 
       {/* Calendar */}
       <div className="bg-white rounded-lg shadow overflow-hidden border border-gray-200 px-6 py-10">
-        {isLoading ? (
+        {(isLoading && tasks.length === 0) ? (
           <div className="flex justify-center items-center py-10">
             <LoadingIndicator />
           </div>

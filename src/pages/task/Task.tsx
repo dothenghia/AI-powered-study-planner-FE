@@ -229,7 +229,7 @@ export default function TaskPage() {
 
       {/* Task list */}
       <div className="mt-6 bg-white rounded-lg shadow overflow-hidden border border-gray-200">
-        {isLoading ? (
+        {(isLoading && tasks.length === 0) ? (
           <div className="flex justify-center items-center py-10">
             <LoadingIndicator />
           </div>
