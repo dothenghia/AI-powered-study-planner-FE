@@ -159,6 +159,9 @@ export default function CalendarPage() {
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
+            weekNumbers
+            displayEventTime={false}
+            timeZone="UTC"
             editable={true}
             droppable={true}
             events={taskEvents}
