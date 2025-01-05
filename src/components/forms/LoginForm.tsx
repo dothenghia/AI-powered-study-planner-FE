@@ -42,9 +42,12 @@ export const LoginForm = ({
         placeholder="Password"
         error={errors.password?.message}
       />
-        <Link to="/forgot-password" className="text-blue-600 mt-2 ml-1 hover:underline text-right">
-          Forgot password ?
-        </Link>
+      <Link
+        to="/forgot-password"
+        className="text-blue-600 mt-2 ml-1 hover:underline text-right"
+      >
+        Forgot password ?
+      </Link>
       <div className="mb-5"></div>
 
       <Button type="submit" variant="primary" className="mt-10 mb-5">
@@ -62,9 +65,15 @@ export const LoginForm = ({
         type="button"
         onClick={onGoogleSignIn}
         variant="default"
-        className="mt-5"
+        className="mt-5 gap-5 p-5"
       >
-        Sign in with Google
+        <img
+          width="20"
+          height="20"
+          src="https://img.icons8.com/color/48/google-logo.png"
+          alt="google-logo"
+        />
+        Continue with Google
       </Button>
     </form>
   );

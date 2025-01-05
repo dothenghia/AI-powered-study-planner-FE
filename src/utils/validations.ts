@@ -56,7 +56,7 @@ export const taskSchema = yup.object({
     .test("opened_at", "Start date cannot be after due date", function(opened_at) {
       const { dued_at } = this.parent;
       if (!opened_at || !dued_at) return true;
-      return new Date(opened_at) <= new Date(dued_at);
+      return new Date(opened_at) < new Date(dued_at);
     }),
   dued_at: yup
     .string()
@@ -64,7 +64,7 @@ export const taskSchema = yup.object({
     .test("dued_at", "Due date cannot be before start date", function(dued_at) {
       const { opened_at } = this.parent;
       if (!opened_at || !dued_at) return true;
-      return new Date(dued_at) >= new Date(opened_at);
+      return new Date(dued_at) > new Date(opened_at);
     })
 });
 

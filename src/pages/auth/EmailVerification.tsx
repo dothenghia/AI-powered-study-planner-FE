@@ -12,16 +12,21 @@ export default function EmailVerificationPage() {
   const navigate = useNavigate();
   const { verifyEmail, isLoading } = useAuth();
   const [isVerified, setIsVerified] = useState(false);
+  const [hasAttemptedVerification, setHasAttemptedVerification] =
+    useState(false);
 
   useEffect(() => {
     const verifyToken = async () => {
+      // Prevent multiple verification attempts
+      if (hasAttemptedVerification) return;
+      setHasAttemptedVerification(true);
+
       const params = new URLSearchParams(window.location.search);
       const urlToken = params.get("token") || "";
-      
+
       if (urlToken) {
         const decoded = decodeJwt(urlToken);
-        console.log('Decoded token:', decoded);
-        
+
         if (!decoded) {
           toast.error("Invalid verification token");
           navigate(ROUTES.LOGIN);
@@ -51,7 +56,7 @@ export default function EmailVerificationPage() {
     };
 
     verifyToken();
-  }, []);
+  }, [navigate, verifyEmail, hasAttemptedVerification]);
 
   return (
     <>
@@ -66,7 +71,9 @@ export default function EmailVerificationPage() {
           <div className="text-center px-8">
             {isLoading ? (
               <>
-                <h1 className="font-bold text-4xl mb-3 text-primary">Verifying Email...</h1>
+                <h1 className="font-bold text-4xl mb-3 text-primary">
+                  Verifying Email...
+                </h1>
                 <div className="flex justify-center">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
                 </div>
@@ -76,7 +83,9 @@ export default function EmailVerificationPage() {
               </>
             ) : isVerified ? (
               <>
-                <h1 className="font-bold text-4xl mb-3 text-primary">Email Verified! 🎉</h1>
+                <h1 className="font-bold text-4xl mb-3 text-primary">
+                  Email Verified! 🎉
+                </h1>
                 <p className="mb-10 text-xl font-medium text-gray-500">
                   Your email has been successfully verified.
                 </p>
@@ -90,7 +99,25 @@ export default function EmailVerificationPage() {
                   Go to Login
                 </Button>
               </>
-            ) : null}
+            ) : (
+              <>
+                <h1 className="font-bold text-4xl mb-3 text-red-600">
+                  Verification Failed
+                </h1>
+                <p className="mb-10 text-xl font-medium text-gray-500">
+                  "Something went wrong during email verification."
+                </p>
+                <p className="mb-10 text-gray-600">
+                  Please try again or contact support if the problem persists.
+                </p>
+                <Button
+                  onClick={() => navigate(ROUTES.LOGIN)}
+                  className="mt-5 px-8"
+                >
+                  Return to Login
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
