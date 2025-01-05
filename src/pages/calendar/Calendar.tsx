@@ -21,7 +21,7 @@ export default function CalendarPage() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
   const { userId } = useAuthStore();
-  const { tasks, isLoading, fetchTasks, updateTask } = useTasks();
+  const { tasks, isLoading, fetchTasks, updateTask } = useTasks({ showToast: false });
 
   // Fetch tasks when user is authenticated
   useEffect(() => {

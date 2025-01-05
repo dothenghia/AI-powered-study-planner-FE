@@ -4,7 +4,11 @@ import { taskService } from '../services/task';
 import { ITask } from '../types/task';
 import { useAuthStore } from '../stores';
 
-export const useTasks = () => {
+interface TasksConfig {
+  showToast?: boolean;
+}
+
+export const useTasks = (config: TasksConfig = { showToast: true }) => {
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { userId } = useAuthStore();
@@ -19,26 +23,34 @@ export const useTasks = () => {
       setTasks(data);
     } catch (error) {
       console.error('Failed to load tasks:', error);
-      toast.error('Failed to load tasks');
+      if (config.showToast) {
+        toast.error('Failed to load tasks');
+      }
     } finally {
       setIsLoading(false);
     }
-  }, [userId]);
+  }, [userId, config.showToast]);
 
   // Create a new task
   const createTask = async (taskData: Partial<ITask>): Promise<boolean> => {
     if (!userId) return false;
     
     try {
-      toast.info('Adding task...');
+      if (config.showToast) {
+        toast.info('Adding task...');
+      }
       await taskService.createTask({ ...taskData, userId });
       await fetchTasks();
-      toast.dismiss();
-      toast.success('Task added successfully');
+      if (config.showToast) {
+        toast.dismiss();
+        toast.success('Task added successfully');
+      }
       return true;
     } catch (error) {
       console.error('Error adding task:', error);
-      toast.error('Failed to add task');
+      if (config.showToast) {
+        toast.error('Failed to add task');
+      }
       return false;
     }
   };
@@ -46,7 +58,9 @@ export const useTasks = () => {
   // Update an existing task
   const updateTask = async (id: string, taskData: Partial<ITask>): Promise<boolean> => {
     try {
-      toast.info('Updating task...');
+      if (config.showToast) {
+        toast.info('Updating task...');
+      }
       
       const updateBody = {
         name: taskData.name,
@@ -60,12 +74,16 @@ export const useTasks = () => {
 
       await taskService.updateTask(id, updateBody);
       await fetchTasks();
-      toast.dismiss();
-      toast.success('Task updated successfully');
+      if (config.showToast) {
+        toast.dismiss();
+        toast.success('Task updated successfully');
+      }
       return true;
     } catch (error) {
       console.error('Error updating task:', error);
-      toast.error('Failed to update task');
+      if (config.showToast) {
+        toast.error('Failed to update task');
+      }
       return false;
     }
   };
@@ -73,15 +91,21 @@ export const useTasks = () => {
   // Delete an existing task
   const deleteTask = async (id: string): Promise<boolean> => {
     try {
-      toast.info('Deleting task...');
+      if (config.showToast) {
+        toast.info('Deleting task...');
+      }
       await taskService.deleteTask(id);
       await fetchTasks();
-      toast.dismiss();
-      toast.success('Task deleted successfully');
+      if (config.showToast) {
+        toast.dismiss();
+        toast.success('Task deleted successfully');
+      }
       return true;
     } catch (error) {
       console.error('Error deleting task:', error);
-      toast.error('Failed to delete task');
+      if (config.showToast) {
+        toast.error('Failed to delete task');
+      }
       return false;
     }
   };
