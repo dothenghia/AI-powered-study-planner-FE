@@ -20,6 +20,7 @@ import { STATUS, PRIORITY } from "../../types/common";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/constants";
+import { Sparkles } from "lucide-react";
 
 export default function TaskPage() {
   const [showModal, setShowModal] = useState(false);
@@ -207,8 +208,10 @@ export default function TaskPage() {
             variant="primary"
             onClick={handleAIAnalysis}
             isLoading={isAnalyzing}
+            className="flex items-center gap-2"
           >
-            ✨ Analyse with AI
+            <Sparkles className="w-5 h-5" />
+            Analyse with AI
           </Button>
         </div>
       </div>

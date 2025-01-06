@@ -11,6 +11,7 @@ import { promptService } from '../../services/prompt';
 import { toast } from 'react-toastify';
 import Markdown from 'react-markdown';
 import { Modal } from '../../components/ui/Modal';
+import { Sparkles } from 'lucide-react';
 
 // Register ChartJS components
 ChartJS.register(
@@ -94,26 +95,6 @@ export default function Analytics() {
     }
   };
 
-  // Render loading indicator if user is not authenticated
-  if (!isAuthenticated) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          Welcome to Analytics Dashboard
-        </h2>
-        <p className="text-gray-600 text-center max-w-md mb-6">
-          Log in to view detailed analytics about your tasks, focus time, and productivity trends.
-        </p>
-        <Button
-          variant="primary"
-          onClick={() => navigate(ROUTES.LOGIN)}
-        >
-          Log In to Get Started
-        </Button>
-      </div>
-    );
-  }
-
   return (
     <div className="p-6">
       {/* Header */}
@@ -123,88 +104,111 @@ export default function Analytics() {
           variant="primary"
           onClick={handleAIAnalysis}
           isLoading={isAnalyzing}
+          className="flex items-center gap-2"
         >
-          ✨ Analyze with AI
+          <Sparkles className="w-5 h-5" />
+          Analyze with AI
         </Button>
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Task Status Distribution */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4">Task Status Distribution</h2>
-          <div className="h-[300px] flex items-center justify-center">
-            {isLoadingStatus ? (
-              <LoadingIndicator />
-            ) : taskStatusData && (
-              <Doughnut
-                data={taskStatusData}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: {
-                    legend: {
-                      position: 'bottom',
-                    },
-                  },
-                }}
-              />
-            )}
-          </div>
-        </div>
 
-        {/* Focus Time vs Estimated Time */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4">7-Day Focus vs Estimated Time (minutes)</h2>
-          <div className="h-[300px] flex items-center justify-center">
-            {isLoadingSummary ? (
-              <LoadingIndicator />
-            ) : focusedTimeSummary && (
-              <Doughnut
-                data={focusedTimeSummary}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: {
-                    legend: {
-                      position: 'bottom',
-                    },
-                  },
-                }}
-              />
-            )}
+      {
+        !isAuthenticated ? (
+          <div className="flex flex-col items-center justify-center min-h-[60vh]">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+              Welcome to Analytics Dashboard
+            </h2>
+            <p className="text-gray-600 text-center max-w-md mb-6">
+              Log in to view detailed analytics about your tasks, focus time, and productivity trends.
+            </p>
+            <Button
+              variant="primary"
+              onClick={() => navigate(ROUTES.LOGIN)}
+            >
+              Log In to Get Started
+            </Button>
           </div>
-        </div>
+        ) : (
 
-        {/* Focus Time Trend */}
-        <div className="bg-white p-6 rounded-lg shadow md:col-span-2">
-          <h2 className="text-lg font-semibold mb-4">Daily Focus Time Trend (minutes)</h2>
-          <div className="h-[300px]">
-            {isLoadingFocusTime ? (
-              <div className="flex items-center justify-center h-full">
-                <LoadingIndicator />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Task Status Distribution */}
+            <div className="bg-white p-6 rounded-lg shadow">
+              <h2 className="text-lg font-semibold mb-4">Task Status Distribution</h2>
+              <div className="h-[300px] flex items-center justify-center">
+                {isLoadingStatus ? (
+                  <LoadingIndicator />
+                ) : taskStatusData && (
+                  <Doughnut
+                    data={taskStatusData}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: {
+                          position: 'bottom',
+                        },
+                      },
+                    }}
+                  />
+                )}
               </div>
-            ) : focusedTimeData && (
-              <Line
-                data={focusedTimeData}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: {
-                    legend: {
-                      position: 'bottom',
-                    },
-                  },
-                  scales: {
-                    y: {
-                      beginAtZero: true,
-                    },
-                  },
-                }}
-              />
-            )}
+            </div>
+
+            {/* Focus Time vs Estimated Time */}
+            <div className="bg-white p-6 rounded-lg shadow">
+              <h2 className="text-lg font-semibold mb-4">7-Day Focus vs Estimated Time (minutes)</h2>
+              <div className="h-[300px] flex items-center justify-center">
+                {isLoadingSummary ? (
+                  <LoadingIndicator />
+                ) : focusedTimeSummary && (
+                  <Doughnut
+                    data={focusedTimeSummary}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: {
+                          position: 'bottom',
+                        },
+                      },
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Focus Time Trend */}
+            <div className="bg-white p-6 rounded-lg shadow md:col-span-2">
+              <h2 className="text-lg font-semibold mb-4">Daily Focus Time Trend (minutes)</h2>
+              <div className="h-[300px]">
+                {isLoadingFocusTime ? (
+                  <div className="flex items-center justify-center h-full">
+                    <LoadingIndicator />
+                  </div>
+                ) : focusedTimeData && (
+                  <Line
+                    data={focusedTimeData}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: {
+                          position: 'bottom',
+                        },
+                      },
+                      scales: {
+                        y: {
+                          beginAtZero: true,
+                        },
+                      },
+                    }}
+                  />
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        )
+      }
 
       {/* AI Analysis Modal */}
       <Modal
