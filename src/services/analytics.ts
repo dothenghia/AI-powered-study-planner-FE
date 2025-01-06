@@ -1,18 +1,18 @@
 import { api } from './api';
 
-interface TaskStatusCount {
-  Todo: number;
+export interface TaskStatusCount {
+  'Todo': number;
   'In Progress': number;
-  Completed: number;
-  Expired: number;
+  'Completed': number;
+  'Expired': number;
 }
 
-interface FocusedTimeByDate {
+export interface FocusedTimeByDate {
   date: string;
   totalSeconds: number;
 }
 
-interface FocusedTimeSummary {
+export interface FocusedTimeSummary {
   total_focused_time_in_7_days: number;
   total_estimated_time_in_7_days: number;
 }

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { analyticsService } from '../services/analytics';
+import { analyticsService, FocusedTimeByDate, FocusedTimeSummary, TaskStatusCount } from '../services/analytics';
 import { useAuthStore } from '../stores';
 
 interface AnalyticsConfig {
@@ -14,6 +14,11 @@ export const useAnalytics = (config: AnalyticsConfig = { showToast: true }) => {
   const [taskStatusData, setTaskStatusData] = useState<any>(null);
   const [focusedTimeData, setFocusedTimeData] = useState<any>(null);
   const [focusedTimeSummary, setFocusedTimeSummary] = useState<any>(null);
+
+  const [taskStatusDataRaw, setTaskStatusDataRaw] = useState<TaskStatusCount | null>(null);
+  const [focusedTimeDataRaw, setFocusedTimeDataRaw] = useState<FocusedTimeByDate[] | null>(null);
+  const [focusedTimeSummaryRaw, setFocusedTimeSummaryRaw] = useState<FocusedTimeSummary | null>(null);
+
   const { userId } = useAuthStore();
 
   const fetchTaskStatusData = useCallback(async () => {
@@ -22,6 +27,7 @@ export const useAnalytics = (config: AnalyticsConfig = { showToast: true }) => {
     setIsLoadingStatus(true);
     try {
       const statusCount = await analyticsService.getTaskStatusCount(userId);
+      setTaskStatusDataRaw(statusCount);
       setTaskStatusData({
         labels: Object.keys(statusCount),
         datasets: [{
@@ -51,6 +57,7 @@ export const useAnalytics = (config: AnalyticsConfig = { showToast: true }) => {
     setIsLoadingFocusTime(true);
     try {
       const timeByDate = await analyticsService.getFocusedTimeByDate(userId);
+      setFocusedTimeDataRaw(timeByDate);
       setFocusedTimeData({
         labels: timeByDate.map(item => {
           const date = new Date(item.date);
@@ -80,6 +87,7 @@ export const useAnalytics = (config: AnalyticsConfig = { showToast: true }) => {
     setIsLoadingSummary(true);
     try {
       const timeSummary = await analyticsService.getFocusedTimeSummary(userId);
+      setFocusedTimeSummaryRaw(timeSummary);
       setFocusedTimeSummary({
         labels: ['Focused Time', 'Estimated Time'],
         datasets: [{
@@ -106,8 +114,11 @@ export const useAnalytics = (config: AnalyticsConfig = { showToast: true }) => {
     isLoadingFocusTime,
     isLoadingSummary,
     taskStatusData,
+    taskStatusDataRaw,
     focusedTimeData,
+    focusedTimeDataRaw,
     focusedTimeSummary,
+    focusedTimeSummaryRaw,
     fetchTaskStatusData,
     fetchFocusTimeData,
     fetchFocusTimeSummary,
