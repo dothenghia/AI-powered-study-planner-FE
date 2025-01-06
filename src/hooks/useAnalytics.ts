@@ -52,11 +52,15 @@ export const useAnalytics = (config: AnalyticsConfig = { showToast: true }) => {
     try {
       const timeByDate = await analyticsService.getFocusedTimeByDate(userId);
       setFocusedTimeData({
-        labels: timeByDate.map(item => item.date),
+        labels: timeByDate.map(item => {
+          const date = new Date(item.date);
+          return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }),
         datasets: [{
           label: 'Focus Time (minutes)',
-          data: timeByDate.map(item => Math.round(item.totalSeconds / 60)),
+          data: timeByDate.map(item => item.totalSeconds),
           borderColor: '#1677ff',
+          backgroundColor: '#1677ff',
           tension: 0.4,
         }],
       });
@@ -80,8 +84,8 @@ export const useAnalytics = (config: AnalyticsConfig = { showToast: true }) => {
         labels: ['Focused Time', 'Estimated Time'],
         datasets: [{
           data: [
-            Math.round(timeSummary.total_focused_time_in_7_days / 60),
-            Math.round(timeSummary.total_estimated_time_in_7_days / 60),
+            timeSummary.total_focused_time_in_7_days,
+            timeSummary.total_estimated_time_in_7_days,
           ],
           backgroundColor: ['#1677ff', '#90c6fe'],
           borderWidth: 1,
