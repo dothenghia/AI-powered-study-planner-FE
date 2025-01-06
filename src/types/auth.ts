@@ -15,6 +15,7 @@ export interface AuthResponse {
   email: string;
   username: string;
   access_token: string;
+  imageUrl: string;
 }
 
 export interface AuthState {

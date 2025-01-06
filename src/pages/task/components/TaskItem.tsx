@@ -14,9 +14,9 @@ interface TaskItemProps {
 
 export const TaskItem = ({ task, onView, onEdit, onDelete }: TaskItemProps) => {
   return (
-    <tr className="hover:bg-gray-50 cursor-pointer" onClick={onView}>
+    <tr className="hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer transition-colors" onClick={onView}>
       <td className="px-6 py-4">
-        <span className="font-medium">{task.name}</span>
+        <span className="font-medium text-gray-900 dark:text-gray-100">{task.name}</span>
       </td>
       <td className="px-6 py-4 text-center">
         <div className="flex justify-center">
@@ -28,17 +28,17 @@ export const TaskItem = ({ task, onView, onEdit, onDelete }: TaskItemProps) => {
           <PriorityTag priority={task.priority} />
         </div>
       </td>
-      <td className="px-6 py-4 text-center">
+      <td className="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
         {task.estimated_time}
       </td>
-      <td className="px-6 py-4 text-center">
+      <td className="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
         {formatDate(task.opened_at || "")}
       </td>
-      <td className="px-6 py-4 text-center">
+      <td className="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
         {formatDate(task.dued_at || "")}
       </td>
       <td className="px-6 py-4">
-        <div className="max-w-xs truncate" title={task.description}>
+        <div className="max-w-xs truncate text-gray-700 dark:text-gray-300" title={task.description}>
           {task.description}
         </div>
       </td>

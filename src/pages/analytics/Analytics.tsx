@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import Markdown from 'react-markdown';
 import { Modal } from '../../components/ui/Modal';
 import { Sparkles } from 'lucide-react';
+import { useThemeStore } from "../../stores/themeStore";
 
 // Register ChartJS components
 ChartJS.register(
@@ -42,6 +43,8 @@ export default function Analytics() {
     fetchFocusTimeData,
     fetchFocusTimeSummary,
   } = useAnalytics();
+
+  const { theme } = useThemeStore();
 
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showAIModal, setShowAIModal] = useState(false);
@@ -96,10 +99,10 @@ export default function Analytics() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 dark:bg-gray-900">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Analytics Dashboard</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Analytics Dashboard</h1>
         <Button
           variant="primary"
           onClick={handleAIAnalysis}
@@ -114,10 +117,10 @@ export default function Analytics() {
       {
         !isAuthenticated ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh]">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
               Welcome to Analytics Dashboard
             </h2>
-            <p className="text-gray-600 text-center max-w-md mb-6">
+            <p className="text-gray-600 dark:text-gray-400 text-center max-w-md mb-6">
               Log in to view detailed analytics about your tasks, focus time, and productivity trends.
             </p>
             <Button
@@ -128,12 +131,10 @@ export default function Analytics() {
             </Button>
           </div>
         ) : (
-
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Task Status Distribution */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h2 className="text-lg font-semibold mb-4">Task Status Distribution</h2>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Task Status Distribution</h2>
               <div className="h-[300px] flex items-center justify-center">
                 {isLoadingStatus ? (
                   <LoadingIndicator />
@@ -146,6 +147,9 @@ export default function Analytics() {
                       plugins: {
                         legend: {
                           position: 'bottom',
+                          labels: {
+                            color: theme === 'dark' ? '#e5e7eb' : '#1f2937'
+                          }
                         },
                       },
                     }}
@@ -155,8 +159,8 @@ export default function Analytics() {
             </div>
 
             {/* Focus Time vs Estimated Time */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h2 className="text-lg font-semibold mb-4">7-Day Focus vs Estimated Time (minutes)</h2>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">7-Day Focus vs Estimated Time (minutes)</h2>
               <div className="h-[300px] flex items-center justify-center">
                 {isLoadingSummary ? (
                   <LoadingIndicator />
@@ -169,6 +173,9 @@ export default function Analytics() {
                       plugins: {
                         legend: {
                           position: 'bottom',
+                          labels: {
+                            color: theme === 'dark' ? '#e5e7eb' : '#1f2937'
+                          }
                         },
                       },
                     }}
@@ -178,8 +185,8 @@ export default function Analytics() {
             </div>
 
             {/* Focus Time Trend */}
-            <div className="bg-white p-6 rounded-lg shadow md:col-span-2">
-              <h2 className="text-lg font-semibold mb-4">Daily Focus Time Trend (minutes)</h2>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow md:col-span-2">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Daily Focus Time Trend (minutes)</h2>
               <div className="h-[300px]">
                 {isLoadingFocusTime ? (
                   <div className="flex items-center justify-center h-full">
@@ -194,12 +201,29 @@ export default function Analytics() {
                       plugins: {
                         legend: {
                           position: 'bottom',
+                          labels: {
+                            color: theme === 'dark' ? '#e5e7eb' : '#1f2937'
+                          }
                         },
                       },
                       scales: {
                         y: {
                           beginAtZero: true,
+                          grid: {
+                            color: theme === 'dark' ? '#374151' : '#e5e7eb'
+                          },
+                          ticks: {
+                            color: theme === 'dark' ? '#e5e7eb' : '#1f2937'
+                          }
                         },
+                        x: {
+                          grid: {
+                            color: theme === 'dark' ? '#374151' : '#e5e7eb'
+                          },
+                          ticks: {
+                            color: theme === 'dark' ? '#e5e7eb' : '#1f2937'
+                          }
+                        }
                       },
                     }}
                   />
@@ -218,13 +242,13 @@ export default function Analytics() {
         hideFooter
         containerClassName="!max-w-6xl"
       >
-        <div className="bg-gray-50 w-full px-6 py-4 rounded-lg shadow-inner">
+        <div className="bg-gray-50 dark:bg-gray-900 w-full px-6 py-4 rounded-lg shadow-inner">
           {isAnalyzing ? (
             <div className="flex justify-center items-center py-10">
               <LoadingIndicator />
             </div>
           ) : (
-            <div className="prose max-w-none">
+            <div className="prose dark:prose-invert max-w-none">
               <Markdown>{analysisResult}</Markdown>
             </div>
           )}

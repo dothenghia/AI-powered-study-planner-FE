@@ -14,8 +14,8 @@ export const useAuth = () => {
   const login = useCallback(async (credentials: LoginCredentials) => {
     try {
       const response = await authService.login(credentials);
-      const { userId, email, username, access_token } = response;
-      setUser(userId, email, username, access_token);
+      const { userId, email, username, access_token, imageUrl } = response;
+      setUser(userId, email, username, access_token, imageUrl);
       return true;
     } catch (error) {
       if (error instanceof AxiosError) {

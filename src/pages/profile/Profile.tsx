@@ -56,13 +56,13 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="h-[calc(100vh-52px)] bg-gray-200 dark:bg-gray-800 flex flex-wrap items-center justify-center">
+    <div className="h-[calc(100vh-52px)] bg-gray-200 dark:bg-gray-900 flex flex-wrap items-center justify-center">
       <img
         src={background}
         alt="Background"
-        className="absolute bg-cover bottom-0 left-0 w-full h-full object-cover"
+        className="absolute bg-cover bottom-0 left-0 w-full h-full object-cover opacity-50 dark:opacity-30"
       />
-      <div className="container lg:w-2/6 xl:w-2/7 sm:w-full md:w-2/3 bg-white shadow-lg transform duration-200 easy-in-out rounded-lg overflow-hidden">
+      <div className="container lg:w-2/6 xl:w-2/7 sm:w-full md:w-2/3 bg-white dark:bg-gray-800 shadow-lg transform duration-200 easy-in-out rounded-lg overflow-hidden relative z-10">
         <div className="h-48 overflow-hidden">
           <img
             className="w-full object-cover"
@@ -72,7 +72,7 @@ export default function ProfilePage() {
         </div>
         <div className="flex justify-center px-5 -mt-12">
           <img
-            className="h-32 w-32 bg-white p-2 rounded-full object-cover"
+            className="h-32 w-32 bg-white dark:bg-gray-700 p-2 rounded-full object-cover"
             src={imageUrl ?? avatar}
             alt="Profile"
           />
@@ -86,7 +86,7 @@ export default function ProfilePage() {
                   onSubmit={handleSubmit(onSubmit)}
                   className="space-y-4"
                 >
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Display name
                   </label>
                   <Input
@@ -94,7 +94,7 @@ export default function ProfilePage() {
                     placeholder="Enter display name"
                     error={errors.username?.message}
                   />
-                  <label className="block mt-5 text-sm font-medium text-gray-700">
+                  <label className="block mt-5 text-sm font-medium text-gray-700 dark:text-gray-300">
                     Email
                   </label>
                   <Input
@@ -103,7 +103,7 @@ export default function ProfilePage() {
                     error={errors.email?.message}
                   />
 
-                  <label className="block mt-5 text-sm font-medium text-gray-700">
+                  <label className="block mt-5 text-sm font-medium text-gray-700 dark:text-gray-300">
                     Image URL
                   </label>
                   <Input
@@ -115,25 +115,25 @@ export default function ProfilePage() {
               </div>
             ) : (
               <div>
-                <h2 className="text-gray-700 text-xl font-bold">{username}</h2>
+                <h2 className="text-gray-700 dark:text-gray-200 text-xl font-bold">{username}</h2>
                 <p className="text-gray-400 mt-2 mb-10 text-md">{email}</p>
               </div>
             )}
           </div>
-          <hr className="mt-6" />
-          <div className="flex bg-gray-50">
+          <hr className="mt-6 border-gray-200 dark:border-gray-700" />
+          <div className="flex bg-gray-50 dark:bg-gray-900">
             {isEditing ? (
               <>
                 <button
                   form="update-form"
                   type="submit"
-                  className="text-center w-1/2 bg-green-100 p-4 text-gray-700 hover:bg-green-200 cursor-pointer"
+                  className="text-center w-1/2 bg-green-100 dark:bg-green-900 p-4 text-gray-700 dark:text-gray-200 hover:bg-green-200 dark:hover:bg-green-800 cursor-pointer transition-colors"
                 >
                   <p className="font-semibold">Save</p>
                 </button>
                 <button
                   onClick={handleCancel}
-                  className="text-center w-1/2 bg-red-100 p-4 text-gray-700 hover:bg-red-200 cursor-pointer"
+                  className="text-center w-1/2 bg-red-100 dark:bg-red-900 p-4 text-gray-700 dark:text-gray-200 hover:bg-red-200 dark:hover:bg-red-800 cursor-pointer transition-colors"
                 >
                   <p className="font-semibold">Cancel</p>
                 </button>
@@ -142,13 +142,13 @@ export default function ProfilePage() {
               <>
                 <div
                   onClick={handleEditToggle}
-                  className="text-center w-1/2 bg-yellow-100 p-4 text-gray-700 hover:bg-yellow-200 cursor-pointer"
+                  className="text-center w-1/2 bg-yellow-100 dark:bg-yellow-900 p-4 text-gray-700 dark:text-gray-200 hover:bg-yellow-200 dark:hover:bg-yellow-800 cursor-pointer transition-colors"
                 >
                   <p className="font-semibold">Edit Profile</p>
                 </div>
                 <div
                   onClick={handleLogout}
-                  className="text-center w-1/2 bg-blue-100 p-4 text-gray-700 hover:bg-blue-200 cursor-pointer"
+                  className="text-center w-1/2 bg-blue-100 dark:bg-blue-900 p-4 text-gray-700 dark:text-gray-200 hover:bg-blue-200 dark:hover:bg-blue-800 cursor-pointer transition-colors"
                 >
                   <p className="font-semibold">Log Out</p>
                 </div>

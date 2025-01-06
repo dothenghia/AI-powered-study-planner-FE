@@ -13,10 +13,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     // Define button styles based on variant
     const variants = {
       primary: "bg-primary hover:bg-primary-hover text-white",
-      outline: "border-2 border-primary text-primary hover:border-primary-hover hover:text-primary-hover",
-      filled: "bg-primary-background text-primary hover:bg-primary-background-hover hover:text-primary-hover",
-      default: "bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center justify-center gap-2",
-      gray: "bg-gray-100 hover:bg-gray-200 text-gray-700"
+      outline: "border-2 border-primary text-primary hover:border-primary-hover hover:text-primary-hover dark:border-blue-400 dark:text-blue-400 dark:hover:border-blue-300 dark:hover:text-blue-300",
+      filled: "bg-primary-background text-primary hover:bg-primary-background-hover hover:text-primary-hover dark:bg-blue-900 dark:text-blue-300",
+      default: "bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center gap-2",
+      gray: "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
     };
 
     return (

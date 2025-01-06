@@ -50,17 +50,17 @@ export const Modal = ({ isOpen, onClose, title, children, footer, hideFooter = f
   return createPortal(
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex min-h-screen items-center justify-center p-4">
-        <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={handleOverlayClick} />
+        <div className="fixed inset-0 bg-black/50 dark:bg-black/70 transition-opacity" onClick={handleOverlayClick} />
         <div
           ref={modalRef}
-          className={`relative w-full max-w-lg transform rounded-lg bg-white p-6 pb-1 shadow-xl transition-all ${containerClassName}`}
+          className={`relative w-full max-w-lg transform rounded-lg bg-white dark:bg-gray-800 p-6 pb-1 shadow-xl transition-all ${containerClassName}`}
         >
           {!hideTitle && (
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-medium">{title}</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">{title}</h3>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-500"
+                className="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
               >
                 <X className="w-5 h-5" />
               </button>

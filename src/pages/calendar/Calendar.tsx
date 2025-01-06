@@ -152,32 +152,32 @@ export default function CalendarPage() {
   }, [selectedTask, fetchTasks]);
 
   return (
-    <div className="p-6">
+    <div className="p-6 dark:bg-gray-900">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Calendar View</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Calendar View</h1>
         <div className="flex space-x-5">
           <div className="flex items-center">
             <span className={`w-4 h-4 rounded-full bg-yellow-500 mr-2`}></span>
-            <span>Todo</span>
+            <span className="text-gray-700 dark:text-gray-300">Todo</span>
           </div>
           <div className="flex items-center">
             <span className={`w-4 h-4 rounded-full bg-blue-500 mr-2`}></span>
-            <span>In Progress</span>
+            <span className="text-gray-700 dark:text-gray-300">In Progress</span>
           </div>
           <div className="flex items-center">
             <span className={`w-4 h-4 rounded-full bg-green-500 mr-2`}></span>
-            <span>Completed</span>
+            <span className="text-gray-700 dark:text-gray-300">Completed</span>
           </div>
           <div className="flex items-center">
             <span className={`w-4 h-4 rounded-full bg-gray-500 mr-2`}></span>
-            <span>Expired</span>
+            <span className="text-gray-700 dark:text-gray-300">Expired</span>
           </div>
         </div>
       </div>
 
       {/* Calendar */}
-      <div className="bg-white rounded-lg shadow overflow-hidden border border-gray-200 px-6 py-10">
+      <div className="bg-white !text-gray-900 rounded-lg shadow overflow-hidden border border-gray-200 px-6 py-10">
         {(isLoading && tasks.length === 0) ? (
           <div className="flex justify-center items-center py-10">
             <LoadingIndicator />
@@ -187,7 +187,7 @@ export default function CalendarPage() {
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">
               Welcome to Calendar View
             </h2>
-            <p className="text-gray-600 text-center max-w-md mb-6">
+            <p className="text-gray-600 dark:text-gray-400 text-center max-w-md mb-6">
               Log in to view and manage your tasks in a calendar format, track deadlines, and use the Pomodoro timer.
             </p>
             <Button

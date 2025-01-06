@@ -193,10 +193,10 @@ export default function TaskPage() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 dark:bg-gray-900">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Task Management</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Task Management</h1>
         <div className="space-x-4 flex items-center">
           <Button
             variant="primary"
@@ -231,17 +231,17 @@ export default function TaskPage() {
       />
 
       {/* Task list */}
-      <div className="mt-6 bg-white rounded-lg shadow overflow-hidden border border-gray-200">
+      <div className="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden border border-gray-200 dark:border-gray-700">
         {(isLoading && tasks.length === 0) ? (
           <div className="flex justify-center items-center py-10">
             <LoadingIndicator />
           </div>
         ) : !isAuthenticated ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
               Welcome to Task Management
             </h2>
-            <p className="text-gray-600 text-center max-w-md mb-6">
+            <p className="text-gray-600 dark:text-gray-400 text-center max-w-md mb-6">
               Log in to create and manage your tasks, track your progress, and get AI-powered insights.
             </p>
             <Button
@@ -292,25 +292,25 @@ export default function TaskPage() {
           <div className="space-y-6">
             <div className="space-y-6">
               <div>
-                <h3 className="text-sm font-medium text-gray-500">Task Name</h3>
-                <p className="mt-1 text-base text-gray-900">{viewingTask.name}</p>
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Task Name</h3>
+                <p className="mt-1 text-base text-gray-900 dark:text-gray-100">{viewingTask.name}</p>
               </div>
 
               <div>
-                <h3 className="text-sm font-medium text-gray-500">Description</h3>
-                <p className="mt-1 text-base text-gray-900 whitespace-pre-wrap">{viewingTask.description || "No description"}</p>
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Description</h3>
+                <p className="mt-1 text-base text-gray-900 dark:text-gray-100 whitespace-pre-wrap">{viewingTask.description || "No description"}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-500">Priority</h3>
+                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Priority</h3>
                   <div className="mt-1">
                     <PriorityTag priority={viewingTask.priority} />
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-medium text-gray-500">Status</h3>
+                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Status</h3>
                   <div className="mt-1">
                     <StatusTag status={viewingTask.status} />
                   </div>
@@ -318,19 +318,19 @@ export default function TaskPage() {
               </div>
 
               <div>
-                <h3 className="text-sm font-medium text-gray-500">Estimated Time</h3>
-                <p className="mt-1 text-base text-gray-900">{viewingTask.estimated_time} minutes</p>
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Estimated Time</h3>
+                <p className="mt-1 text-base text-gray-900 dark:text-gray-100">{viewingTask.estimated_time} minutes</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-500">Start Date</h3>
-                  <p className="mt-1 text-base text-gray-900">{formatDate(viewingTask.opened_at || "")}</p>
+                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Start Date</h3>
+                  <p className="mt-1 text-base text-gray-900 dark:text-gray-100">{formatDate(viewingTask.opened_at || "")}</p>
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-medium text-gray-500">Due Date</h3>
-                  <p className="mt-1 text-base text-gray-900">{formatDate(viewingTask.dued_at || "")}</p>
+                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Due Date</h3>
+                  <p className="mt-1 text-base text-gray-900 dark:text-gray-100">{formatDate(viewingTask.dued_at || "")}</p>
                 </div>
               </div>
             </div>
@@ -367,13 +367,13 @@ export default function TaskPage() {
         hideFooter
         containerClassName="!max-w-6xl"
       >
-        <div className="bg-gray-50 w-full px-6 py-4 rounded-lg shadow-inner">
+        <div className="bg-gray-50 dark:bg-gray-900 w-full px-6 py-4 rounded-lg shadow-inner">
           {isAnalyzing ? (
             <div className="flex justify-center items-center py-10">
               <LoadingIndicator />
             </div>
           ) : (
-            <div className="prose max-w-none">
+            <div className="prose dark:prose-invert max-w-none">
               <Markdown>{analysisResult}</Markdown>
             </div>
           )}
